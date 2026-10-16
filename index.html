@@ -801,6 +801,12 @@
     }
 
     function setMode(mode) {
+      // Bloqueia alternar de modo se o utilizador logado não tiver permissão para ambos
+      if (currentSessionUser && currentSessionUser.mode !== 'all' && currentSessionUser.mode !== mode) {
+        alert("Acesso restrito: Sua conta possui permissão apenas para o modo " + (currentSessionUser.mode === 'church' ? "Adventista" : "Campanha") + ".");
+        return;
+      }
+
       systemMode = mode;
       const selectAccess = document.getElementById('accessLevelSelect');
 
@@ -839,9 +845,11 @@
         document.getElementById('cardVal4').innerText = "90%";
         document.getElementById('cardIcon4').className = "fa-solid fa-chart-line";
 
-        document.getElementById('loggedUserName').innerText = "Pr. Marcos Alencar";
-        document.getElementById('loggedUserRole').innerText = "Presidente da Associação";
-        document.getElementById('mobileLoggedUser').innerText = "Pr. Marcos Alencar";
+        if (!currentSessionUser) {
+          document.getElementById('loggedUserName').innerText = "Pr. Marcos Alencar";
+          document.getElementById('loggedUserRole').innerText = "Presidente da Associação";
+          document.getElementById('mobileLoggedUser').innerText = "Pr. Marcos Alencar";
+        }
 
         selectAccess.innerHTML = `
           <option value="admin">👑 Visão Geral (Presidente)</option>
@@ -884,9 +892,11 @@
         document.getElementById('cardVal4').innerText = "88%";
         document.getElementById('cardIcon4').className = "fa-solid fa-bullseye";
 
-        document.getElementById('loggedUserName').innerText = "Dr. Arthur Vinicius";
-        document.getElementById('loggedUserRole').innerText = "Candidato Majoritário";
-        document.getElementById('mobileLoggedUser').innerText = "Dr. Arthur Vinicius";
+        if (!currentSessionUser) {
+          document.getElementById('loggedUserName').innerText = "Dr. Arthur Vinicius";
+          document.getElementById('loggedUserRole').innerText = "Candidato Majoritário";
+          document.getElementById('mobileLoggedUser').innerText = "Dr. Arthur Vinicius";
+        }
 
         selectAccess.innerHTML = `
           <option value="admin">👑 Visão Geral (Candidato)</option>
@@ -896,8 +906,20 @@
         document.getElementById('treeHeadingTitle').innerText = "Organograma de Lideranças Eleitorais";
       }
 
-      currentScope = 'admin';
-      selectAccess.value = 'admin';
+      // Se houver usuário logado, mantém o escopo e o nome dele NUNCA voltando para admin sozinho!
+      if (currentSessionUser) {
+        currentScope = currentSessionUser.scope;
+        document.getElementById('loggedUserName').innerText = currentSessionUser.name;
+        document.getElementById('loggedUserRole').innerText = currentSessionUser.role;
+        document.getElementById('mobileLoggedUser').innerText = currentSessionUser.name;
+      } else {
+        currentScope = 'admin';
+      }
+
+      if (selectAccess) {
+        selectAccess.value = currentScope;
+      }
+
       updateScopeStatusUI();
       populateSectorFilter();
       refreshAllViews();
