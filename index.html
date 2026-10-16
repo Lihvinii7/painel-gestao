@@ -127,6 +127,9 @@
       <button onclick="switchTabMobile('metas')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
         <i class="fa-regular fa-circle-dot w-4"></i> Metas & Cobertura
       </button>
+      <button onclick="switchTabMobile('usuarios')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-amber-400 hover:bg-slate-800 flex items-center gap-2">
+        <i class="fa-solid fa-user-shield w-4"></i> Gestão de Senhas & Acessos
+      </button>
     </div>
     <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
       <span id="mobileLoggedUser" class="text-[11px] text-slate-400 font-semibold truncate">Pr. Marcos Alencar</span>
@@ -167,11 +170,15 @@
       </div>
 
       <div>
-        <span class="px-3 text-[10px] font-bold tracking-wider text-slate-500 uppercase">Relatórios</span>
+        <span class="px-3 text-[10px] font-bold tracking-wider text-slate-500 uppercase">Relatórios & Segurança</span>
         <div class="mt-2 space-y-1">
           <button onclick="switchTab('metas')" id="navMetas" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
             <i class="fa-regular fa-circle-dot w-4 text-center"></i>
             <span>Metas & Cobertura</span>
+          </button>
+          <button onclick="switchTab('usuarios')" id="navUsuarios" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-amber-400 hover:text-amber-300 hover:bg-slate-800/60 transition">
+            <i class="fa-solid fa-user-shield w-4 text-center"></i>
+            <span>Gestão de Senhas</span>
           </button>
         </div>
       </div>
@@ -211,13 +218,18 @@
         </button>
       </div>
 
-      <!-- Simulador de Acesso & Botão Novo -->
+      <!-- Simulador de Acesso & Botões de Ação -->
       <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
         <div class="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs flex-1 sm:flex-none">
           <i class="fa-solid fa-user-gear text-slate-400 mr-1.5 text-[11px]"></i>
           <select id="accessLevelSelect" onchange="simulateAccessChange(this.value)" class="bg-transparent text-slate-800 font-semibold focus:outline-none cursor-pointer text-[11px] w-full sm:w-auto truncate">
           </select>
         </div>
+
+        <button onclick="openNewUserModal()" class="px-2.5 sm:px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-[11px] sm:text-xs font-semibold rounded-lg shadow-sm flex items-center gap-1 shrink-0" title="Criar novo login e senha">
+          <i class="fa-solid fa-key text-[10px]"></i>
+          <span>Criar Senha</span>
+        </button>
 
         <button onclick="openModalForNew()" class="px-3 py-1.5 bg-[#0d1322] hover:bg-slate-800 text-white text-xs font-semibold rounded-lg shadow-sm flex items-center gap-1 shrink-0">
           <i class="fa-solid fa-plus text-[10px]"></i>
@@ -233,7 +245,7 @@
         <span id="tagLevelDescription" class="text-slate-600 font-medium text-[11px] truncate">Visão consolidada do campo (Acesso Geral).</span>
       </div>
       <span class="text-slate-400 text-[10px] font-medium hidden sm:flex items-center gap-1">
-        <i class="fa-solid fa-shield-check text-emerald-600"></i> Auditoria Ativa
+        <i class="fa-solid fa-shield-check text-emerald-600"></i> Auditoria de Acessos Ativa
       </span>
     </div>
 
@@ -435,11 +447,121 @@
         </div>
       </section>
 
+      <!-- ABA 5: GESTÃO DE SENHAS E ACESSOS (DIRETO NO SITE) -->
+      <section id="tabContentUsuarios" class="hidden space-y-4 sm:space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs">
+          
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg shadow-xs">
+                <i class="fa-solid fa-key"></i>
+              </div>
+              <div>
+                <h2 class="text-sm sm:text-base font-bold text-slate-900">Gestão de Senhas e Acessos</h2>
+                <p class="text-[11px] text-slate-400">Crie logins e credenciais para coordenadores e pastores diretamente no painel.</p>
+              </div>
+            </div>
+            <button onclick="openNewUserModal()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-sm flex items-center justify-center gap-1.5 shrink-0">
+              <i class="fa-solid fa-plus text-[10px]"></i>
+              <span>Criar Novo Login</span>
+            </button>
+          </div>
+
+          <div class="mt-4 overflow-x-auto -mx-4 sm:mx-0">
+            <table class="w-full text-left border-collapse text-xs min-w-[600px]">
+              <thead>
+                <tr class="text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100 bg-slate-50/50">
+                  <th class="py-2.5 px-3 font-bold">NOME / IDENTIFICAÇÃO</th>
+                  <th class="py-2.5 px-3 font-bold">USUÁRIO (LOGIN)</th>
+                  <th class="py-2.5 px-3 font-bold">SENHA</th>
+                  <th class="py-2.5 px-3 font-bold">PAPEL / CARGO</th>
+                  <th class="py-2.5 px-3 font-bold">NÍVEL DE ACESSO</th>
+                  <th class="py-2.5 px-3 font-bold text-right">AÇÕES</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
+            </table>
+          </div>
+
+        </div>
+      </section>
+
     </main>
 
   </div>
 
-  <!-- MODAL DE EDIÇÃO E REGISTO -->
+  <!-- MODAL DE CRIAÇÃO/EDIÇÃO DE USUÁRIO E SENHA (NOVO) -->
+  <div id="userModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden p-4 sm:p-5">
+      
+      <div class="pb-3 border-b border-slate-100 flex items-center justify-between">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-sm">
+            <i class="fa-solid fa-user-lock"></i>
+          </div>
+          <div>
+            <h3 id="userModalHeading" class="font-bold text-slate-900 text-sm">Criar Acesso ao Sistema</h3>
+            <p class="text-[10px] text-slate-400">Defina o login e a senha para o líder</p>
+          </div>
+        </div>
+        <button onclick="closeUserModal()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="userForm" onsubmit="handleSaveUser(event)" class="mt-3 space-y-3">
+        <input type="hidden" id="editUserIndex" value="">
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Nome Completo</label>
+          <input type="text" id="userFormName" required placeholder="Ex: Pr. Carlos / Dr. Henrique" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Usuário (Login)</label>
+            <input type="text" id="userFormUsername" required placeholder="Ex: carlos.lider" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Senha de Acesso</label>
+            <div class="relative">
+              <input type="text" id="userFormPassword" required placeholder="Digite a senha" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white font-mono">
+              <button type="button" onclick="generateRandomPass()" class="absolute right-2 top-1.5 text-[10px] text-blue-600 font-bold hover:underline">Gerar</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Cargo / Papel Exibido</label>
+          <input type="text" id="userFormRole" required placeholder="Ex: Coordenador Regional / Pastor Distrital" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Nível Hierárquico (Visão)</label>
+            <select id="userFormScope" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 cursor-pointer">
+              <option value="admin">Acesso Total (Geral)</option>
+              <option value="regional1">Regional 1 (Zona Norte)</option>
+              <option value="regional2">Regional 2 (Zona Sul)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Módulo Permitido</label>
+            <select id="userFormMode" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 cursor-pointer">
+              <option value="all">Ambos (Igreja & Campanha)</option>
+              <option value="church">Apenas Igreja</option>
+              <option value="election">Apenas Campanha</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t border-slate-100 flex justify-end gap-2">
+          <button type="button" onclick="closeUserModal()" class="px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-100 rounded-xl font-medium">Cancelar</button>
+          <button type="submit" class="px-4 py-1.5 text-xs bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-semibold shadow-sm">Salvar Credencial</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DE EDIÇÃO E REGISTO DE MEMBROS -->
   <div id="editModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
     <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden p-4 sm:p-5">
       
@@ -498,9 +620,9 @@
     </div>
   </div>
 
-  <!-- JAVASCRIPT DINÂMICO -->
+  <!-- JAVASCRIPT DINÂMICO COM LOCALSTORAGE E GESTÃO DE SENHAS -->
   <script>
-    const systemUsers = [
+    const defaultUsers = [
       { user: "marcos.alencar", pass: "pastor2026", name: "Pr. Marcos Alencar", role: "Presidente da Associação", scope: "admin", mode: "church" },
       { user: "arthur.vinicius", pass: "eleicoes2026", name: "Dr. Arthur Vinicius", role: "Candidato Majoritário", scope: "admin", mode: "election" },
       { user: "thiago.moreira", pass: "distrito1", name: "Pr. Thiago Moreira", role: "Pastor Distrital (Norte)", scope: "regional1", mode: "church" },
@@ -510,6 +632,20 @@
       { user: "admin", pass: "admin123", name: "Administrador Central", role: "Comando Geral", scope: "admin", mode: "all" }
     ];
 
+    // Carrega usuários do LocalStorage ou usa padrão
+    function getStoredUsers() {
+      const stored = localStorage.getItem('gestao_system_users');
+      if (stored) {
+        try { return JSON.parse(stored); } catch(e) {}
+      }
+      return defaultUsers;
+    }
+
+    function saveStoredUsers(users) {
+      localStorage.setItem('gestao_system_users', JSON.stringify(users));
+    }
+
+    let systemUsers = getStoredUsers();
     let currentSessionUser = null;
     let systemMode = 'church';
     let currentScope = 'admin';
@@ -593,6 +729,8 @@
       e.preventDefault();
       const u = document.getElementById('loginUser').value.trim();
       const p = document.getElementById('loginPass').value.trim();
+      
+      systemUsers = getStoredUsers();
       const match = systemUsers.find(item => item.user === u && item.pass === p);
 
       if (match) {
@@ -626,8 +764,9 @@
       document.getElementById('tabContentOrganograma').classList.add('hidden');
       document.getElementById('tabContentMembros').classList.add('hidden');
       document.getElementById('tabContentMetas').classList.add('hidden');
+      document.getElementById('tabContentUsuarios').classList.add('hidden');
 
-      const tabs = ['visaoGeral', 'organograma', 'membros', 'metas'];
+      const tabs = ['visaoGeral', 'organograma', 'membros', 'metas', 'usuarios'];
       tabs.forEach(t => {
         const btn = document.getElementById(`nav${t.charAt(0).toUpperCase() + t.slice(1)}`);
         if (btn) {
@@ -652,6 +791,10 @@
       if (tabId === 'metas') {
         document.getElementById('tabContentMetas').classList.remove('hidden');
         renderMetasCards();
+      }
+      if (tabId === 'usuarios') {
+        document.getElementById('tabContentUsuarios').classList.remove('hidden');
+        renderUsersTable();
       }
     }
 
@@ -809,6 +952,7 @@
       if (activeTab === 'organograma') renderOrganogramaTree();
       if (activeTab === 'membros') renderMembersTable();
       if (activeTab === 'metas') renderMetasCards();
+      if (activeTab === 'usuarios') renderUsersTable();
     }
 
     function renderOverviewLevels() {
@@ -1094,6 +1238,135 @@
           </div>
         </div>
       `).join('');
+    }
+
+    // GESTÃO DE SENHAS E ACESSOS (TABELA & CRIAÇÃO DIRETO NA TELA)
+    function renderUsersTable() {
+      const tbody = document.getElementById('usersTableBody');
+      systemUsers = getStoredUsers();
+      tbody.innerHTML = '';
+
+      systemUsers.forEach((u, idx) => {
+        let scopeBadge = `<span class="bg-purple-100 text-purple-700 text-[10px] font-bold px-2 py-0.5 rounded">Acesso Total</span>`;
+        if (u.scope === 'regional1') scopeBadge = `<span class="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded">Zona Norte</span>`;
+        if (u.scope === 'regional2') scopeBadge = `<span class="bg-indigo-100 text-indigo-700 text-[10px] font-bold px-2 py-0.5 rounded">Zona Sul</span>`;
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50/80 transition";
+        tr.innerHTML = `
+          <td class="py-2.5 px-3">
+            <p class="font-bold text-slate-900">${u.name}</p>
+            <p class="text-[10px] text-slate-400 uppercase font-semibold">${u.mode === 'all' ? 'Igreja & Campanha' : u.mode === 'church' ? 'Igreja' : 'Campanha'}</p>
+          </td>
+          <td class="py-2.5 px-3 font-mono font-semibold text-blue-600">${u.user}</td>
+          <td class="py-2.5 px-3 font-mono font-semibold text-slate-600">${u.pass}</td>
+          <td class="py-2.5 px-3 text-slate-700">${u.role}</td>
+          <td class="py-2.5 px-3">${scopeBadge}</td>
+          <td class="py-2.5 px-3 text-right">
+            <div class="flex items-center justify-end gap-1.5">
+              <button onclick="shareUserWhatsApp(${idx})" class="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg transition" title="Enviar acesso via WhatsApp">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+              </button>
+              <button onclick="openEditUserModal(${idx})" class="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Editar">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+              <button onclick="deleteUser(${idx})" class="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition" title="Excluir">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openNewUserModal() {
+      document.getElementById('editUserIndex').value = '';
+      document.getElementById('userForm').reset();
+      document.getElementById('userModalHeading').innerText = "Criar Novo Login e Senha";
+      document.getElementById('userModal').classList.remove('hidden');
+      document.getElementById('userModal').classList.add('flex');
+      generateRandomPass();
+    }
+
+    function openEditUserModal(idx) {
+      systemUsers = getStoredUsers();
+      const u = systemUsers[idx];
+      if (!u) return;
+
+      document.getElementById('editUserIndex').value = idx;
+      document.getElementById('userFormName').value = u.name;
+      document.getElementById('userFormUsername').value = u.user;
+      document.getElementById('userFormPassword').value = u.pass;
+      document.getElementById('userFormRole').value = u.role;
+      document.getElementById('userFormScope').value = u.scope;
+      document.getElementById('userFormMode').value = u.mode;
+      document.getElementById('userModalHeading').innerText = "Alterar Credencial";
+
+      document.getElementById('userModal').classList.remove('hidden');
+      document.getElementById('userModal').classList.add('flex');
+    }
+
+    function closeUserModal() {
+      document.getElementById('userModal').classList.remove('flex');
+      document.getElementById('userModal').classList.add('hidden');
+    }
+
+    function generateRandomPass() {
+      const chars = "abcdefghijklmnopqrstuvwxyz1234567890";
+      let pass = "";
+      for (let i = 0; i < 6; i++) {
+        pass += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      document.getElementById('userFormPassword').value = pass;
+    }
+
+    function handleSaveUser(e) {
+      e.preventDefault();
+      const idx = document.getElementById('editUserIndex').value;
+      const name = document.getElementById('userFormName').value.trim();
+      const user = document.getElementById('userFormUsername').value.trim().toLowerCase();
+      const pass = document.getElementById('userFormPassword').value.trim();
+      const role = document.getElementById('userFormRole').value.trim();
+      const scope = document.getElementById('userFormScope').value;
+      const mode = document.getElementById('userFormMode').value;
+
+      systemUsers = getStoredUsers();
+
+      if (idx !== '') {
+        systemUsers[idx] = { name, user, pass, role, scope, mode };
+      } else {
+        // Verifica se usuário já existe
+        if (systemUsers.some(u => u.user === user)) {
+          alert("Atenção: Já existe um login cadastrado com esse usuário!");
+          return;
+        }
+        systemUsers.unshift({ name, user, pass, role, scope, mode });
+      }
+
+      saveStoredUsers(systemUsers);
+      closeUserModal();
+      alert(`Credencial guardada com sucesso!\n\nUsuário: ${user}\nSenha: ${pass}\nA pessoa já pode entrar imediatamente no sistema com estes dados.`);
+      renderUsersTable();
+    }
+
+    function deleteUser(idx) {
+      systemUsers = getStoredUsers();
+      if (confirm(`Deseja excluir o acesso de "${systemUsers[idx].name}"?`)) {
+        systemUsers.splice(idx, 1);
+        saveStoredUsers(systemUsers);
+        renderUsersTable();
+      }
+    }
+
+    function shareUserWhatsApp(idx) {
+      systemUsers = getStoredUsers();
+      const u = systemUsers[idx];
+      const link = window.location.href.split('#')[0];
+      const text = encodeURIComponent(
+        `Olá, ${u.name}!\n\nSeu acesso ao *Painel de Gestão Hierárquica* foi configurado:\n\n🌐 *Link do Site:* ${link}\n👤 *Usuário:* ${u.user}\n🔑 *Senha:* ${u.pass}\n🛡️ *Nível:* ${u.role}\n\nGuarde sua credencial com segurança!`
+      );
+      window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
     }
 
     function openModalForEdit(id) {
