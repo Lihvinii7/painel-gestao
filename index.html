@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Gestão Hierárquica</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .tree-connector::before {
+      content: '';
+      position: absolute;
+      left: -20px;
+      top: 50%;
+      width: 20px;
+      height: 2px;
+      background-color: #cbd5e1;
+    }
+    .tree-branch {
+      position: relative;
+      margin-left: 28px;
+      padding-left: 20px;
+      border-left: 2px solid #cbd5e1;
+    }
+  </style>
+</head>
+<body class="bg-[#f1f5f9] text-slate-800 antialiased min-h-screen flex font-sans">
+
+  <!-- MODAL DE LOGIN INDIVIDUAL (SEM SENHA EXPOSTA NA FRENTE) -->
+  <div id="loginOverlay" class="fixed inset-0 bg-[#0b0f19]/80 backdrop-blur-sm flex items-center justify-center p-4 z-[100]">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-sm overflow-hidden p-6 sm:p-7">
+      
+      <div class="flex items-center space-x-3 mb-6 pb-4 border-b border-slate-100">
+        <div class="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center text-lg shadow-md shadow-blue-500/30">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <div>
+          <h2 class="text-base font-bold text-slate-900 tracking-tight">Acesso ao Painel</h2>
+          <p class="text-xs text-slate-400">Entre com sua credencial individual</p>
+        </div>
+      </div>
+
+      <div id="loginAlert" class="hidden mb-4 p-2.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
+        <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+        <span>Usuário ou senha incorretos.</span>
+      </div>
+
+      <form onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Usuário</label>
+          <div class="relative">
+            <i class="fa-solid fa-user absolute left-3 top-3 text-slate-400 text-xs"></i>
+            <input type="text" id="loginUser" required placeholder="Digite seu usuário" class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white transition">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Senha</label>
+          <div class="relative">
+            <i class="fa-solid fa-key absolute left-3 top-3 text-slate-400 text-xs"></i>
+            <input type="password" id="loginPass" required placeholder="Digite sua senha" class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white transition">
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs shadow-md shadow-blue-600/25 transition">
+          Entrar no Sistema
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- SIDEBAR FIXA -->
+  <aside class="w-64 bg-[#0d1322] text-slate-300 flex flex-col shrink-0 min-h-screen">
+    
+    <!-- Topo / Logo -->
+    <div class="p-5 border-b border-slate-800/80 flex items-center space-x-3">
+      <div id="sideLogoIcon" class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-lg font-bold shadow-md shadow-blue-500/20">
+        <i class="fa-solid fa-church"></i>
+      </div>
+      <div>
+        <h2 id="sideBrandTitle" class="text-sm font-bold text-white tracking-wide leading-tight">GESTÃO ADVENTISTA</h2>
+        <p id="sideBrandSub" class="text-[10px] text-slate-400 font-medium">Associação / Campo Local</p>
+      </div>
+    </div>
+
+    <!-- Abas de Navegação -->
+    <div class="px-3 py-5 space-y-6 flex-1">
+      <div>
+        <span class="px-3 text-[10px] font-bold tracking-wider text-slate-500 uppercase">Principal</span>
+        <div class="mt-2 space-y-1">
+          <button onclick="switchTab('visaoGeral')" id="navVisaoGeral" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-blue-600 text-white transition shadow-sm">
+            <i class="fa-solid fa-chart-pie w-4 text-center"></i>
+            <span>Visão Geral</span>
+          </button>
+          <button onclick="switchTab('organograma')" id="navOrganograma" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <i class="fa-solid fa-sitemap w-4 text-center"></i>
+            <span>Organograma em Árvore</span>
+          </button>
+          <button onclick="switchTab('membros')" id="navMembros" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <i class="fa-solid fa-users w-4 text-center"></i>
+            <span id="navMembrosLabel">Gestão de Membros</span>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <span class="px-3 text-[10px] font-bold tracking-wider text-slate-500 uppercase">Relatórios</span>
+        <div class="mt-2 space-y-1">
+          <button onclick="switchTab('metas')" id="navMetas" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <i class="fa-regular fa-circle-dot w-4 text-center"></i>
+            <span>Metas & Cobertura</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rodapé Sidebar -->
+    <div class="p-4 border-t border-slate-800/80 bg-[#090d17]">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center space-x-2">
+          <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+          <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Usuário Conectado:</span>
+        </div>
+        <button onclick="handleLogout()" class="text-[10px] text-rose-400 hover:text-rose-300 font-semibold" title="Sair">
+          <i class="fa-solid fa-arrow-right-from-bracket mr-0.5"></i> Sair
+        </button>
+      </div>
+      <p id="loggedUserName" class="text-xs font-bold text-white truncate">Pr. Marcos Alencar</p>
+      <p id="loggedUserRole" class="text-[11px] text-blue-400 truncate">Presidente da Associação</p>
+    </div>
+
+  </aside>
+
+  <!-- ÁREA PRINCIPAL -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+
+    <!-- Header Superior -->
+    <header class="bg-white border-b border-slate-200 px-6 py-3.5 flex flex-wrap items-center justify-between gap-4 sticky top-0 z-40">
+      
+      <!-- Alternador de Contexto (Adventista vs Eleitoral) -->
+      <div class="flex items-center gap-2">
+        <button id="btnChurchMode" onclick="setMode('church')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 shadow-sm flex items-center gap-2 transition">
+          <i class="fa-solid fa-church"></i>
+          <span>Modelo Adventista</span>
+        </button>
+        <button id="btnElectionMode" onclick="setMode('election')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center gap-2 transition">
+          <i class="fa-solid fa-landmark text-emerald-600"></i>
+          <span>Modelo Eleitoral / Campanha</span>
+        </button>
+      </div>
+
+      <!-- Simulador de Acesso e Botão Novo Cadastro -->
+      <div class="flex items-center gap-3">
+        <div class="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-xs">
+          <i class="fa-solid fa-user-gear text-slate-500 mr-2"></i>
+          <span class="text-slate-500 font-bold uppercase text-[10px] mr-2">SIMULAR ACESSO:</span>
+          <select id="accessLevelSelect" onchange="simulateAccessChange(this.value)" class="bg-transparent text-slate-800 font-semibold focus:outline-none cursor-pointer">
+            <!-- Atualizado dinamicamente de acordo com o modo -->
+          </select>
+        </div>
+
+        <button onclick="openModalForNew()" class="px-3.5 py-1.5 bg-[#0d1322] hover:bg-slate-800 text-white text-xs font-semibold rounded-lg shadow-sm flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-plus text-[10px]"></i>
+          <span id="btnTopNew">Novo Cadastro</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sub-Barra de Status do Nível Ativo -->
+    <div class="bg-slate-100/70 border-b border-slate-200 px-6 py-2 flex items-center justify-between text-xs">
+      <div class="flex items-center space-x-2">
+        <span id="tagLevelPill" class="bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded text-[10px] uppercase">NÍVEL 1 - TOTAL</span>
+        <span id="tagLevelDescription" class="text-slate-600 font-medium">Você está visualizando todos os dados do campo (Acesso Geral).</span>
+      </div>
+      <span class="text-slate-500 text-[11px] font-medium flex items-center gap-1">
+        <i class="fa-solid fa-shield-check text-emerald-600"></i> Auditoria de Dados Ativa
+      </span>
+    </div>
+
+    <!-- CONTEÚDO DAS ABAS -->
+    <main class="p-6 space-y-6 max-w-7xl">
+
+      <!-- ABA 1: VISÃO GERAL -->
+      <section id="tabContentVisaoGeral" class="space-y-6">
+        
+        <!-- Banner Principal -->
+        <div class="relative bg-gradient-to-r from-[#0d1322] to-[#151c2e] text-white rounded-2xl p-6 shadow-sm overflow-hidden border border-slate-800">
+          <div class="relative z-10 max-w-2xl">
+            <span id="bannerTag" class="inline-block bg-blue-500/20 text-blue-300 border border-blue-400/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider mb-2">
+              PAINEL DE MOBILIZAÇÃO E GESTÃO
+            </span>
+            <h1 id="bannerTitle" class="text-2xl font-bold tracking-tight text-white">Painel de Gestão da Associação</h1>
+            <p id="bannerSubtitle" class="text-xs text-slate-300 mt-1">Estrutura eclesiástica: Presidência, Departamentos, Pastores Distritais, Anciãos e Membresia.</p>
+          </div>
+          <div class="absolute right-6 -bottom-4 text-white/5 text-9xl pointer-events-none">
+            <i id="bannerWatermark" class="fa-solid fa-church"></i>
+          </div>
+        </div>
+
+        <!-- Cards de Métricas -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white rounded-xl border border-slate-200/90 p-4 shadow-xs flex items-center justify-between">
+            <div>
+              <p id="cardLabel1" class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">TOTAL DE MEMBROS</p>
+              <p id="cardVal1" class="text-2xl font-extrabold text-slate-900 mt-1">11</p>
+              <p class="text-[11px] text-emerald-600 font-semibold mt-1 flex items-center gap-1">
+                <i class="fa-solid fa-arrow-trend-up"></i> +12% esse mês
+              </p>
+            </div>
+            <div class="w-11 h-11 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-lg">
+              <i id="cardIcon1" class="fa-solid fa-address-book"></i>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl border border-slate-200/90 p-4 shadow-xs flex items-center justify-between">
+            <div>
+              <p id="cardLabel2" class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">PASTORES & ANCIÃOS</p>
+              <p id="cardVal2" class="text-2xl font-extrabold text-slate-900 mt-1">5</p>
+              <p id="cardSub2" class="text-[11px] text-slate-500 font-medium mt-1">Atuando em campo</p>
+            </div>
+            <div class="w-11 h-11 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-lg">
+              <i id="cardIcon2" class="fa-solid fa-user-tie"></i>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl border border-slate-200/90 p-4 shadow-xs flex items-center justify-between">
+            <div>
+              <p id="cardLabel3" class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">DISTRITOS PASTORAIS</p>
+              <p id="cardVal3" class="text-2xl font-extrabold text-slate-900 mt-1">6</p>
+              <p class="text-[11px] text-emerald-600 font-semibold mt-1">100% com cobertura</p>
+            </div>
+            <div class="w-11 h-11 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-lg">
+              <i id="cardIcon3" class="fa-solid fa-map-location-dot"></i>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl border border-slate-200/90 p-4 shadow-xs flex items-center justify-between">
+            <div>
+              <p id="cardLabel4" class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">META GLOBAL ATINGIDA</p>
+              <p id="cardVal4" class="text-2xl font-extrabold text-slate-900 mt-1">90%</p>
+              <div class="w-24 bg-slate-100 rounded-full h-1.5 mt-2 overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 90%"></div>
+              </div>
+            </div>
+            <div class="w-11 h-11 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-lg">
+              <i id="cardIcon4" class="fa-solid fa-chart-line"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção Inferior: Níveis de Comando + Tabela Resumida -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+                <h3 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Níveis de Comando</h3>
+                <span class="text-[10px] text-slate-400 font-semibold uppercase">Fluxo Decisório</span>
+              </div>
+              <div class="space-y-3" id="hierarchyLevelsContainer"></div>
+            </div>
+            <button onclick="switchTab('organograma')" class="mt-5 w-full py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 transition flex items-center justify-center gap-1.5">
+              <span>Explorar Organograma Completo</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </button>
+          </div>
+
+          <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs flex flex-col">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+              <div>
+                <h3 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Últimas Pessoas Registradas no Sistema</h3>
+                <p class="text-[11px] text-slate-400">Clique na caneta para alterar dados ou em ver todas para a tabela completa</p>
+              </div>
+              <button onclick="switchTab('membros')" class="text-xs font-bold text-blue-600 hover:text-blue-700">Ver todas</button>
+            </div>
+            <div class="overflow-x-auto flex-1">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100">
+                    <th class="py-2.5 px-3 font-bold">NOME</th>
+                    <th class="py-2.5 px-3 font-bold">SETOR / DISTRITO</th>
+                    <th class="py-2.5 px-3 font-bold">LIDERANÇA DIRETA</th>
+                    <th class="py-2.5 px-3 font-bold">STATUS</th>
+                    <th class="py-2.5 px-3 font-bold text-right">AÇÕES</th>
+                  </tr>
+                </thead>
+                <tbody id="overviewTableBody" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ABA 2: ORGANOGRAMA EM ÁRVORE -->
+      <section id="tabContentOrganograma" class="hidden space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-6 shadow-xs">
+          
+          <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-100 mb-6">
+            <div class="flex items-center space-x-3">
+              <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-base">
+                <i class="fa-solid fa-sitemap"></i>
+              </div>
+              <div>
+                <h2 id="treeHeadingTitle" class="text-sm font-bold text-slate-900">Estrutura Organizacional Hierárquica</h2>
+                <p class="text-xs text-slate-400">Clique nas caixas para expandir, recolher ou ver a ficha do responsável e subordinados.</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="expandAllTree(true)" class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-up-right-and-down-left-from-center text-[10px]"></i>
+                <span>Expandir Tudo</span>
+              </button>
+              <button onclick="expandAllTree(false)" class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-down-left-and-up-right-to-center text-[10px]"></i>
+                <span>Recolher</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Conteiner da Árvore Hierárquica -->
+          <div id="treeContainer" class="p-2 space-y-3">
+            <!-- Renderizado dinamicamente via JS -->
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ABA 3: GESTÃO DE MEMBROS / ELEITORES (TABELA COMPLETA) -->
+      <section id="tabContentMembros" class="hidden space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-6 shadow-xs">
+          
+          <!-- Filtro e Botão Cadastrar -->
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+            <div class="relative flex-1 max-w-md">
+              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+              <input type="text" id="memberSearchInput" oninput="renderMembersTable()" placeholder="Buscar por nome, telefone ou líder..." class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white transition">
+            </div>
+
+            <div class="flex items-center gap-2">
+              <select id="memberSectorFilter" onchange="renderMembersTable()" class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none cursor-pointer">
+                <!-- Setores populados dinamicamente de acordo com o modo -->
+              </select>
+
+              <button onclick="openModalForNew()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-sm flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-plus text-[10px]"></i>
+                <span>Cadastrar</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Tabela Completa -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100 bg-slate-50/50">
+                  <th class="py-3 px-4 font-bold">PESSOA / CONTATO</th>
+                  <th class="py-3 px-4 font-bold">PAPEL / POSIÇÃO</th>
+                  <th class="py-3 px-4 font-bold">DISTRITO / SETOR</th>
+                  <th class="py-3 px-4 font-bold">SUBORDINADO A (CHEFIA)</th>
+                  <th class="py-3 px-4 font-bold text-right">AÇÕES</th>
+                </tr>
+              </thead>
+              <tbody id="fullMembersTableBody" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
+            </table>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ABA 4: METAS & COBERTURA -->
+      <section id="tabContentMetas" class="hidden space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-6 shadow-xs">
+          
+          <div class="pb-4 border-b border-slate-100 mb-6">
+            <h2 id="metasHeadingTitle" class="text-base font-bold text-slate-900">Desempenho por Distrito / Setor de Campanha</h2>
+            <p class="text-xs text-slate-400">Acompanhamento de engajamento territorial e metas atingidas.</p>
+          </div>
+
+          <!-- Grid dos Cartões de Metas -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="metasCardsGrid">
+            <!-- Renderizado dinamicamente via JS -->
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- MODAL DE CADASTRO E EDIÇÃO (ALTERAR NOMES E DADOS) -->
+  <div id="editModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      
+      <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <div>
+          <h3 id="modalHeading" class="font-bold text-slate-900 text-sm">Alterar Dados do Registro</h3>
+          <p class="text-[11px] text-slate-400">Atualize as informações desejadas</p>
+        </div>
+        <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="editForm" onsubmit="handleSaveRecord(event)" class="p-5 space-y-3.5">
+        <input type="hidden" id="recordId" value="">
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Nome Completo</label>
+          <input type="text" id="fieldName" required placeholder="Digite o nome" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Telefone / WhatsApp</label>
+            <input type="text" id="fieldPhone" required placeholder="(81) 99999-0000" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Papel / Posição</label>
+            <input type="text" id="fieldRole" required placeholder="Ex: Primeiro Ancião / Diretor" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Distrito / Setor</label>
+            <input type="text" id="fieldRegion" required placeholder="Ex: Distrito Sul ou Zona Sul" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Subordinado a (Chefia)</label>
+            <input type="text" id="fieldLeader" required placeholder="Ex: Líder direto" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Status</label>
+          <select id="fieldStatus" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 cursor-pointer">
+            <option value="Ativo">Ativo</option>
+            <option value="Confirmado">Confirmado</option>
+            <option value="Pendente">Pendente</option>
+          </select>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
+          <button type="button" onclick="closeEditModal()" class="px-3.5 py-1.5 text-xs text-slate-600 hover:bg-slate-100 rounded-xl font-medium">Cancelar</button>
+          <button type="submit" class="px-4 py-1.5 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-sm">Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT: LÓGICA COMPLETA DE ALTERNÂNCIA REAL (ADVENTISTA VS ELEIÇÃO) -->
+  <script>
+    // Usuários com senhas privadas cadastradas no código
+    const systemUsers = [
+      { user: "marcos.alencar", pass: "pastor2026", name: "Pr. Marcos Alencar", role: "Presidente da Associação", scope: "admin", mode: "church" },
+      { user: "arthur.vinicius", pass: "eleicoes2026", name: "Dr. Arthur Vinicius", role: "Candidato Majoritário", scope: "admin", mode: "election" },
+      { user: "thiago.moreira", pass: "distrito1", name: "Pr. Thiago Moreira", role: "Pastor Distrital (Norte)", scope: "regional1", mode: "church" },
+      { user: "samuel.ribeiro", pass: "distrito2", name: "Pr. Samuel Ribeiro", role: "Pastor Distrital (Sul)", scope: "regional2", mode: "church" },
+      { user: "helena.ramos", pass: "campanha1", name: "Profª Helena Ramos", role: "Coord. Regional Zona Norte", scope: "regional1", mode: "election" },
+      { user: "jorge.farmacia", pass: "campanha2", name: "Jorge da Farmácia", role: "Coord. Regional Zona Sul", scope: "regional2", mode: "election" },
+      { user: "admin", pass: "admin123", name: "Administrador Central", role: "Comando Geral", scope: "admin", mode: "all" }
+    ];
+
+    let currentSessionUser = null;
+    let systemMode = 'church'; // 'church' ou 'election'
+    let currentScope = 'admin'; // 'admin', 'regional1', 'regional2'
+    let activeTab = 'visaoGeral';
+
+    // BASE 1: ADVENTISTA (EXATAMENTE COMO O PRINT DA IGREJA)
+    let churchDatabase = [
+      { id: 1, name: "Pr. Marcos Alencar", role: "Presidente da Associação", phone: "(81) 99111-0001", region: "Associação Geral", leader: "Nível de Comando", status: "Ativo", scope: "admin", badgeColor: "purple" },
+      { id: 2, name: "Pr. Carlos Eduardo", role: "Diretor Departamental", phone: "(81) 99111-0002", region: "Ministério Pessoal", leader: "Pr. Marcos Alencar", status: "Ativo", scope: "admin", badgeColor: "blue" },
+      { id: 3, name: "Pr. Fernando Dias", role: "Diretor Departamental", phone: "(81) 99111-0003", region: "Evangelismo & Jovens", leader: "Pr. Marcos Alencar", status: "Ativo", scope: "admin", badgeColor: "blue" },
+      { id: 4, name: "Pr. Samuel Ribeiro", role: "Pastor Distrital", phone: "(81) 99222-0010", region: "Distrito Sul", leader: "Pr. Carlos Eduardo", status: "Ativo", scope: "regional2", badgeColor: "indigo" },
+      { id: 5, name: "Pr. Thiago Moreira", role: "Pastor Distrital", phone: "(81) 99222-0020", region: "Distrito Norte", leader: "Pr. Fernando Dias", status: "Ativo", scope: "regional1", badgeColor: "indigo" },
+      { id: 6, name: "Ancião Paulo Souza", role: "Primeiro Ancião / Diretor", phone: "(81) 99333-1001", region: "Distrito Sul", leader: "Pr. Samuel Ribeiro", status: "Ativo", scope: "regional2", badgeColor: "amber" },
+      { id: 7, name: "Ancião Davi Mendes", role: "Primeiro Ancião / Diretor", phone: "(81) 99333-1002", region: "Distrito Norte", leader: "Pr. Thiago Moreira", status: "Ativo", scope: "regional1", badgeColor: "amber" },
+      { id: 8, name: "Mariana Costa", role: "Membro Ativo", phone: "(81) 99444-2001", region: "Distrito Sul", leader: "Ancião Paulo Souza", status: "Ativo", scope: "regional2", badgeColor: "slate" },
+      { id: 9, name: "Lucas Fernandes", role: "Membro Ativo", phone: "(81) 99444-2002", region: "Distrito Sul", leader: "Ancião Paulo Souza", status: "Ativo", scope: "regional2", badgeColor: "slate" },
+      { id: 10, name: "Beatriz Oliveira", role: "Membro Ativo", phone: "(81) 99444-2003", region: "Distrito Norte", leader: "Ancião Davi Mendes", status: "Ativo", scope: "regional1", badgeColor: "slate" },
+      { id: 11, name: "LISANDRO VINICIOS DA SILVA", role: "Primeiro Ancião / Diretor", phone: "81991781052", region: "Zona Norte", leader: "Lucas Fernandes", status: "Ativo", scope: "regional1", badgeColor: "amber" }
+    ];
+
+    // BASE 2: ELEIÇÕES / CAMPANHA (EXATAMENTE COMO O PRINT DE CAMPANHA)
+    let electionDatabase = [
+      { id: 101, name: "Dr. Arthur Vinicius", role: "Candidato Majoritário", phone: "(81) 98111-1000", region: "Comitê Central", leader: "Nível de Comando", status: "Ativo", scope: "admin", badgeColor: "purple" },
+      { id: 102, name: "Ricardo Albuquerque", role: "Coordenação Geral de Campanha", phone: "(81) 98111-2000", region: "Estratégia Geral", leader: "Dr. Arthur Vinicius", status: "Ativo", scope: "admin", badgeColor: "emerald" },
+      { id: 103, name: "Valéria Santos", role: "Coordenação Geral de Campanha", phone: "(81) 98111-3000", region: "Mobilização Comunitária", leader: "Dr. Arthur Vinicius", status: "Ativo", scope: "admin", badgeColor: "emerald" },
+      { id: 104, name: "Jorge da Farmácia", role: "Coordenador Regional / Bairro", phone: "(81) 98222-4001", region: "Zona Sul", leader: "Ricardo Albuquerque", status: "Ativo", scope: "regional2", badgeColor: "blue" },
+      { id: 105, name: "Profª Helena Ramos", role: "Coordenador Regional / Bairro", phone: "(81) 98222-4002", region: "Zona Norte", leader: "Valéria Santos", status: "Ativo", scope: "regional1", badgeColor: "blue" },
+      { id: 106, name: "Marcos Líder Comunitário", role: "Liderança de Rua / Cabo Eleitoral", phone: "(81) 98333-5001", region: "Zona Sul", leader: "Jorge da Farmácia", status: "Ativo", scope: "regional2", badgeColor: "amber" },
+      { id: 107, name: "Dona Neide Morro", role: "Liderança de Rua / Cabo Eleitoral", phone: "(81) 98333-5002", region: "Zona Norte", leader: "Profª Helena Ramos", status: "Ativo", scope: "regional1", badgeColor: "amber" },
+      { id: 108, name: "Carlos Henrique", role: "Eleitor / Voto Confirmado", phone: "(81) 98444-6001", region: "Zona Sul", leader: "Marcos Líder Comunitário", status: "Ativo", scope: "regional2", badgeColor: "slate" },
+      { id: 109, name: "Vanessa Lins", role: "Eleitor / Voto Confirmado", phone: "(81) 98444-6002", region: "Zona Sul", leader: "Marcos Líder Comunitário", status: "Ativo", scope: "regional2", badgeColor: "slate" },
+      { id: 110, name: "João Pedro Silva", role: "Eleitor / Voto Confirmado", phone: "(81) 98444-6003", region: "Zona Norte", leader: "Dona Neide Morro", status: "Ativo", scope: "regional1", badgeColor: "slate" }
+    ];
+
+    // Metas de Setores para cada Modo
+    const churchGoals = [
+      { name: "Associação Geral", sub: "1 lideranças / pessoas cadastradas", pct: 95, color: "emerald" },
+      { name: "Ministério Pessoal", sub: "1 lideranças / pessoas cadastradas", pct: 88, color: "emerald" },
+      { name: "Evangelismo & Jovens", sub: "1 lideranças / pessoas cadastradas", pct: 90, color: "emerald" },
+      { name: "Distrito Sul", sub: "4 lideranças / pessoas cadastradas", pct: 93, color: "emerald" },
+      { name: "Distrito Norte", sub: "3 lideranças / pessoas cadastradas", pct: 82, color: "amber" },
+      { name: "Zona Norte", sub: "1 lideranças / pessoas cadastradas", pct: 100, color: "emerald" }
+    ];
+
+    const electionGoals = [
+      { name: "Comitê Central", sub: "1 liderança geral", pct: 98, color: "emerald" },
+      { name: "Estratégia Geral", sub: "1 coordenação geral", pct: 92, color: "emerald" },
+      { name: "Mobilização Comunitária", sub: "1 coordenação de campo", pct: 89, color: "emerald" },
+      { name: "Zona Sul", sub: "4 lideranças e eleitores", pct: 94, color: "emerald" },
+      { name: "Zona Norte", sub: "3 lideranças e eleitores", pct: 85, color: "amber" }
+    ];
+
+    // Níveis de Comando
+    const levelsChurch = [
+      { role: "Presidente da Associação", count: "1 ativos", icon: "fa-crown text-purple-600" },
+      { role: "Diretor Departamental", count: "2 ativos", icon: "fa-briefcase text-blue-600" },
+      { role: "Pastor Distrital", count: "2 ativos", icon: "fa-user-tie text-indigo-600" },
+      { role: "Primeiro Ancião / Diretor", count: "3 ativos", icon: "fa-person-chalkboard text-amber-600" },
+      { role: "Membro Ativo", count: "3 ativos", icon: "fa-user text-slate-600" }
+    ];
+
+    const levelsElection = [
+      { role: "Candidato Majoritário", count: "1 ativos", icon: "fa-crown text-purple-600" },
+      { role: "Coordenação Geral", count: "2 ativos", icon: "fa-briefcase text-blue-600" },
+      { role: "Coordenador Regional", count: "2 ativos", icon: "fa-user-tie text-indigo-600" },
+      { role: "Liderança de Bairro / Cabo", count: "2 ativos", icon: "fa-person-chalkboard text-amber-600" },
+      { role: "Eleitor / Voto Confirmado", count: "3 ativos", icon: "fa-user text-slate-600" }
+    ];
+
+    function getCurrentDB() {
+      return systemMode === 'church' ? churchDatabase : electionDatabase;
+    }
+
+    // AUTENTICAÇÃO
+    function handleLogin(e) {
+      e.preventDefault();
+      const u = document.getElementById('loginUser').value.trim();
+      const p = document.getElementById('loginPass').value.trim();
+      const match = systemUsers.find(item => item.user === u && item.pass === p);
+
+      if (match) {
+        currentSessionUser = match;
+        currentScope = match.scope;
+        if (match.mode !== 'all') {
+          setMode(match.mode);
+        }
+        document.getElementById('loginOverlay').classList.add('hidden');
+        document.getElementById('loginAlert').classList.add('hidden');
+        document.getElementById('loggedUserName').innerText = match.name;
+        document.getElementById('loggedUserRole').innerText = match.role;
+        updateScopeStatusUI();
+        refreshAllViews();
+      } else {
+        document.getElementById('loginAlert').classList.remove('hidden');
+      }
+    }
+
+    function handleLogout() {
+      if (confirm("Deseja sair da sua conta?")) {
+        document.getElementById('loginOverlay').classList.remove('hidden');
+        document.getElementById('loginPass').value = '';
+      }
+    }
+
+    // NAVEGAÇÃO DE ABAS
+    function switchTab(tabId) {
+      activeTab = tabId;
+
+      document.getElementById('tabContentVisaoGeral').classList.add('hidden');
+      document.getElementById('tabContentOrganograma').classList.add('hidden');
+      document.getElementById('tabContentMembros').classList.add('hidden');
+      document.getElementById('tabContentMetas').classList.add('hidden');
+
+      const tabs = ['visaoGeral', 'organograma', 'membros', 'metas'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`nav${t.charAt(0).toUpperCase() + t.slice(1)}`);
+        if (btn) {
+          btn.className = "w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition";
+        }
+      });
+
+      const activeBtn = document.getElementById(`nav${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`);
+      if (activeBtn) {
+        activeBtn.className = "w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-blue-600 text-white transition shadow-sm";
+      }
+
+      if (tabId === 'visaoGeral') document.getElementById('tabContentVisaoGeral').classList.remove('hidden');
+      if (tabId === 'organograma') {
+        document.getElementById('tabContentOrganograma').classList.remove('hidden');
+        renderOrganogramaTree();
+      }
+      if (tabId === 'membros') {
+        document.getElementById('tabContentMembros').classList.remove('hidden');
+        renderMembersTable();
+      }
+      if (tabId === 'metas') {
+        document.getElementById('tabContentMetas').classList.remove('hidden');
+        renderMetasCards();
+      }
+    }
+
+    // ALTERNÂNCIA REAL DE MODO (CHURCH VS ELECTION)
+    function setMode(mode) {
+      systemMode = mode;
+      const selectAccess = document.getElementById('accessLevelSelect');
+
+      if (mode === 'church') {
+        // Estilos e Botões
+        document.getElementById('btnChurchMode').className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 shadow-sm flex items-center gap-2 transition";
+        document.getElementById('btnElectionMode').className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center gap-2 transition";
+        document.getElementById('sideBrandTitle').innerText = "GESTÃO ADVENTISTA";
+        document.getElementById('sideBrandSub').innerText = "Associação / Campo Local";
+        document.getElementById('sideLogoIcon').innerHTML = `<i class="fa-solid fa-church"></i>`;
+        document.getElementById('navMembrosLabel').innerText = "Gestão de Membros";
+        document.getElementById('btnTopNew').innerText = "Novo Membro";
+        
+        // Banner
+        document.getElementById('bannerTag').innerText = "PAINEL DE MOBILIZAÇÃO E GESTÃO";
+        document.getElementById('bannerTitle').innerText = "Painel de Gestão da Associação";
+        document.getElementById('bannerSubtitle').innerText = "Estrutura eclesiástica: Presidência, Departamentos, Pastores Distritais, Anciãos e Membresia.";
+        document.getElementById('bannerWatermark').className = "fa-solid fa-church";
+
+        // Cards de Métricas
+        document.getElementById('cardLabel1').innerText = "TOTAL DE MEMBROS";
+        document.getElementById('cardVal1').innerText = "11";
+        document.getElementById('cardIcon1').className = "fa-solid fa-address-book";
+        
+        document.getElementById('cardLabel2').innerText = "PASTORES & ANCIÃOS";
+        document.getElementById('cardVal2').innerText = "5";
+        document.getElementById('cardSub2').innerText = "Atuando em campo";
+        document.getElementById('cardIcon2').className = "fa-solid fa-user-tie";
+
+        document.getElementById('cardLabel3').innerText = "DISTRITOS PASTORAIS";
+        document.getElementById('cardVal3').innerText = "6";
+        document.getElementById('cardIcon3').className = "fa-solid fa-map-location-dot";
+
+        document.getElementById('cardLabel4').innerText = "META GLOBAL ATINGIDA";
+        document.getElementById('cardVal4').innerText = "90%";
+        document.getElementById('cardIcon4').className = "fa-solid fa-chart-line";
+
+        // Usuário Conectado
+        document.getElementById('loggedUserName').innerText = "Pr. Marcos Alencar";
+        document.getElementById('loggedUserRole').innerText = "Presidente da Associação";
+
+        // Seletor de Simulação
+        selectAccess.innerHTML = `
+          <option value="admin">👑 Visão Geral (Admin / Presidente da Associação)</option>
+          <option value="regional1">📍 Pr. Distrital / Coord. Zona Norte (Thiago Moreira)</option>
+          <option value="regional2">📍 Pr. Distrital / Coord. Zona Sul (Samuel Ribeiro)</option>
+        `;
+        document.getElementById('treeHeadingTitle').innerText = "Estrutura Organizacional Hierárquica";
+      } else {
+        // Modo Eleitoral / Campanha
+        document.getElementById('btnElectionMode').className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm flex items-center gap-2 transition";
+        document.getElementById('btnChurchMode').className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center gap-2 transition";
+        document.getElementById('sideBrandTitle').innerText = "MOBILIZA ELEITORAL";
+        document.getElementById('sideBrandSub').innerText = "Comitê Central de Campanha";
+        document.getElementById('sideLogoIcon').innerHTML = `<i class="fa-solid fa-landmark"></i>`;
+        document.getElementById('navMembrosLabel').innerText = "Gestão de Eleitores";
+        document.getElementById('btnTopNew').innerText = "Novo Eleitor";
+
+        // Banner
+        document.getElementById('bannerTag').innerText = "CENTRAL DE MOBILIZAÇÃO E VOTOS";
+        document.getElementById('bannerTitle').innerText = "Painel de Gestão de Lideranças";
+        document.getElementById('bannerSubtitle').innerText = "Estrutura de Campanha: Candidato, Coordenação Geral, Coordenadores Regionais, Cabos Eleitorais e Eleitores.";
+        document.getElementById('bannerWatermark').className = "fa-solid fa-landmark";
+
+        // Cards de Métricas
+        document.getElementById('cardLabel1').innerText = "TOTAL DE ELEITORES";
+        document.getElementById('cardVal1').innerText = "10";
+        document.getElementById('cardIcon1').className = "fa-solid fa-check-to-slot";
+
+        document.getElementById('cardLabel2').innerText = "COORDENADORES & CABOS";
+        document.getElementById('cardVal2').innerText = "6";
+        document.getElementById('cardSub2').innerText = "Mobilizando na rua";
+        document.getElementById('cardIcon2').className = "fa-solid fa-bullhorn";
+
+        document.getElementById('cardLabel3').innerText = "ZONAS ELEITORAIS";
+        document.getElementById('cardVal3').innerText = "5";
+        document.getElementById('cardIcon3').className = "fa-solid fa-map-location-dot";
+
+        document.getElementById('cardLabel4').innerText = "META DE MOBILIZAÇÃO";
+        document.getElementById('cardVal4').innerText = "88%";
+        document.getElementById('cardIcon4').className = "fa-solid fa-bullseye";
+
+        // Usuário Conectado
+        document.getElementById('loggedUserName').innerText = "Dr. Arthur Vinicius";
+        document.getElementById('loggedUserRole').innerText = "Candidato Majoritário";
+
+        // Seletor de Simulação
+        selectAccess.innerHTML = `
+          <option value="admin">👑 Visão Geral (Admin / Candidato Majoritário)</option>
+          <option value="regional1">📍 Coord. Regional Zona Norte (Profª Helena Ramos)</option>
+          <option value="regional2">📍 Coord. Regional Zona Sul (Jorge da Farmácia)</option>
+        `;
+        document.getElementById('treeHeadingTitle').innerText = "Organograma de Lideranças Eleitorais";
+      }
+
+      currentScope = 'admin';
+      selectAccess.value = 'admin';
+      updateScopeStatusUI();
+      populateSectorFilter();
+      refreshAllViews();
+    }
+
+    function populateSectorFilter() {
+      const select = document.getElementById('memberSectorFilter');
+      if (systemMode === 'church') {
+        select.innerHTML = `
+          <option value="all">Todos os Setores (6)</option>
+          <option value="Associação Geral">Associação Geral</option>
+          <option value="Ministério Pessoal">Ministério Pessoal</option>
+          <option value="Evangelismo & Jovens">Evangelismo & Jovens</option>
+          <option value="Distrito Sul">Distrito Sul</option>
+          <option value="Distrito Norte">Distrito Norte</option>
+          <option value="Zona Norte">Zona Norte</option>
+        `;
+      } else {
+        select.innerHTML = `
+          <option value="all">Todos os Setores (5)</option>
+          <option value="Comitê Central">Comitê Central</option>
+          <option value="Estratégia Geral">Estratégia Geral</option>
+          <option value="Mobilização Comunitária">Mobilização Comunitária</option>
+          <option value="Zona Sul">Zona Sul</option>
+          <option value="Zona Norte">Zona Norte</option>
+        `;
+      }
+    }
+
+    // SIMULADOR DE ACESSO
+    function simulateAccessChange(val) {
+      currentScope = val;
+      updateScopeStatusUI();
+      refreshAllViews();
+    }
+
+    function updateScopeStatusUI() {
+      const pill = document.getElementById('tagLevelPill');
+      const desc = document.getElementById('tagLevelDescription');
+      if (currentScope === 'admin') {
+        pill.innerText = "NÍVEL 1 - TOTAL";
+        pill.className = "bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded text-[10px] uppercase";
+        desc.innerText = "Você está visualizando todos os dados do campo (Acesso Geral).";
+      } else if (currentScope === 'regional1') {
+        pill.innerText = "NÍVEL 2 - ZONA NORTE";
+        pill.className = "bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded text-[10px] uppercase";
+        desc.innerText = systemMode === 'church' 
+          ? "Acesso Restrito: Exibindo apenas pessoas sob liderança do Distrito Norte." 
+          : "Acesso Restrito: Exibindo apenas eleitores sob supervisão da Zona Norte (Profª Helena Ramos).";
+      } else {
+        pill.innerText = "NÍVEL 2 - ZONA SUL";
+        pill.className = "bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded text-[10px] uppercase";
+        desc.innerText = systemMode === 'church' 
+          ? "Acesso Restrito: Exibindo apenas pessoas sob liderança do Distrito Sul." 
+          : "Acesso Restrito: Exibindo apenas eleitores sob supervisão da Zona Sul (Jorge da Farmácia).";
+      }
+    }
+
+    function refreshAllViews() {
+      renderOverviewLevels();
+      renderOverviewTable();
+      if (activeTab === 'organograma') renderOrganogramaTree();
+      if (activeTab === 'membros') renderMembersTable();
+      if (activeTab === 'metas') renderMetasCards();
+    }
+
+    // NÍVEIS NA VISÃO GERAL
+    function renderOverviewLevels() {
+      const container = document.getElementById('hierarchyLevelsContainer');
+      const levels = systemMode === 'church' ? levelsChurch : levelsElection;
+      container.innerHTML = levels.map(l => `
+        <div class="flex items-center justify-between text-xs py-1">
+          <div class="flex items-center space-x-2.5">
+            <i class="fa-solid ${l.icon} w-4 text-center"></i>
+            <span class="font-semibold text-slate-800">${l.role}</span>
+          </div>
+          <span class="text-slate-500 font-medium">${l.count}</span>
+        </div>
+      `).join('');
+    }
+
+    // TABELA RESUMIDA NA VISÃO GERAL
+    function renderOverviewTable() {
+      const tbody = document.getElementById('overviewTableBody');
+      const db = getCurrentDB();
+      const filtered = db.filter(r => currentScope === 'admin' || r.scope === currentScope).slice(0, 5);
+      tbody.innerHTML = '';
+
+      filtered.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50/80 transition";
+        tr.innerHTML = `
+          <td class="py-3 px-3">
+            <p class="font-bold text-slate-900">${r.name}</p>
+            <p class="text-[11px] text-slate-400 font-mono">${r.phone}</p>
+          </td>
+          <td class="py-3 px-3 text-slate-600">${r.region}</td>
+          <td class="py-3 px-3 text-slate-700">${r.leader}</td>
+          <td class="py-3 px-3">
+            <span class="inline-flex items-center gap-1.5 font-semibold text-emerald-700">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              ${r.status}
+            </span>
+          </td>
+          <td class="py-3 px-3 text-right">
+            <div class="flex items-center justify-end gap-2">
+              <button onclick="openModalForEdit(${r.id})" class="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Alterar Nome e Dados">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+              <button onclick="deleteRecord(${r.id})" class="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition" title="Excluir">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // ORGANOGRAMA EM ÁRVORE REALMENTE CONDICIONAL
+    function renderOrganogramaTree() {
+      const container = document.getElementById('treeContainer');
+      if (systemMode === 'church') {
+        container.innerHTML = `
+          <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs hover:border-blue-400 transition">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-xs">
+                  <i class="fa-solid fa-crown"></i>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h4 class="font-bold text-slate-900 text-xs">Pr. Marcos Alencar</h4>
+                    <span class="bg-purple-100 text-purple-700 text-[10px] font-bold px-2 py-0.5 rounded">Presidente da Associação</span>
+                  </div>
+                  <p class="text-[11px] text-slate-500 mt-0.5"><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i>Associação Geral &bull; <span class="text-blue-600 font-semibold"><i class="fa-solid fa-users text-[10px] mr-1"></i>2 subordinados</span></p>
+                </div>
+              </div>
+              <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+            </div>
+          </div>
+
+          <div class="tree-branch space-y-3">
+            <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs hover:border-blue-400 transition">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                  <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-briefcase"></i>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <h4 class="font-bold text-slate-900 text-xs">Pr. Carlos Eduardo</h4>
+                      <span class="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded">Diretor Departamental</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-0.5"><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i>Ministério Pessoal &bull; <span class="text-blue-600 font-semibold"><i class="fa-solid fa-users text-[10px] mr-1"></i>1 subordinados</span></p>
+                  </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+              </div>
+            </div>
+
+            <div class="tree-branch space-y-3">
+              <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs hover:border-blue-400 transition">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs">
+                      <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <h4 class="font-bold text-slate-900 text-xs">Pr. Samuel Ribeiro</h4>
+                        <span class="bg-indigo-100 text-indigo-700 text-[10px] font-bold px-2 py-0.5 rounded">Pastor Distrital</span>
+                      </div>
+                      <p class="text-[11px] text-slate-500 mt-0.5"><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i>Distrito Sul &bull; <span class="text-blue-600 font-semibold"><i class="fa-solid fa-users text-[10px] mr-1"></i>1 subordinados</span></p>
+                    </div>
+                  </div>
+                  <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                </div>
+              </div>
+
+              <div class="tree-branch space-y-3">
+                <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs hover:border-blue-400 transition">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                      <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-person-chalkboard"></i>
+                      </div>
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <h4 class="font-bold text-slate-900 text-xs">Ancião Paulo Souza</h4>
+                          <span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded">Primeiro Ancião / Diretor</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-0.5"><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i>Distrito Sul &bull; <span class="text-blue-600 font-semibold"><i class="fa-solid fa-users text-[10px] mr-1"></i>2 subordinados</span></p>
+                      </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                  </div>
+                </div>
+
+                <div class="tree-branch space-y-3">
+                  <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-2xs flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                      <div class="w-7 h-7 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-user"></i>
+                      </div>
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <h4 class="font-bold text-slate-900 text-xs">Mariana Costa</h4>
+                          <span class="bg-slate-100 text-slate-600 text-[9px] font-bold px-2 py-0.5 rounded">Membro Ativo</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Distrito Sul</p>
+                      </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                  </div>
+
+                  <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-2xs flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                      <div class="w-7 h-7 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-user"></i>
+                      </div>
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <h4 class="font-bold text-slate-900 text-xs">Lucas Fernandes</h4>
+                          <span class="bg-slate-100 text-slate-600 text-[9px] font-bold px-2 py-0.5 rounded">Membro Ativo</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Distrito Sul &bull; <span class="text-blue-600 font-semibold">1 subordinados</span></p>
+                      </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                  </div>
+
+                  <div class="tree-branch space-y-2">
+                    <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-2xs flex items-center justify-between">
+                      <div class="flex items-center space-x-3">
+                        <div class="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-xs">
+                          <i class="fa-solid fa-person-chalkboard"></i>
+                        </div>
+                        <div>
+                          <div class="flex items-center gap-2">
+                            <h4 class="font-bold text-slate-900 text-xs">LISANDRO VINICIOS DA SILVA</h4>
+                            <span class="bg-amber-100 text-amber-700 text-[9px] font-bold px-2 py-0.5 rounded">Primeiro Ancião / Diretor</span>
+                          </div>
+                          <p class="text-[10px] text-slate-400 mt-0.5">Zona Norte</p>
+                        </div>
+                      </div>
+                      <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        // Árvore do Modelo Eleitoral
+        container.innerHTML = `
+          <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs hover:border-emerald-400 transition">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-xs">
+                  <i class="fa-solid fa-crown"></i>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h4 class="font-bold text-slate-900 text-xs">Dr. Arthur Vinicius</h4>
+                    <span class="bg-purple-100 text-purple-700 text-[10px] font-bold px-2 py-0.5 rounded">Candidato Majoritário</span>
+                  </div>
+                  <p class="text-[11px] text-slate-500 mt-0.5"><i class="fa-solid fa-landmark text-slate-400 mr-1"></i>Comitê Central &bull; <span class="text-emerald-600 font-semibold"><i class="fa-solid fa-users text-[10px] mr-1"></i>2 coordenadores gerais</span></p>
+                </div>
+              </div>
+              <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+            </div>
+          </div>
+
+          <div class="tree-branch space-y-3">
+            <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs hover:border-emerald-400 transition">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                  <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-briefcase"></i>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <h4 class="font-bold text-slate-900 text-xs">Ricardo Albuquerque</h4>
+                      <span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded">Coordenação Geral de Campanha</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-0.5"><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i>Estratégia Geral &bull; <span class="text-emerald-600 font-semibold"><i class="fa-solid fa-users text-[10px] mr-1"></i>1 coord. regional</span></p>
+                  </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+              </div>
+            </div>
+
+            <div class="tree-branch space-y-3">
+              <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs hover:border-emerald-400 transition">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs">
+                      <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <h4 class="font-bold text-slate-900 text-xs">Jorge da Farmácia</h4>
+                        <span class="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded">Coordenador Regional / Bairro</span>
+                      </div>
+                      <p class="text-[11px] text-slate-500 mt-0.5"><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i>Zona Sul &bull; <span class="text-emerald-600 font-semibold"><i class="fa-solid fa-users text-[10px] mr-1"></i>1 liderança de rua</span></p>
+                    </div>
+                  </div>
+                  <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                </div>
+              </div>
+
+              <div class="tree-branch space-y-3">
+                <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs hover:border-emerald-400 transition">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                      <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-person-chalkboard"></i>
+                      </div>
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <h4 class="font-bold text-slate-900 text-xs">Marcos Líder Comunitário</h4>
+                          <span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded">Liderança de Rua / Cabo Eleitoral</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-0.5"><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i>Zona Sul &bull; <span class="text-emerald-600 font-semibold"><i class="fa-solid fa-users text-[10px] mr-1"></i>2 eleitores confirmados</span></p>
+                      </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                  </div>
+                </div>
+
+                <div class="tree-branch space-y-3">
+                  <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-2xs flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                      <div class="w-7 h-7 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-user"></i>
+                      </div>
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <h4 class="font-bold text-slate-900 text-xs">Carlos Henrique</h4>
+                          <span class="bg-slate-100 text-slate-600 text-[9px] font-bold px-2 py-0.5 rounded">Eleitor / Voto Confirmado</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Zona Sul</p>
+                      </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                  </div>
+
+                  <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-2xs flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                      <div class="w-7 h-7 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-user"></i>
+                      </div>
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <h4 class="font-bold text-slate-900 text-xs">Vanessa Lins</h4>
+                          <span class="bg-slate-100 text-slate-600 text-[9px] font-bold px-2 py-0.5 rounded">Eleitor / Voto Confirmado</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Zona Sul</p>
+                      </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function expandAllTree(expand) {
+      const branches = document.querySelectorAll('.tree-branch');
+      branches.forEach(b => {
+        b.style.display = expand ? 'block' : 'none';
+      });
+    }
+
+    // TABELA COMPLETA (ABA GESTÃO DE MEMBROS / ELEITORES)
+    function renderMembersTable() {
+      const tbody = document.getElementById('fullMembersTableBody');
+      const search = (document.getElementById('memberSearchInput').value || '').toLowerCase();
+      const sectorFilter = document.getElementById('memberSectorFilter').value;
+      const db = getCurrentDB();
+      tbody.innerHTML = '';
+
+      const filtered = db.filter(item => {
+        if (currentScope !== 'admin' && item.scope !== currentScope) return false;
+        if (sectorFilter !== 'all' && item.region !== sectorFilter) return false;
+        return item.name.toLowerCase().includes(search) ||
+               item.phone.includes(search) ||
+               item.leader.toLowerCase().includes(search) ||
+               item.role.toLowerCase().includes(search) ||
+               item.region.toLowerCase().includes(search);
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-slate-400">Nenhum registro encontrado para este filtro.</td></tr>`;
+        return;
+      }
+
+      filtered.forEach(r => {
+        let badgeClass = "bg-slate-100 text-slate-700";
+        let iconClass = "fa-user";
+        if (r.badgeColor === 'purple') { badgeClass = "bg-purple-100 text-purple-700"; iconClass = "fa-crown"; }
+        if (r.badgeColor === 'emerald') { badgeClass = "bg-emerald-100 text-emerald-700"; iconClass = "fa-star"; }
+        if (r.badgeColor === 'blue') { badgeClass = "bg-blue-100 text-blue-700"; iconClass = "fa-briefcase"; }
+        if (r.badgeColor === 'indigo') { badgeClass = "bg-indigo-100 text-indigo-700"; iconClass = "fa-user-tie"; }
+        if (r.badgeColor === 'amber') { badgeClass = "bg-amber-100 text-amber-700"; iconClass = "fa-person-chalkboard"; }
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50/80 transition";
+        tr.innerHTML = `
+          <td class="py-3 px-4">
+            <p class="font-bold text-slate-900">${r.name}</p>
+            <p class="text-[11px] text-slate-400 font-mono"><i class="fa-solid fa-phone text-[10px] mr-1"></i>${r.phone}</p>
+          </td>
+          <td class="py-3 px-4">
+            <span class="inline-flex items-center gap-1.5 ${badgeClass} text-[11px] font-bold px-2.5 py-1 rounded-md">
+              <i class="fa-solid ${iconClass} text-[10px]"></i>
+              ${r.role}
+            </span>
+          </td>
+          <td class="py-3 px-4 text-slate-600">${r.region}</td>
+          <td class="py-3 px-4 text-slate-500 italic">${r.leader}</td>
+          <td class="py-3 px-4 text-right">
+            <div class="flex items-center justify-end gap-2">
+              <button onclick="openModalForEdit(${r.id})" class="px-2.5 py-1 text-slate-600 hover:text-blue-600 hover:bg-blue-50 border border-slate-200 rounded-lg text-xs font-semibold transition flex items-center gap-1">
+                <i class="fa-solid fa-pen-to-square text-[10px]"></i> Alterar
+              </button>
+              <button onclick="deleteRecord(${r.id})" class="p-1 text-slate-400 hover:text-rose-600 transition" title="Excluir">
+                <i class="fa-solid fa-trash-can text-xs"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // CARDS DE METAS & COBERTURA
+    function renderMetasCards() {
+      const grid = document.getElementById('metasCardsGrid');
+      const goals = systemMode === 'church' ? churchGoals : electionGoals;
+      grid.innerHTML = goals.map(g => `
+        <div class="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-2xs">
+          <div class="flex items-center justify-between mb-1.5">
+            <h4 class="font-bold text-slate-900 text-xs">${g.name}</h4>
+            <span class="font-extrabold text-xs ${g.color === 'emerald' ? 'text-emerald-600' : 'text-amber-600'}">${g.pct}% da meta</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mb-3">${g.sub}</p>
+          <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+            <div class="${g.color === 'emerald' ? 'bg-emerald-500' : 'bg-amber-500'} h-2 rounded-full" style="width: ${g.pct}%"></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // MODAL DE EDIÇÃO E CADASTRO
+    function openModalForEdit(id) {
+      const db = getCurrentDB();
+      const rec = db.find(r => r.id === id);
+      if (!rec) return;
+
+      document.getElementById('recordId').value = rec.id;
+      document.getElementById('fieldName').value = rec.name;
+      document.getElementById('fieldPhone').value = rec.phone;
+      document.getElementById('fieldRole').value = rec.role;
+      document.getElementById('fieldRegion').value = rec.region;
+      document.getElementById('fieldLeader').value = rec.leader;
+      document.getElementById('fieldStatus').value = rec.status;
+      document.getElementById('modalHeading').innerText = "Alterar Dados do Registro";
+
+      document.getElementById('editModal').classList.remove('hidden');
+      document.getElementById('editModal').classList.add('flex');
+    }
+
+    function openModalForNew() {
+      document.getElementById('recordId').value = "";
+      document.getElementById('editForm').reset();
+      document.getElementById('modalHeading').innerText = systemMode === 'church' ? "Cadastrar Novo Membro" : "Cadastrar Novo Eleitor";
+
+      document.getElementById('editModal').classList.remove('hidden');
+      document.getElementById('editModal').classList.add('flex');
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').classList.remove('flex');
+      document.getElementById('editModal').classList.add('hidden');
+    }
+
+    function handleSaveRecord(e) {
+      e.preventDefault();
+      const id = document.getElementById('recordId').value;
+      const name = document.getElementById('fieldName').value.trim();
+      const phone = document.getElementById('fieldPhone').value.trim();
+      const role = document.getElementById('fieldRole').value.trim();
+      const region = document.getElementById('fieldRegion').value.trim();
+      const leader = document.getElementById('fieldLeader').value.trim();
+      const status = document.getElementById('fieldStatus').value;
+
+      let scope = "admin";
+      if (region.toLowerCase().includes("norte")) scope = "regional1";
+      if (region.toLowerCase().includes("sul")) scope = "regional2";
+
+      const db = getCurrentDB();
+
+      if (id) {
+        const idx = db.findIndex(r => r.id == id);
+        if (idx !== -1) {
+          db[idx].name = name;
+          db[idx].phone = phone;
+          db[idx].role = role;
+          db[idx].region = region;
+          db[idx].leader = leader;
+          db[idx].status = status;
+          db[idx].scope = scope;
+        }
+      } else {
+        db.unshift({
+          id: Date.now(),
+          name,
+          phone,
+          role,
+          region,
+          leader,
+          status,
+          scope,
+          badgeColor: "slate"
+        });
+      }
+
+      closeEditModal();
+      refreshAllViews();
+    }
+
+    function deleteRecord(id) {
+      if (confirm("Deseja realmente excluir este registro?")) {
+        if (systemMode === 'church') {
+          churchDatabase = churchDatabase.filter(r => r.id !== id);
+        } else {
+          electionDatabase = electionDatabase.filter(r => r.id !== id);
+        }
+        refreshAllViews();
+      }
+    }
+
+    // Inicialização
+    setMode('church');
+  </script>
+</body>
+</html>
