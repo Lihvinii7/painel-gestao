@@ -1298,7 +1298,23 @@
       systemUsers = getStoredUsers();
       tbody.innerHTML = '';
 
-      systemUsers.forEach((u, idx) => {
+      // Filtra estritamente pelo modo ativo (Igreja só vê Igreja, Campanha só vê Campanha)
+      const visibleUsers = systemUsers.map((u, idx) => ({ ...u, originalIndex: idx }))
+        .filter(u => {
+          if (systemMode === 'church') {
+            return u.mode === 'church' || u.mode === 'all';
+          } else {
+            return u.mode === 'election' || u.mode === 'all';
+          }
+        });
+
+      if (visibleUsers.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-400">Nenhum acesso registado para este módulo.</td></tr>`;
+        return;
+      }
+
+      visibleUsers.forEach(u => {
+        const idx = u.originalIndex;
         let scopeBadge = `<span class="bg-purple-100 text-purple-700 text-[10px] font-bold px-2 py-0.5 rounded">Acesso Total</span>`;
         if (u.scope === 'regional1') scopeBadge = `<span class="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded">Zona Norte</span>`;
         if (u.scope === 'regional2') scopeBadge = `<span class="bg-indigo-100 text-indigo-700 text-[10px] font-bold px-2 py-0.5 rounded">Zona Sul</span>`;
@@ -1336,6 +1352,7 @@
       document.getElementById('editUserIndex').value = '';
       document.getElementById('userForm').reset();
       document.getElementById('userModalHeading').innerText = "Criar Novo Login e Senha";
+      document.getElementById('userFormMode').value = systemMode;
       document.getElementById('userModal').classList.remove('hidden');
       document.getElementById('userModal').classList.add('flex');
       generateRandomPass();
