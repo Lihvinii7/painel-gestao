@@ -759,12 +759,19 @@
     }
 
     function switchTab(tabId) {
+      // Trava de segurança: somente admin pode acessar a aba de usuários
+      if (tabId === 'usuarios' && currentScope !== 'admin') {
+        alert("Acesso restrito: Apenas Administradores Gerais podem gerenciar senhas e acessos.");
+        return;
+      }
+
       activeTab = tabId;
       document.getElementById('tabContentVisaoGeral').classList.add('hidden');
       document.getElementById('tabContentOrganograma').classList.add('hidden');
       document.getElementById('tabContentMembros').classList.add('hidden');
       document.getElementById('tabContentMetas').classList.add('hidden');
       document.getElementById('tabContentUsuarios').classList.add('hidden');
+      
 
       const tabs = ['visaoGeral', 'organograma', 'membros', 'metas', 'usuarios'];
       tabs.forEach(t => {
@@ -932,6 +939,33 @@
     }
 
     function updateScopeStatusUI() {
+      function updateScopeStatusUI() {
+      const pill = document.getElementById('tagLevelPill');
+      const desc = document.getElementById('tagLevelDescription');
+      const btnCriarSenha = document.querySelector("button[onclick='openNewUserModal()']");
+      const navUsuarios = document.getElementById('navUsuarios');
+      const mobileNavUsuarios = document.querySelector("button[onclick*='switchTabMobile(\\'usuarios\\')']");
+
+      if (currentScope === 'admin') {
+        pill.innerText = "NÍVEL 1";
+        desc.innerText = "Visão consolidada do campo (Acesso Geral).";
+        if (btnCriarSenha) btnCriarSenha.style.display = "flex";
+        if (navUsuarios) navUsuarios.style.display = "flex";
+        if (mobileNavUsuarios) mobileNavUsuarios.style.display = "flex";
+      } else if (currentScope === 'regional1') {
+        pill.innerText = "NÍVEL 2 - NORTE";
+        desc.innerText = "Exibindo apenas dados sob liderança da Zona Norte.";
+        if (btnCriarSenha) btnCriarSenha.style.display = "none";
+        if (navUsuarios) navUsuarios.style.display = "none";
+        if (mobileNavUsuarios) mobileNavUsuarios.style.display = "none";
+      } else {
+        pill.innerText = "NÍVEL 2 - SUL";
+        desc.innerText = "Exibindo apenas dados sob liderança da Zona Sul.";
+        if (btnCriarSenha) btnCriarSenha.style.display = "none";
+        if (navUsuarios) navUsuarios.style.display = "none";
+        if (mobileNavUsuarios) mobileNavUsuarios.style.display = "none";
+      }
+    }
       const pill = document.getElementById('tagLevelPill');
       const desc = document.getElementById('tagLevelDescription');
       if (currentScope === 'admin') {
