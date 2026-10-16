@@ -127,7 +127,7 @@
       <button onclick="switchTabMobile('metas')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
         <i class="fa-regular fa-circle-dot w-4"></i> Metas & Cobertura
       </button>
-      <button onclick="switchTabMobile('usuarios')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-amber-400 hover:bg-slate-800 flex items-center gap-2">
+      <button id="mobileNavUsuarios" onclick="switchTabMobile('usuarios')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-amber-400 hover:bg-slate-800 flex items-center gap-2">
         <i class="fa-solid fa-user-shield w-4"></i> Gestão de Senhas & Acessos
       </button>
     </div>
@@ -226,7 +226,7 @@
           </select>
         </div>
 
-        <button onclick="openNewUserModal()" class="px-2.5 sm:px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-[11px] sm:text-xs font-semibold rounded-lg shadow-sm flex items-center gap-1 shrink-0" title="Criar novo login e senha">
+        <button id="btnCriarSenha" onclick="openNewUserModal()" class="px-2.5 sm:px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-[11px] sm:text-xs font-semibold rounded-lg shadow-sm flex items-center gap-1 shrink-0" title="Criar novo login e senha">
           <i class="fa-solid fa-key text-[10px]"></i>
           <span>Criar Senha</span>
         </button>
@@ -739,6 +739,8 @@
         if (match.mode !== 'all') {
           setMode(match.mode);
         }
+        // Garante que o escopo permanece o do utilizador logado
+        currentScope = match.scope;
         document.getElementById('loginOverlay').classList.add('hidden');
         document.getElementById('loginAlert').classList.add('hidden');
         document.getElementById('loggedUserName').innerText = match.name;
@@ -759,19 +761,12 @@
     }
 
     function switchTab(tabId) {
-      // Trava de segurança: somente admin pode acessar a aba de usuários
-      if (tabId === 'usuarios' && currentScope !== 'admin') {
-        alert("Acesso restrito: Apenas Administradores Gerais podem gerenciar senhas e acessos.");
-        return;
-      }
-
       activeTab = tabId;
       document.getElementById('tabContentVisaoGeral').classList.add('hidden');
       document.getElementById('tabContentOrganograma').classList.add('hidden');
       document.getElementById('tabContentMembros').classList.add('hidden');
       document.getElementById('tabContentMetas').classList.add('hidden');
       document.getElementById('tabContentUsuarios').classList.add('hidden');
-      
 
       const tabs = ['visaoGeral', 'organograma', 'membros', 'metas', 'usuarios'];
       tabs.forEach(t => {
@@ -933,50 +928,51 @@
     }
 
     function simulateAccessChange(val) {
+      if (currentSessionUser && currentSessionUser.scope !== 'admin') {
+        alert("Apenas administradores podem simular outros perfis.");
+        document.getElementById('accessLevelSelect').value = currentScope;
+        return;
+      }
       currentScope = val;
       updateScopeStatusUI();
       refreshAllViews();
     }
 
     function updateScopeStatusUI() {
-      function updateScopeStatusUI() {
       const pill = document.getElementById('tagLevelPill');
       const desc = document.getElementById('tagLevelDescription');
-      const btnCriarSenha = document.querySelector("button[onclick='openNewUserModal()']");
+      const btnCriarSenha = document.getElementById('btnCriarSenha');
       const navUsuarios = document.getElementById('navUsuarios');
-      const mobileNavUsuarios = document.querySelector("button[onclick*='switchTabMobile(\\'usuarios\\')']");
+      const mobileNavUsuarios = document.getElementById('mobileNavUsuarios');
+      const selectAccess = document.getElementById('accessLevelSelect');
+
+      if (selectAccess) {
+        selectAccess.value = currentScope;
+      }
 
       if (currentScope === 'admin') {
         pill.innerText = "NÍVEL 1";
         desc.innerText = "Visão consolidada do campo (Acesso Geral).";
-        if (btnCriarSenha) btnCriarSenha.style.display = "flex";
-        if (navUsuarios) navUsuarios.style.display = "flex";
-        if (mobileNavUsuarios) mobileNavUsuarios.style.display = "flex";
-      } else if (currentScope === 'regional1') {
-        pill.innerText = "NÍVEL 2 - NORTE";
-        desc.innerText = "Exibindo apenas dados sob liderança da Zona Norte.";
-        if (btnCriarSenha) btnCriarSenha.style.display = "none";
-        if (navUsuarios) navUsuarios.style.display = "none";
-        if (mobileNavUsuarios) mobileNavUsuarios.style.display = "none";
+        if (btnCriarSenha) btnCriarSenha.classList.remove('hidden');
+        if (navUsuarios) navUsuarios.classList.remove('hidden');
+        if (mobileNavUsuarios) mobileNavUsuarios.classList.remove('hidden');
       } else {
-        pill.innerText = "NÍVEL 2 - SUL";
-        desc.innerText = "Exibindo apenas dados sob liderança da Zona Sul.";
-        if (btnCriarSenha) btnCriarSenha.style.display = "none";
-        if (navUsuarios) navUsuarios.style.display = "none";
-        if (mobileNavUsuarios) mobileNavUsuarios.style.display = "none";
-      }
-    }
-      const pill = document.getElementById('tagLevelPill');
-      const desc = document.getElementById('tagLevelDescription');
-      if (currentScope === 'admin') {
-        pill.innerText = "NÍVEL 1";
-        desc.innerText = "Visão consolidada do campo (Acesso Geral).";
-      } else if (currentScope === 'regional1') {
-        pill.innerText = "NÍVEL 2 - NORTE";
-        desc.innerText = "Exibindo apenas dados sob liderança da Zona Norte.";
-      } else {
-        pill.innerText = "NÍVEL 2 - SUL";
-        desc.innerText = "Exibindo apenas dados sob liderança da Zona Sul.";
+        if (currentScope === 'regional1') {
+          pill.innerText = "NÍVEL 2 - NORTE";
+          desc.innerText = "Exibindo apenas dados sob liderança da Zona Norte.";
+        } else {
+          pill.innerText = "NÍVEL 2 - SUL";
+          desc.innerText = "Exibindo apenas dados sob liderança da Zona Sul.";
+        }
+        // Oculta completamente botões e abas de senhas para não-admin
+        if (btnCriarSenha) btnCriarSenha.classList.add('hidden');
+        if (navUsuarios) navUsuarios.classList.add('hidden');
+        if (mobileNavUsuarios) mobileNavUsuarios.classList.add('hidden');
+        
+        // Se a pessoa estiver na aba de usuários, volta para a visão geral
+        if (activeTab === 'usuarios') {
+          switchTab('visaoGeral');
+        }
       }
     }
 
