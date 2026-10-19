@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Painel de Gestão Hierárquica</title>
+  <title>MOBILIZA | Gestão Comunitária, Causas & Lideranças</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -48,63 +48,93 @@
         padding-left: 18px;
       }
     }
+    .big-cause-card {
+      transition: all 0.25s ease;
+    }
+    .big-cause-card:hover {
+      transform: translateY(-4px);
+    }
+    .big-cause-card.active {
+      border-color: #10b981;
+      background-color: #f0fdf4;
+      box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.2);
+      transform: translateY(-4px);
+    }
   </style>
 </head>
-<body class="bg-[#f1f5f9] text-slate-800 antialiased min-h-screen flex flex-col md:flex-row font-sans">
+<body class="bg-[#f8fafc] text-slate-800 antialiased min-h-screen flex flex-col md:flex-row font-sans">
 
-  <!-- MODAL DE LOGIN INDIVIDUAL -->
-  <div id="loginOverlay" class="fixed inset-0 bg-[#0b0f19]/85 backdrop-blur-sm flex items-center justify-center p-4 z-[100]">
-    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-sm overflow-hidden p-6 sm:p-7">
+  <!-- MODAL DE LOGIN (NEUTRO, MODERNO E FOCO SOCIAL) -->
+  <div id="loginOverlay" class="fixed inset-0 bg-[#090d16]/90 backdrop-blur-md flex items-center justify-center p-4 z-[100]">
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-200/80 w-full max-w-md overflow-hidden p-6 sm:p-8 relative">
       
-      <div class="flex items-center space-x-3 mb-5 pb-4 border-b border-slate-100">
-        <div class="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center text-lg shadow-md shadow-blue-500/30">
-          <i class="fa-solid fa-lock"></i>
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center text-3xl mx-auto shadow-lg shadow-emerald-600/30 mb-3">
+          <i class="fa-solid fa-people-roof"></i>
         </div>
-        <div>
-          <h2 class="text-base font-bold text-slate-900 tracking-tight">Acesso ao Painel</h2>
-          <p class="text-xs text-slate-400">Entre com a sua credencial</p>
-        </div>
+        <span class="inline-block px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-black rounded-full tracking-wider uppercase mb-1">
+          Plataforma de Mobilização Comunitária
+        </span>
+        <h2 class="text-2xl font-black text-slate-900 tracking-tight">MOBILIZA SOCIAL</h2>
+        <p class="text-xs text-slate-500 mt-1">Gestão Integrada de Lideranças, Causas & Voluntariado</p>
       </div>
 
-      <div id="loginAlert" class="hidden mb-4 p-2.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
-        <i class="fa-solid fa-triangle-exclamation mr-1"></i>
-        <span>Utilizador ou palavra-passe incorretos.</span>
+      <div id="loginAlert" class="hidden mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium flex items-center gap-2">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>Credenciais inválidas. Verifique o usuário ou senha.</span>
       </div>
 
-      <form onsubmit="handleLogin(event)" class="space-y-3.5">
+      <form onsubmit="handleLogin(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Utilizador</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Seu Usuário de Acesso</label>
           <div class="relative">
-            <i class="fa-solid fa-user absolute left-3 top-3 text-slate-400 text-xs"></i>
-            <input type="text" id="loginUser" required placeholder="Digite o seu utilizador" class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white transition">
+            <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+            <input type="text" id="loginUser" required placeholder="Digite o usuário" class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white transition shadow-2xs">
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Palavra-passe</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Senha de Acesso</label>
           <div class="relative">
-            <i class="fa-solid fa-key absolute left-3 top-3 text-slate-400 text-xs"></i>
-            <input type="password" id="loginPass" required placeholder="Digite a sua palavra-passe" class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white transition">
+            <i class="fa-solid fa-key absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+            <input type="password" id="loginPass" required placeholder="Digite a senha" class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white transition shadow-2xs">
           </div>
         </div>
 
-        <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs shadow-md shadow-blue-600/25 transition">
-          Entrar no Sistema
+        <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md shadow-emerald-600/30 transition flex items-center justify-center gap-2">
+          <span>Acessar Painel</span>
+          <i class="fa-solid fa-arrow-right text-[11px]"></i>
         </button>
       </form>
+
+      <!-- Botões de Demonstração Rápidos com Isolamento de Acesso -->
+      <div class="mt-6 pt-5 border-t border-slate-100">
+        <p class="text-[11px] font-black text-slate-400 uppercase tracking-wider text-center mb-2.5">Entrar como Perfil de Demonstração:</p>
+        <div class="grid grid-cols-3 gap-2">
+          <button type="button" onclick="quickFillLogin('arthur.vinicius', 'eleicoes2026')" class="px-2 py-2 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-xl text-[10px] font-bold text-purple-700 transition truncate text-center">
+            👑 Gestão Geral (Vê Tudo)
+          </button>
+          <button type="button" onclick="quickFillLogin('helena.ramos', 'campanha1')" class="px-2 py-2 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-xl text-[10px] font-bold text-blue-700 transition truncate text-center">
+            📍 Coord. Norte (Vê Região)
+          </button>
+          <button type="button" onclick="quickFillLogin('maria.varzea', 'varzea2026')" class="px-2 py-2 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl text-[10px] font-bold text-amber-700 transition truncate text-center">
+            🐾 Líder Várzea (Vê Causa)
+          </button>
+        </div>
+      </div>
 
     </div>
   </div>
 
-  <!-- CABEÇALHO MOBILE (APENAS EM TELEMÓVEL) -->
-  <div class="md:hidden bg-[#0d1322] text-white p-3.5 flex items-center justify-between border-b border-slate-800 sticky top-0 z-40">
+  <!-- CABEÇALHO MOBILE -->
+  <div class="md:hidden bg-[#0a1120] text-white p-3.5 flex items-center justify-between border-b border-slate-800 sticky top-0 z-40">
     <div class="flex items-center space-x-2.5">
-      <div id="mobileLogoIcon" class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center text-sm shadow">
-        <i class="fa-solid fa-church"></i>
+      <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow">
+        <i class="fa-solid fa-people-roof"></i>
       </div>
       <div>
-        <h2 id="mobileBrandTitle" class="text-xs font-bold leading-none">GESTÃO ADVENTISTA</h2>
-        <p id="mobileBrandSub" class="text-[9px] text-slate-400 mt-0.5">Associação / Campo Local</p>
+        <h2 class="text-xs font-bold leading-none tracking-wide text-white">MOBILIZA SOCIAL</h2>
+        <p class="text-[9px] text-emerald-400 mt-0.5">Gestão Comunitária & Causas</p>
       </div>
     </div>
     <button onclick="toggleMobileMenu()" class="p-2 text-slate-300 hover:text-white rounded-lg focus:outline-none">
@@ -112,69 +142,76 @@
     </button>
   </div>
 
-  <!-- MENU MOBILE GAVETA EXPANSÍVEL -->
-  <div id="mobileMenu" class="hidden md:hidden bg-[#0d1322] border-b border-slate-800 px-4 py-3 space-y-3 z-30">
+  <!-- MENU MOBILE EXPANSÍVEL -->
+  <div id="mobileMenu" class="hidden md:hidden bg-[#0a1120] border-b border-slate-800 px-4 py-3 space-y-2.5 z-30">
     <div class="space-y-1">
       <button onclick="switchTabMobile('visaoGeral')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
-        <i class="fa-solid fa-chart-pie w-4"></i> Visão Geral
+        <i class="fa-solid fa-chart-pie w-4 text-emerald-400"></i> Visão Geral & Números
+      </button>
+      <button onclick="switchTabMobile('causas')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
+        <i class="fa-solid fa-icons w-4 text-emerald-400"></i> Causas & Mini-Projetos
       </button>
       <button onclick="switchTabMobile('organograma')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
-        <i class="fa-solid fa-sitemap w-4"></i> Organograma em Árvore
+        <i class="fa-solid fa-sitemap w-4 text-emerald-400"></i> Árvore de Liderança
       </button>
       <button onclick="switchTabMobile('membros')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
-        <i class="fa-solid fa-users w-4"></i> <span class="mobileMembrosText">Gestão de Membros</span>
+        <i class="fa-solid fa-users w-4 text-emerald-400"></i> Rede de Apoiadores
       </button>
-      <button onclick="switchTabMobile('metas')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
-        <i class="fa-regular fa-circle-dot w-4"></i> Metas & Cobertura
+      <button onclick="switchTabMobile('filiacao')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-teal-300 hover:bg-slate-800 flex items-center gap-2">
+        <i class="fa-solid fa-share-nodes w-4"></i> Link de Filiação & Cadastro
       </button>
       <button id="mobileNavUsuarios" onclick="switchTabMobile('usuarios')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-amber-400 hover:bg-slate-800 flex items-center gap-2">
-        <i class="fa-solid fa-user-shield w-4"></i> Gestão de Senhas & Acessos
+        <i class="fa-solid fa-user-shield w-4"></i> Gestão de Senhas
       </button>
     </div>
     <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
-      <span id="mobileLoggedUser" class="text-[11px] text-slate-400 font-semibold truncate">Pr. Marcos Alencar</span>
+      <span id="mobileLoggedUser" class="text-[11px] text-slate-400 font-semibold truncate">Dr. Arthur Vinicius</span>
       <button onclick="handleLogout()" class="text-xs text-rose-400 font-bold"><i class="fa-solid fa-right-from-bracket mr-1"></i>Sair</button>
     </div>
   </div>
 
-  <!-- SIDEBAR FIXA (APENAS EM COMPUTADORES E TABLETS) -->
-  <aside class="hidden md:flex w-64 bg-[#0d1322] text-slate-300 flex-col shrink-0 min-h-screen">
+  <!-- SIDEBAR FIXA (DESKTOP) -->
+  <aside class="hidden md:flex w-64 bg-[#0a1120] text-slate-300 flex-col shrink-0 min-h-screen">
     <div class="p-5 border-b border-slate-800/80 flex items-center space-x-3">
-      <div id="sideLogoIcon" class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-lg font-bold shadow-md shadow-blue-500/20">
-        <i class="fa-solid fa-church"></i>
+      <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center text-xl font-bold shadow-md shadow-emerald-500/20">
+        <i class="fa-solid fa-people-roof"></i>
       </div>
       <div>
-        <h2 id="sideBrandTitle" class="text-sm font-bold text-white tracking-wide leading-tight">GESTÃO ADVENTISTA</h2>
-        <p id="sideBrandSub" class="text-[10px] text-slate-400 font-medium">Associação / Campo Local</p>
+        <h2 class="text-sm font-black text-white tracking-wide leading-tight">MOBILIZA SOCIAL</h2>
+        <p class="text-[10px] text-emerald-400 font-semibold">Gestão Comunitária & Causas</p>
       </div>
     </div>
 
     <!-- Navegação Sidebar -->
     <div class="px-3 py-5 space-y-6 flex-1">
       <div>
-        <span class="px-3 text-[10px] font-bold tracking-wider text-slate-500 uppercase">Principal</span>
+        <span class="px-3 text-[10px] font-bold tracking-wider text-slate-500 uppercase">Seu Trabalho de Campo</span>
         <div class="mt-2 space-y-1">
-          <button onclick="switchTab('visaoGeral')" id="navVisaoGeral" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-blue-600 text-white transition shadow-sm">
+          <button onclick="switchTab('visaoGeral')" id="navVisaoGeral" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-emerald-600 text-white transition shadow-sm">
             <i class="fa-solid fa-chart-pie w-4 text-center"></i>
-            <span>Visão Geral</span>
+            <span>Visão Geral & Números</span>
+          </button>
+          <button onclick="switchTab('causas')" id="navCausas" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <i class="fa-solid fa-icons w-4 text-center"></i>
+            <span>Causas & Mini-Projetos</span>
           </button>
           <button onclick="switchTab('organograma')" id="navOrganograma" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
             <i class="fa-solid fa-sitemap w-4 text-center"></i>
-            <span>Organograma em Árvore</span>
+            <span>Árvore de Liderança</span>
           </button>
           <button onclick="switchTab('membros')" id="navMembros" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
             <i class="fa-solid fa-users w-4 text-center"></i>
-            <span id="navMembrosLabel">Gestão de Membros</span>
+            <span>Rede de Apoiadores</span>
           </button>
         </div>
       </div>
 
       <div>
-        <span class="px-3 text-[10px] font-bold tracking-wider text-slate-500 uppercase">Relatórios & Segurança</span>
+        <span class="px-3 text-[10px] font-bold tracking-wider text-slate-500 uppercase">Captação & Segurança</span>
         <div class="mt-2 space-y-1">
-          <button onclick="switchTab('metas')" id="navMetas" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
-            <i class="fa-regular fa-circle-dot w-4 text-center"></i>
-            <span>Metas & Cobertura</span>
+          <button onclick="switchTab('filiacao')" id="navFiliacao" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-teal-400 hover:text-teal-300 hover:bg-slate-800/60 transition">
+            <i class="fa-solid fa-share-nodes w-4 text-center"></i>
+            <span>Ponto de Filiação (Link)</span>
           </button>
           <button onclick="switchTab('usuarios')" id="navUsuarios" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-amber-400 hover:text-amber-300 hover:bg-slate-800/60 transition">
             <i class="fa-solid fa-user-shield w-4 text-center"></i>
@@ -185,245 +222,304 @@
     </div>
 
     <!-- Rodapé Sidebar -->
-    <div class="p-4 border-t border-slate-800/80 bg-[#090d17]">
+    <div class="p-4 border-t border-slate-800/80 bg-[#070b14]">
       <div class="flex items-center justify-between mb-2">
         <div class="flex items-center space-x-2">
           <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-          <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Utilizador:</span>
+          <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Perfil Conectado:</span>
         </div>
         <button onclick="handleLogout()" class="text-[10px] text-rose-400 hover:text-rose-300 font-semibold" title="Sair">
           <i class="fa-solid fa-arrow-right-from-bracket mr-0.5"></i> Sair
         </button>
       </div>
-      <p id="loggedUserName" class="text-xs font-bold text-white truncate">Pr. Marcos Alencar</p>
-      <p id="loggedUserRole" class="text-[11px] text-blue-400 truncate">Presidente da Associação</p>
+      <p id="loggedUserName" class="text-xs font-bold text-white truncate">Dr. Arthur Vinicius</p>
+      <p id="loggedUserRole" class="text-[11px] text-emerald-400 truncate">Comando Geral</p>
     </div>
   </aside>
 
   <!-- ÁREA PRINCIPAL -->
   <div class="flex-1 flex flex-col min-w-0 overflow-y-auto w-full">
 
-    <!-- Barra de Controlos Superior -->
+    <!-- BARRA SUPERIOR -->
     <header class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3 sticky top-0 md:relative z-20">
       
-      <!-- Alternador de Contexto -->
-      <div class="flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto">
-        <button id="btnChurchMode" onclick="setMode('church')" class="flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 shadow-sm flex items-center justify-center gap-1.5 transition">
-          <i class="fa-solid fa-church"></i>
-          <span>Adventista</span>
-        </button>
-        <button id="btnElectionMode" onclick="setMode('election')" class="flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center justify-center gap-1.5 transition">
-          <i class="fa-solid fa-landmark text-emerald-600"></i>
-          <span>Campanha</span>
-        </button>
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold">
+          <i class="fa-solid fa-handshake-angle"></i>
+        </div>
+        <div>
+          <h1 class="text-xs sm:text-sm font-bold text-slate-900 leading-tight">Programa Comunitário de Mobilização Social</h1>
+          <p class="text-[10px] text-slate-400">Acompanhamento e Métricas em Tempo Real</p>
+        </div>
       </div>
 
-      <!-- Simulador de Acesso & Botões de Ação -->
+      <!-- Simulador de Perfil (Restrito a Admin) & Ações -->
       <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
         <div class="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs flex-1 sm:flex-none">
-          <i class="fa-solid fa-user-gear text-slate-400 mr-1.5 text-[11px]"></i>
-          <select id="accessLevelSelect" onchange="simulateAccessChange(this.value)" class="bg-transparent text-slate-800 font-semibold focus:outline-none cursor-pointer text-[11px] w-full sm:w-auto truncate">
+          <i class="fa-solid fa-filter text-slate-400 mr-1.5 text-[11px]"></i>
+          <select id="accessLevelSelect" onchange="simulateAccessChange(this.value)" class="bg-transparent text-slate-800 font-bold focus:outline-none cursor-pointer text-[11px] w-full sm:w-auto truncate">
+            <option value="admin">👑 Visão do Candidato (Acesso a Tudo)</option>
+            <option value="regional1">📍 Coord. Zona Norte (Apenas Norte)</option>
+            <option value="regional2">🐾 Líder Várzea (Apenas Várzea / Causa)</option>
           </select>
         </div>
 
-        <button id="btnCriarSenha" onclick="openNewUserModal()" class="px-2.5 sm:px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-[11px] sm:text-xs font-semibold rounded-lg shadow-sm flex items-center gap-1 shrink-0" title="Criar novo login e senha">
+        <button id="btnCriarSenha" onclick="openNewUserModal()" class="px-2.5 sm:px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-[11px] sm:text-xs font-semibold rounded-lg shadow-sm flex items-center gap-1 shrink-0" title="Criar login de acesso">
           <i class="fa-solid fa-key text-[10px]"></i>
           <span>Criar Senha</span>
         </button>
 
-        <button onclick="openModalForNew()" class="px-3 py-1.5 bg-[#0d1322] hover:bg-slate-800 text-white text-xs font-semibold rounded-lg shadow-sm flex items-center gap-1 shrink-0">
+        <button onclick="openModalForNew()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm flex items-center gap-1 shrink-0">
           <i class="fa-solid fa-plus text-[10px]"></i>
-          <span id="btnTopNew">Novo</span>
+          <span>Novo Cadastro</span>
         </button>
       </div>
     </header>
 
-    <!-- Sub-Barra de Estado -->
+    <!-- Sub-Barra de Limitação de Escopo -->
     <div class="bg-slate-100/70 border-b border-slate-200 px-4 sm:px-6 py-2 flex flex-wrap items-center justify-between gap-1 text-xs">
       <div class="flex items-center space-x-2 truncate">
-        <span id="tagLevelPill" class="bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded text-[10px] uppercase shrink-0">NÍVEL 1</span>
-        <span id="tagLevelDescription" class="text-slate-600 font-medium text-[11px] truncate">Visão consolidada do campo (Acesso Geral).</span>
+        <span id="tagLevelPill" class="bg-purple-100 text-purple-800 font-bold px-2 py-0.5 rounded text-[10px] uppercase shrink-0">VISÃO GERAL</span>
+        <span id="tagLevelDescription" class="text-slate-600 font-semibold text-[11px] truncate">Exibindo números consolidados de toda a cidade (Acesso Geral do Candidato).</span>
       </div>
-      <span class="text-slate-400 text-[10px] font-medium hidden sm:flex items-center gap-1">
-        <i class="fa-solid fa-shield-check text-emerald-600"></i> Auditoria de Acessos Ativa
-      </span>
+      <button onclick="switchTab('filiacao')" class="text-emerald-700 hover:text-emerald-800 font-bold text-[11px] flex items-center gap-1">
+        <i class="fa-solid fa-link text-xs"></i> Link de Cadastro da sua Equipe
+      </button>
     </div>
 
-    <!-- CONTEÚDO DAS ABAS -->
-    <main class="p-3 sm:p-6 space-y-4 sm:space-y-6 max-w-7xl w-full">
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="p-3 sm:p-6 space-y-5 max-w-7xl w-full">
 
       <!-- ABA 1: VISÃO GERAL -->
-      <section id="tabContentVisaoGeral" class="space-y-4 sm:space-y-6">
+      <section id="tabContentVisaoGeral" class="space-y-5">
         
-        <!-- Banner Principal -->
-        <div class="relative bg-gradient-to-r from-[#0d1322] to-[#151c2e] text-white rounded-2xl p-4 sm:p-6 shadow-sm overflow-hidden border border-slate-800">
+        <!-- Banner Informativo Dinâmico -->
+        <div class="relative bg-gradient-to-r from-[#0a1120] to-[#122338] text-white rounded-3xl p-5 sm:p-7 shadow-sm overflow-hidden border border-slate-800">
           <div class="relative z-10 max-w-2xl">
-            <span id="bannerTag" class="inline-block bg-blue-500/20 text-blue-300 border border-blue-400/30 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider mb-2">
-              PAINEL DE MOBILIZAÇÃO E GESTÃO
+            <span class="inline-block bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider mb-2">
+              PAINEL DE RESULTADOS & MOBILIZAÇÃO
             </span>
-            <h1 id="bannerTitle" class="text-lg sm:text-2xl font-bold tracking-tight text-white leading-snug">Painel de Gestão da Associação</h1>
-            <p id="bannerSubtitle" class="text-[11px] sm:text-xs text-slate-300 mt-1">Estrutura eclesiástica: Presidência, Departamentos, Pastores Distritais, Anciãos e Membresia.</p>
+            <h1 id="bannerTitle" class="text-xl sm:text-2xl font-black text-white leading-tight">Visão Geral da Rede Comunitária</h1>
+            <p id="bannerSubtitle" class="text-xs text-slate-300 mt-1.5 leading-relaxed">
+              Métricas calculadas exclusivamente com base nas pessoas e projetos sob sua responsabilidade.
+            </p>
           </div>
-          <div class="absolute right-4 -bottom-4 text-white/5 text-7xl sm:text-9xl pointer-events-none">
-            <i id="bannerWatermark" class="fa-solid fa-church"></i>
-          </div>
-        </div>
-
-        <!-- Cartões de Métricas -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div class="bg-white rounded-xl border border-slate-200 p-3 sm:p-4 shadow-xs flex items-center justify-between">
-            <div>
-              <p id="cardLabel1" class="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider truncate">TOTAL MEMBROS</p>
-              <p id="cardVal1" class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">11</p>
-              <p class="text-[10px] text-emerald-600 font-semibold mt-0.5 flex items-center gap-1">
-                <i class="fa-solid fa-arrow-trend-up"></i> +12%
-              </p>
-            </div>
-            <div class="w-9 h-9 sm:w-11 sm:h-11 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-sm sm:text-lg">
-              <i id="cardIcon1" class="fa-solid fa-address-book"></i>
-            </div>
-          </div>
-
-          <div class="bg-white rounded-xl border border-slate-200 p-3 sm:p-4 shadow-xs flex items-center justify-between">
-            <div>
-              <p id="cardLabel2" class="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider truncate">LIDERANÇAS</p>
-              <p id="cardVal2" class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">5</p>
-              <p id="cardSub2" class="text-[10px] text-slate-500 font-medium mt-0.5 truncate">Em campo</p>
-            </div>
-            <div class="w-9 h-9 sm:w-11 sm:h-11 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-sm sm:text-lg">
-              <i id="cardIcon2" class="fa-solid fa-user-tie"></i>
-            </div>
-          </div>
-
-          <div class="bg-white rounded-xl border border-slate-200 p-3 sm:p-4 shadow-xs flex items-center justify-between">
-            <div>
-              <p id="cardLabel3" class="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider truncate">DISTRITOS</p>
-              <p id="cardVal3" class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">6</p>
-              <p class="text-[10px] text-emerald-600 font-semibold mt-0.5 truncate">100% ativos</p>
-            </div>
-            <div class="w-9 h-9 sm:w-11 sm:h-11 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-sm sm:text-lg">
-              <i id="cardIcon3" class="fa-solid fa-map-location-dot"></i>
-            </div>
-          </div>
-
-          <div class="bg-white rounded-xl border border-slate-200 p-3 sm:p-4 shadow-xs flex items-center justify-between">
-            <div>
-              <p id="cardLabel4" class="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider truncate">META GLOBAL</p>
-              <p id="cardVal4" class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">90%</p>
-              <div class="w-16 sm:w-24 bg-slate-100 rounded-full h-1.5 mt-1.5 overflow-hidden">
-                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 90%"></div>
-              </div>
-            </div>
-            <div class="w-9 h-9 sm:w-11 sm:h-11 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-sm sm:text-lg">
-              <i id="cardIcon4" class="fa-solid fa-chart-line"></i>
-            </div>
+          <div class="absolute right-4 -bottom-6 text-white/5 text-8xl sm:text-9xl pointer-events-none">
+            <i class="fa-solid fa-hands-holding-circle"></i>
           </div>
         </div>
 
-        <!-- Painel Inferior: Níveis e Lista Resumida -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
-          <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs flex flex-col justify-between">
+        <!-- 4 CARTÕES DE MÉTRICAS 100% DINÂMICOS & CONCRETOS -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
             <div>
-              <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 mb-3">
-                <h3 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Níveis de Comando</h3>
-                <span class="text-[10px] text-slate-400 font-semibold uppercase">Hierarquia</span>
-              </div>
-              <div class="space-y-2.5" id="hierarchyLevelsContainer"></div>
+              <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">APOIADORES REAIS</p>
+              <p id="metricTotalSupporters" class="text-2xl sm:text-3xl font-black text-slate-900 mt-0.5">0</p>
+              <p id="metricScopeNotice" class="text-[10px] text-emerald-600 font-bold mt-0.5">Calculado do seu escopo</p>
             </div>
-            <button onclick="switchTab('organograma')" class="mt-4 w-full py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 transition flex items-center justify-center gap-1.5">
-              <span>Explorar Organograma</span>
-              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            <div class="w-11 h-11 sm:w-12 sm:h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl">
+              <i class="fa-solid fa-users"></i>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
+            <div>
+              <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">LÍDERES & ATIVISTAS</p>
+              <p id="metricLeadersCount" class="text-2xl sm:text-3xl font-black text-slate-900 mt-0.5">0</p>
+              <p class="text-[10px] text-slate-500 font-medium mt-0.5">Em campo no bairro</p>
+            </div>
+            <div class="w-11 h-11 sm:w-12 sm:h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl">
+              <i class="fa-solid fa-bullhorn"></i>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
+            <div>
+              <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">CAUSAS ATIVAS</p>
+              <p id="metricCausesCount" class="text-2xl sm:text-3xl font-black text-slate-900 mt-0.5">0</p>
+              <p class="text-[10px] text-amber-600 font-medium mt-0.5">Projetos em andamento</p>
+            </div>
+            <div class="w-11 h-11 sm:w-12 sm:h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-xl">
+              <i class="fa-solid fa-seedling"></i>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
+            <div>
+              <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">DOAÇÕES / RECURSOS</p>
+              <p id="metricDonationsCount" class="text-2xl sm:text-3xl font-black text-slate-900 mt-0.5">0</p>
+              <p class="text-[10px] text-purple-600 font-medium mt-0.5">Itens & alimentos</p>
+            </div>
+            <div class="w-11 h-11 sm:w-12 sm:h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center text-xl">
+              <i class="fa-solid fa-box-open"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- HUB VISUAL COM CARDS GRANDES DE CAUSAS (VISUAL JOVEM, CATIVANTE E DE FÁCIL COMPREENSÃO) -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div>
+              <h2 class="text-base sm:text-lg font-black text-slate-900">Selecione uma Causa para Filtrar a Rede</h2>
+              <p class="text-xs text-slate-400">Toque no card grande da causa para ver as pessoas e doações vinculadas</p>
+            </div>
+            <button onclick="resetCauseFilter()" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition">
+              Mostrar Todas
             </button>
           </div>
 
-          <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs flex flex-col">
-            <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 mb-3">
+          <!-- Cards Grandes e Ilustrados -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5" id="bigCausesGrid"></div>
+        </div>
+
+        <!-- LISTA CONCRETA DE APOIADORES & PARCERIAS COM EMPRESAS/ONGS -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          
+          <!-- Tabela com Nomes Reais Concretos -->
+          <div class="lg:col-span-8 bg-white rounded-3xl border border-slate-200 p-5 shadow-xs flex flex-col">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
               <div>
-                <h3 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Pessoas Registadas</h3>
-                <p class="text-[10px] sm:text-[11px] text-slate-400">Toque no lápis para editar dados</p>
+                <h3 class="font-black text-slate-900 text-sm">Pessoas Registradas sob seu Comando</h3>
+                <p class="text-[11px] text-slate-400">Mostrando registros reais do banco de dados</p>
               </div>
-              <button onclick="switchTab('membros')" class="text-xs font-bold text-blue-600 hover:text-blue-700">Ver todas</button>
+              <button onclick="switchTab('membros')" class="text-xs font-bold text-emerald-600 hover:text-emerald-700">Ver todas na tabela</button>
             </div>
-            <div class="overflow-x-auto -mx-4 sm:mx-0">
+
+            <div class="overflow-x-auto -mx-5 sm:mx-0">
               <table class="w-full text-left border-collapse text-xs min-w-[500px]">
                 <thead>
                   <tr class="text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100">
-                    <th class="py-2 px-3 font-bold">NOME</th>
-                    <th class="py-2 px-3 font-bold">SETOR</th>
-                    <th class="py-2 px-3 font-bold">LÍDER</th>
-                    <th class="py-2 px-3 font-bold">ESTADO</th>
-                    <th class="py-2 px-3 font-bold text-right">AÇÕES</th>
+                    <th class="py-2.5 px-3 font-bold">NOME / CAUSA</th>
+                    <th class="py-2.5 px-3 font-bold">BAIRRO</th>
+                    <th class="py-2.5 px-3 font-bold">LÍDER RESPONSÁVEL</th>
+                    <th class="py-2.5 px-3 font-bold">DOAÇÃO / APOIO</th>
+                    <th class="py-2.5 px-3 font-bold text-right">AÇÃO</th>
                   </tr>
                 </thead>
                 <tbody id="overviewTableBody" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
               </table>
             </div>
           </div>
+
+          <!-- Empresas e ONGs Parceiras (Item do Áudio) -->
+          <div class="lg:col-span-4 bg-white rounded-3xl border border-slate-200 p-5 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
+                <div class="flex items-center space-x-2">
+                  <div class="w-7 h-7 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center text-xs font-bold">
+                    <i class="fa-solid fa-building-ngo"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-black text-slate-900 text-xs uppercase">Empresas & ONGs</h3>
+                    <p class="text-[10px] text-slate-400">Parcerias e Apoio Local</p>
+                  </div>
+                </div>
+                <span id="partnersBadgeCount" class="px-2 py-0.5 bg-teal-100 text-teal-800 text-[10px] font-bold rounded-full">0</span>
+              </div>
+
+              <div class="space-y-2.5" id="partnersListContainer"></div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-100">
+              <button onclick="switchTab('filiacao')" class="w-full py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-qrcode text-xs"></i>
+                <span>Gerar Link para Captação de Rua</span>
+              </button>
+            </div>
+          </div>
+
         </div>
 
       </section>
 
-      <!-- ABA 2: ORGANOGRAMA EM ÁRVORE -->
-      <section id="tabContentOrganograma" class="hidden space-y-4 sm:space-y-6">
-        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs">
+      <!-- ABA 2: HUB DETALHADO DE CAUSAS & MINI-PROJETOS -->
+      <section id="tabContentCausas" class="hidden space-y-5">
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
           
-          <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100 mb-4">
-            <div class="flex items-center space-x-2.5">
-              <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+            <div>
+              <h2 class="text-base sm:text-lg font-black text-slate-900">Causas, Mini-Projetos & Ações em Campo</h2>
+              <p class="text-xs text-slate-400">Cada projeto reúne ativistas, doações de mantimentos e voluntários de bairro</p>
+            </div>
+            <button onclick="openModalForNew()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm flex items-center justify-center gap-1.5 shrink-0">
+              <i class="fa-solid fa-plus text-[10px]"></i>
+              <span>Vincular Nova Causa / Equipe</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5" id="causesFullGrid"></div>
+
+        </div>
+      </section>
+
+      <!-- ABA 3: ORGANOGRAMA EM ÁRVORE (QUEM RESPONDE A QUEM) -->
+      <section id="tabContentOrganograma" class="hidden space-y-5">
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
+          
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100 mb-4">
+            <div class="flex items-center space-x-3">
+              <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold">
                 <i class="fa-solid fa-sitemap"></i>
               </div>
               <div>
-                <h2 id="treeHeadingTitle" class="text-xs sm:text-sm font-bold text-slate-900">Estrutura Organizacional</h2>
-                <p class="text-[10px] sm:text-xs text-slate-400">Organograma com líderes e subordinados.</p>
+                <h2 class="text-sm sm:text-base font-black text-slate-900">Linha de Comando & Articulação de Bairro</h2>
+                <p class="text-xs text-slate-400">Acompanhe quem coordena cada ativista e equipe</p>
               </div>
             </div>
             <div class="flex items-center gap-1.5">
-              <button onclick="expandAllTree(true)" class="px-2.5 py-1 rounded-lg border border-slate-200 text-[11px] font-semibold text-slate-700 hover:bg-slate-50 transition">
-                Expandir
+              <button onclick="expandAllTree(true)" class="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition">
+                Expandir Tudo
               </button>
-              <button onclick="expandAllTree(false)" class="px-2.5 py-1 rounded-lg border border-slate-200 text-[11px] font-semibold text-slate-700 hover:bg-slate-50 transition">
+              <button onclick="expandAllTree(false)" class="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition">
                 Recolher
               </button>
             </div>
           </div>
 
-          <div id="treeContainer" class="p-1 space-y-2 sm:space-y-3"></div>
+          <div id="treeContainer" class="p-1 space-y-3"></div>
 
         </div>
       </section>
 
-      <!-- ABA 3: GESTÃO DE MEMBROS / ELEITORES -->
-      <section id="tabContentMembros" class="hidden space-y-4 sm:space-y-6">
-        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs">
+      <!-- ABA 4: REDE COMPLETA DE APOIADORES & FILTROS -->
+      <section id="tabContentMembros" class="hidden space-y-5">
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
           
-          <!-- Filtro e Procura -->
           <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 mb-4">
             <div class="relative flex-1">
-              <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-              <input type="text" id="memberSearchInput" oninput="renderMembersTable()" placeholder="Pesquisar por nome, telefone ou líder..." class="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white transition">
+              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+              <input type="text" id="memberSearchInput" oninput="renderMembersTable()" placeholder="Pesquisar por nome, telefone, líder, causa ou bairro..." class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white transition">
             </div>
 
             <div class="flex items-center gap-2">
-              <select id="memberSectorFilter" onchange="renderMembersTable()" class="flex-1 sm:flex-none px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none cursor-pointer">
+              <select id="memberSectorFilter" onchange="renderMembersTable()" class="flex-1 sm:flex-none px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none cursor-pointer">
+                <option value="all">Todos os Bairros</option>
+                <option value="Várzea">Várzea</option>
+                <option value="Cordeiro">Cordeiro</option>
+                <option value="Casa Amarela">Casa Amarela</option>
+                <option value="Boa Viagem">Boa Viagem</option>
+                <option value="Pina">Pina</option>
+                <option value="Afogados">Afogados</option>
               </select>
 
-              <button onclick="openModalForNew()" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-sm flex items-center justify-center gap-1 shrink-0">
+              <button onclick="openModalForNew()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm flex items-center justify-center gap-1 shrink-0">
                 <i class="fa-solid fa-plus text-[10px]"></i>
-                <span>Registar</span>
+                <span>Novo Apoiador</span>
               </button>
             </div>
           </div>
 
-          <!-- Tabela com Deslocamento Suave -->
-          <div class="overflow-x-auto -mx-4 sm:mx-0">
-            <table class="w-full text-left border-collapse text-xs min-w-[550px]">
+          <!-- Tabela Completa -->
+          <div class="overflow-x-auto -mx-5 sm:mx-0">
+            <table class="w-full text-left border-collapse text-xs min-w-[650px]">
               <thead>
                 <tr class="text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100 bg-slate-50/50">
-                  <th class="py-2.5 px-3 font-bold">PESSOA / CONTACTO</th>
-                  <th class="py-2.5 px-3 font-bold">FUNÇÃO / CARGO</th>
-                  <th class="py-2.5 px-3 font-bold">SETOR</th>
-                  <th class="py-2.5 px-3 font-bold">CHEFIA DIRETA</th>
-                  <th class="py-2.5 px-3 font-bold text-right">AÇÕES</th>
+                  <th class="py-3 px-3 font-bold">NOME / CAUSA VINCULADA</th>
+                  <th class="py-3 px-3 font-bold">FUNÇÃO / PAPEL</th>
+                  <th class="py-3 px-3 font-bold">BAIRRO</th>
+                  <th class="py-3 px-3 font-bold">LÍDER DIRETO</th>
+                  <th class="py-3 px-3 font-bold">DOAÇÃO / RECURSO</th>
+                  <th class="py-3 px-3 font-bold text-right">AÇÕES</th>
                 </tr>
               </thead>
               <tbody id="fullMembersTableBody" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
@@ -433,49 +529,132 @@
         </div>
       </section>
 
-      <!-- ABA 4: METAS & COBERTURA -->
-      <section id="tabContentMetas" class="hidden space-y-4 sm:space-y-6">
-        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs">
+      <!-- ABA 5: PONTO DE FILIAÇÃO (LINK DO ATIVISTA & WHATSAPP) -->
+      <section id="tabContentFiliacao" class="hidden space-y-5">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
           
-          <div class="pb-3 border-b border-slate-100 mb-4">
-            <h2 id="metasHeadingTitle" class="text-sm sm:text-base font-bold text-slate-900">Desempenho por Setor</h2>
-            <p class="text-[11px] text-slate-400">Acompanhamento territorial e metas atingidas.</p>
+          <div class="lg:col-span-5 bg-white rounded-3xl border border-slate-200 p-6 shadow-xs space-y-4">
+            <div class="pb-3 border-b border-slate-100">
+              <span class="inline-block px-3 py-1 bg-teal-50 text-teal-700 text-[10px] font-black rounded-full uppercase mb-1">
+                Captação Direta de Rua
+              </span>
+              <h2 class="text-base font-black text-slate-900">Gerador de Link de Filiação</h2>
+              <p class="text-xs text-slate-400">Cada ativista tem o seu próprio link para cadastrar apoiadores no bairro.</p>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Liderança / Ativista que vai convidar:</label>
+              <select id="affiliateLeaderSelect" onchange="updateAffiliateLinkUI()" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-emerald-600">
+                <option value="donamaria">🐾 Dona Maria da Várzea (Causa Animal)</option>
+                <option value="marcoslider">🍲 Marcos Líder Social (Ação Social & Sopão)</option>
+                <option value="paonosso">🍞 Equipe Pão Nosso (Alimentos & Fubá)</option>
+                <option value="helenaramos">🌳 Profª Helena Ramos (Zona Norte)</option>
+              </select>
+            </div>
+
+            <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2">
+              <p class="text-[10px] font-bold text-slate-400 uppercase">Link Rastreável da Liderança:</p>
+              <div class="flex items-center gap-1.5">
+                <input type="text" id="generatedLinkInput" readonly class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-mono text-emerald-700 select-all" value="https://painel-gestao.vercel.app/#cadastro?ref=donamaria">
+                <button onclick="copyGeneratedLink()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shrink-0">
+                  <i class="fa-solid fa-copy"></i>
+                </button>
+              </div>
+            </div>
+
+            <button onclick="shareLinkWhatsApp()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition">
+              <i class="fa-brands fa-whatsapp text-sm"></i>
+              <span>Enviar pelo WhatsApp da Pessoa</span>
+            </button>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4" id="metasCardsGrid"></div>
+          <!-- Simulador do Formulário de Rua -->
+          <div class="lg:col-span-7 bg-white rounded-3xl border border-slate-200 p-6 shadow-xs">
+            <div class="pb-3 border-b border-slate-100 flex items-center justify-between mb-4">
+              <div>
+                <h3 class="text-sm font-black text-slate-900">Formulário de Rua (Visão do Apoiador)</h3>
+                <p class="text-xs text-slate-400">Preenchido em menos de 1 minuto pelo celular</p>
+              </div>
+              <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-black rounded-md">LINK PÚBLICO</span>
+            </div>
+
+            <form onsubmit="handlePublicRegistration(event)" class="space-y-3.5 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+              <div class="text-center pb-2.5 border-b border-slate-200">
+                <p class="text-xs font-black text-slate-800">Participe das Ações Comunitárias</p>
+                <p id="publicFormReferralText" class="text-[11px] text-emerald-600 font-bold mt-0.5">Convidado por: Dona Maria da Várzea</p>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">Seu Nome Completo</label>
+                <input type="text" id="pubName" required placeholder="Digite seu nome completo" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600">
+              </div>
+
+              <div class="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-700 mb-1">WhatsApp</label>
+                  <input type="text" id="pubPhone" required placeholder="(81) 99999-0000" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-700 mb-1">Bairro Onde Mora</label>
+                  <input type="text" id="pubNeighborhood" required placeholder="Ex: Várzea / Cordeiro" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">Qual Causa Deseja Apoiar?</label>
+                <select id="pubCause" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-emerald-600">
+                  <option value="Causa Animal (100 Gatos)">🐾 Causa Animal (100 Gatos da Várzea)</option>
+                  <option value="Ação Social & Sopão">🍲 Ação Social & Sopão Comunitário</option>
+                  <option value="Pão Nosso & Fubá">🍞 Pão Nosso de Cada Dia (Alimentos / Fubá)</option>
+                  <option value="Cultura & Dança">🎭 Cultura, Dança & Teatro para Jovens</option>
+                  <option value="Meio Ambiente & Praças">🌱 Meio Ambiente & Limpeza de Praças</option>
+                  <option value="Saúde nos Bairros">🩺 Saúde Comunitária nos Bairros</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">Doação ou Recurso para a Ação:</label>
+                <input type="text" id="pubDonation" placeholder="Ex: 2kg de fubá / pacote de ração / voluntariado" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600">
+              </div>
+
+              <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md transition">
+                Confirmar Cadastro & Apoio
+              </button>
+            </form>
+          </div>
 
         </div>
       </section>
 
-      <!-- ABA 5: GESTÃO DE SENHAS E ACESSOS (DIRETO NO SITE) -->
-      <section id="tabContentUsuarios" class="hidden space-y-4 sm:space-y-6">
-        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xs">
+      <!-- ABA 6: GESTÃO DE SENHAS (SOMENTE ADMIN) -->
+      <section id="tabContentUsuarios" class="hidden space-y-5">
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
           
           <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
             <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg shadow-xs">
+              <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl shadow-xs">
                 <i class="fa-solid fa-key"></i>
               </div>
               <div>
-                <h2 class="text-sm sm:text-base font-bold text-slate-900">Gestão de Senhas e Acessos</h2>
-                <p class="text-[11px] text-slate-400">Crie logins e credenciais para coordenadores e pastores diretamente no painel.</p>
+                <h2 class="text-sm sm:text-base font-black text-slate-900">Gestão de Senhas e Acessos</h2>
+                <p class="text-xs text-slate-400">Controle de credenciais de coordenadores e ativistas.</p>
               </div>
             </div>
-            <button onclick="openNewUserModal()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-sm flex items-center justify-center gap-1.5 shrink-0">
+            <button onclick="openNewUserModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm flex items-center justify-center gap-1.5 shrink-0">
               <i class="fa-solid fa-plus text-[10px]"></i>
               <span>Criar Novo Login</span>
             </button>
           </div>
 
-          <div class="mt-4 overflow-x-auto -mx-4 sm:mx-0">
+          <div class="mt-4 overflow-x-auto -mx-5 sm:mx-0">
             <table class="w-full text-left border-collapse text-xs min-w-[600px]">
               <thead>
                 <tr class="text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100 bg-slate-50/50">
                   <th class="py-2.5 px-3 font-bold">NOME / IDENTIFICAÇÃO</th>
-                  <th class="py-2.5 px-3 font-bold">USUÁRIO (LOGIN)</th>
+                  <th class="py-2.5 px-3 font-bold">LOGIN</th>
                   <th class="py-2.5 px-3 font-bold">SENHA</th>
-                  <th class="py-2.5 px-3 font-bold">PAPEL / CARGO</th>
-                  <th class="py-2.5 px-3 font-bold">NÍVEL DE ACESSO</th>
+                  <th class="py-2.5 px-3 font-bold">PAPEL ATRIBUÍDO</th>
+                  <th class="py-2.5 px-3 font-bold">ESCOPO DE VISÃO</th>
                   <th class="py-2.5 px-3 font-bold text-right">AÇÕES</th>
                 </tr>
               </thead>
@@ -490,151 +669,152 @@
 
   </div>
 
-  <!-- MODAL DE CRIAÇÃO/EDIÇÃO DE USUÁRIO E SENHA (NOVO) -->
+  <!-- MODAL DE CRIAÇÃO/EDIÇÃO DE USUÁRIO E SENHA -->
   <div id="userModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden p-4 sm:p-5">
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden p-5 sm:p-6">
       
       <div class="pb-3 border-b border-slate-100 flex items-center justify-between">
         <div class="flex items-center space-x-2.5">
-          <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-sm">
+          <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold">
             <i class="fa-solid fa-user-lock"></i>
           </div>
           <div>
-            <h3 id="userModalHeading" class="font-bold text-slate-900 text-sm">Criar Acesso ao Sistema</h3>
-            <p class="text-[10px] text-slate-400">Defina o login e a senha para o líder</p>
+            <h3 id="userModalHeading" class="font-black text-slate-900 text-sm">Criar Acesso ao Sistema</h3>
+            <p class="text-[10px] text-slate-400">Defina usuário e senha para o coordenador/líder</p>
           </div>
         </div>
         <button onclick="closeUserModal()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
-      <form id="userForm" onsubmit="handleSaveUser(event)" class="mt-3 space-y-3">
+      <form id="userForm" onsubmit="handleSaveUser(event)" class="mt-4 space-y-3.5">
         <input type="hidden" id="editUserIndex" value="">
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Nome Completo</label>
-          <input type="text" id="userFormName" required placeholder="Ex: Pr. Carlos / Dr. Henrique" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white">
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nome Completo</label>
+          <input type="text" id="userFormName" required placeholder="Ex: Gleyson Pedrosa / Dona Maria" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white">
         </div>
 
         <div class="grid grid-cols-2 gap-2.5">
           <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Usuário (Login)</label>
-            <input type="text" id="userFormUsername" required placeholder="Ex: carlos.lider" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Usuário (Login)</label>
+            <input type="text" id="userFormUsername" required placeholder="Ex: gleyson.coord" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Senha de Acesso</label>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Senha de Acesso</label>
             <div class="relative">
-              <input type="text" id="userFormPassword" required placeholder="Digite a senha" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white font-mono">
-              <button type="button" onclick="generateRandomPass()" class="absolute right-2 top-1.5 text-[10px] text-blue-600 font-bold hover:underline">Gerar</button>
+              <input type="text" id="userFormPassword" required placeholder="Digite a senha" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white font-mono">
+              <button type="button" onclick="generateRandomPass()" class="absolute right-2 top-2 text-[10px] text-emerald-600 font-bold hover:underline">Gerar</button>
             </div>
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Cargo / Papel Exibido</label>
-          <input type="text" id="userFormRole" required placeholder="Ex: Coordenador Regional / Pastor Distrital" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white">
-        </div>
-
-        <div class="grid grid-cols-2 gap-2.5">
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Nível Hierárquico (Visão)</label>
-            <select id="userFormScope" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 cursor-pointer">
-              <option value="admin">Acesso Total (Geral)</option>
-              <option value="regional1">Regional 1 (Zona Norte)</option>
-              <option value="regional2">Regional 2 (Zona Sul)</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Módulo Permitido</label>
-            <select id="userFormMode" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 cursor-pointer">
-              <option value="all">Ambos (Igreja & Campanha)</option>
-              <option value="church">Apenas Igreja</option>
-              <option value="election">Apenas Campanha</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="pt-2 border-t border-slate-100 flex justify-end gap-2">
-          <button type="button" onclick="closeUserModal()" class="px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-100 rounded-xl font-medium">Cancelar</button>
-          <button type="submit" class="px-4 py-1.5 text-xs bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-semibold shadow-sm">Salvar Credencial</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL DE EDIÇÃO E REGISTO DE MEMBROS -->
-  <div id="editModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden p-4 sm:p-5">
-      
-      <div class="pb-3 border-b border-slate-100 flex items-center justify-between">
-        <div>
-          <h3 id="modalHeading" class="font-bold text-slate-900 text-sm">Alterar Registo</h3>
-          <p class="text-[10px] text-slate-400">Atualize as informações desejadas</p>
-        </div>
-        <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-
-      <form id="editForm" onsubmit="handleSaveRecord(event)" class="mt-3 space-y-3">
-        <input type="hidden" id="recordId" value="">
-
-        <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Nome Completo</label>
-          <input type="text" id="fieldName" required placeholder="Digite o nome" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white">
-        </div>
-
-        <div class="grid grid-cols-2 gap-2.5">
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Telefone</label>
-            <input type="text" id="fieldPhone" required placeholder="(81) 99999-0000" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Função / Cargo</label>
-            <input type="text" id="fieldRole" required placeholder="Ex: Líder" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white">
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-2.5">
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Distrito / Setor</label>
-            <input type="text" id="fieldRegion" required placeholder="Ex: Zona Sul" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Chefia Direta</label>
-            <input type="text" id="fieldLeader" required placeholder="Ex: Líder direto" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 focus:bg-white">
-          </div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Cargo / Responsabilidade</label>
+          <input type="text" id="userFormRole" required placeholder="Ex: Coordenador Regional / Ativista de Bairro" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white">
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Estado</label>
-          <select id="fieldStatus" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-600 cursor-pointer">
-            <option value="Ativo">Ativo</option>
-            <option value="Confirmado">Confirmado</option>
-            <option value="Pendente">Pendente</option>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Escopo de Visão (Isolamento de Números)</label>
+          <select id="userFormScope" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-emerald-600 cursor-pointer">
+            <option value="admin">Acesso Total (Candidato - Vê Todos os Números)</option>
+            <option value="regional1">Regional (Coordenador - Vê Apenas Sua Zona)</option>
+            <option value="regional2">Comunitário (Ativista - Vê Apenas Sua Causa/Bairro)</option>
           </select>
         </div>
 
         <div class="pt-2 border-t border-slate-100 flex justify-end gap-2">
-          <button type="button" onclick="closeEditModal()" class="px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-100 rounded-xl font-medium">Cancelar</button>
-          <button type="submit" class="px-4 py-1.5 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-sm">Guardar</button>
+          <button type="button" onclick="closeUserModal()" class="px-3.5 py-2 text-xs text-slate-600 hover:bg-slate-100 rounded-xl font-bold">Cancelar</button>
+          <button type="submit" class="px-4 py-2 text-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-sm">Salvar Credencial</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- JAVASCRIPT DINÂMICO COM LOCALSTORAGE E GESTÃO DE SENHAS -->
+  <!-- MODAL DE CADASTRO MANUAL -->
+  <div id="editModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden p-5 sm:p-6">
+      
+      <div class="pb-3 border-b border-slate-100 flex items-center justify-between">
+        <div>
+          <h3 id="modalHeading" class="font-black text-slate-900 text-sm">Registrar Novo Apoiador</h3>
+          <p class="text-[10px] text-slate-400">Preencha os dados de campo</p>
+        </div>
+        <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="editForm" onsubmit="handleSaveRecord(event)" class="mt-4 space-y-3.5">
+        <input type="hidden" id="recordId" value="">
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nome Completo</label>
+          <input type="text" id="fieldName" required placeholder="Digite o nome" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">WhatsApp</label>
+            <input type="text" id="fieldPhone" required placeholder="(81) 99999-0000" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Papel</label>
+            <select id="fieldRole" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-emerald-600">
+              <option value="Apoiador / Voluntário">Apoiador / Voluntário</option>
+              <option value="Equipe de Mini-Projeto">Equipe de Mini-Projeto</option>
+              <option value="Liderança / Ativista de Bairro">Liderança / Ativista</option>
+              <option value="Coordenação Regional">Coordenação Regional</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Bairro</label>
+            <input type="text" id="fieldRegion" required placeholder="Ex: Várzea / Cordeiro" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Líder Direto</label>
+            <input type="text" id="fieldLeader" required placeholder="Ex: Dona Maria da Várzea" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Causa</label>
+          <select id="fieldCause" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-emerald-600">
+            <option value="Causa Animal (100 Gatos)">🐾 Causa Animal (100 Gatos)</option>
+            <option value="Ação Social & Sopão">🍲 Ação Social & Sopão</option>
+            <option value="Pão Nosso & Fubá">🍞 Pão Nosso & Fubá</option>
+            <option value="Cultura & Dança">🎭 Cultura, Dança & Teatro</option>
+            <option value="Meio Ambiente & Praças">🌱 Meio Ambiente & Limpeza</option>
+            <option value="Saúde nos Bairros">🩺 Saúde Comunitária</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Doação ou Recurso (opcional)</label>
+          <input type="text" id="fieldDonation" placeholder="Ex: 5kg de Fubá / Ração / Voluntariado" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white">
+        </div>
+
+        <div class="pt-2 border-t border-slate-100 flex justify-end gap-2">
+          <button type="button" onclick="closeEditModal()" class="px-3.5 py-2 text-xs text-slate-600 hover:bg-slate-100 rounded-xl font-bold">Cancelar</button>
+          <button type="submit" class="px-4 py-2 text-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-sm">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT DINÂMICO COM MÉTRICAS 100% REAIS E ISOLADAS POR ESCOPO -->
   <script>
+    // Usuários cadastrados
     const defaultUsers = [
-      { user: "marcos.alencar", pass: "pastor2026", name: "Pr. Marcos Alencar", role: "Presidente da Associação", scope: "admin", mode: "church" },
-      { user: "arthur.vinicius", pass: "eleicoes2026", name: "Dr. Arthur Vinicius", role: "Candidato Majoritário", scope: "admin", mode: "election" },
-      { user: "thiago.moreira", pass: "distrito1", name: "Pr. Thiago Moreira", role: "Pastor Distrital (Norte)", scope: "regional1", mode: "church" },
-      { user: "samuel.ribeiro", pass: "distrito2", name: "Pr. Samuel Ribeiro", role: "Pastor Distrital (Sul)", scope: "regional2", mode: "church" },
-      { user: "helena.ramos", pass: "campanha1", name: "Profª Helena Ramos", role: "Coord. Regional Zona Norte", scope: "regional1", mode: "election" },
-      { user: "jorge.farmacia", pass: "campanha2", name: "Jorge da Farmácia", role: "Coord. Regional Zona Sul", scope: "regional2", mode: "election" },
-      { user: "admin", pass: "admin123", name: "Administrador Central", role: "Comando Geral", scope: "admin", mode: "all" }
+      { user: "arthur.vinicius", pass: "eleicoes2026", name: "Dr. Arthur Vinicius", role: "Comando Geral", scope: "admin" },
+      { user: "helena.ramos", pass: "campanha1", name: "Profª Helena Ramos", role: "Coord. Regional Zona Norte", scope: "regional1" },
+      { user: "jorge.farmacia", pass: "campanha2", name: "Jorge da Farmácia", role: "Coord. Regional Zona Sul", scope: "regional1_sul" },
+      { user: "maria.varzea", pass: "varzea2026", name: "Dona Maria da Várzea", role: "Ativista Causa Animal", scope: "regional2" },
+      { user: "marcos.social", pass: "sopao2026", name: "Marcos Líder Social", role: "Ativista Ação Social", scope: "regional2_sul" }
     ];
 
-    // Carrega usuários do LocalStorage ou usa padrão
     function getStoredUsers() {
-      const stored = localStorage.getItem('gestao_system_users');
+      const stored = localStorage.getItem('mobiliza_system_users_v2');
       if (stored) {
         try { return JSON.parse(stored); } catch(e) {}
       }
@@ -642,78 +822,66 @@
     }
 
     function saveStoredUsers(users) {
-      localStorage.setItem('gestao_system_users', JSON.stringify(users));
+      localStorage.setItem('mobiliza_system_users_v2', JSON.stringify(users));
     }
 
     let systemUsers = getStoredUsers();
     let currentSessionUser = null;
-    let systemMode = 'church';
     let currentScope = 'admin';
     let activeTab = 'visaoGeral';
+    let activeCauseFilter = null;
 
-    let churchDatabase = [
-      { id: 1, name: "Pr. Marcos Alencar", role: "Presidente da Associação", phone: "(81) 99111-0001", region: "Associação Geral", leader: "Nível de Comando", status: "Ativo", scope: "admin", badgeColor: "purple" },
-      { id: 2, name: "Pr. Carlos Eduardo", role: "Diretor Departamental", phone: "(81) 99111-0002", region: "Ministério Pessoal", leader: "Pr. Marcos Alencar", status: "Ativo", scope: "admin", badgeColor: "blue" },
-      { id: 3, name: "Pr. Fernando Dias", role: "Diretor Departamental", phone: "(81) 99111-0003", region: "Evangelismo & Jovens", leader: "Pr. Marcos Alencar", status: "Ativo", scope: "admin", badgeColor: "blue" },
-      { id: 4, name: "Pr. Samuel Ribeiro", role: "Pastor Distrital", phone: "(81) 99222-0010", region: "Distrito Sul", leader: "Pr. Carlos Eduardo", status: "Ativo", scope: "regional2", badgeColor: "indigo" },
-      { id: 5, name: "Pr. Thiago Moreira", role: "Pastor Distrital", phone: "(81) 99222-0020", region: "Distrito Norte", leader: "Pr. Fernando Dias", status: "Ativo", scope: "regional1", badgeColor: "indigo" },
-      { id: 6, name: "Ancião Paulo Souza", role: "Primeiro Ancião / Diretor", phone: "(81) 99333-1001", region: "Distrito Sul", leader: "Pr. Samuel Ribeiro", status: "Ativo", scope: "regional2", badgeColor: "amber" },
-      { id: 7, name: "Ancião Davi Mendes", role: "Primeiro Ancião / Diretor", phone: "(81) 99333-1002", region: "Distrito Norte", leader: "Pr. Thiago Moreira", status: "Ativo", scope: "regional1", badgeColor: "amber" },
-      { id: 8, name: "Mariana Costa", role: "Membro Ativo", phone: "(81) 99444-2001", region: "Distrito Sul", leader: "Ancião Paulo Souza", status: "Ativo", scope: "regional2", badgeColor: "slate" },
-      { id: 9, name: "Lucas Fernandes", role: "Membro Ativo", phone: "(81) 99444-2002", region: "Distrito Sul", leader: "Ancião Paulo Souza", status: "Ativo", scope: "regional2", badgeColor: "slate" },
-      { id: 10, name: "Beatriz Oliveira", role: "Membro Ativo", phone: "(81) 99444-2003", region: "Distrito Norte", leader: "Ancião Davi Mendes", status: "Ativo", scope: "regional1", badgeColor: "slate" },
-      { id: 11, name: "LISANDRO VINICIOS DA SILVA", role: "Primeiro Ancião / Diretor", phone: "81991781052", region: "Zona Norte", leader: "Lucas Fernandes", status: "Ativo", scope: "regional1", badgeColor: "amber" }
+    // Catálogo Oficial de Causas com Cores e Ícones Grandes
+    const causesCatalog = [
+      { id: "animal", name: "Causa Animal (100 Gatos)", shortDesc: "Acolhimento, vacina e castração na Várzea", leader: "Dona Maria da Várzea", icon: "fa-paw", bgGradient: "from-amber-500 to-orange-500", lightBg: "bg-amber-50 text-amber-700", border: "border-amber-200", defaultScope: "regional2" },
+      { id: "paonosso", name: "Pão Nosso & Fubá", shortDesc: "Arrecadação de fubá, pães e cestas na periferia", leader: "Equipe Pão Nosso", icon: "fa-bread-slice", bgGradient: "from-orange-500 to-amber-600", lightBg: "bg-orange-50 text-orange-700", border: "border-orange-200", defaultScope: "regional2" },
+      { id: "cultura", name: "Cultura & Dança", shortDesc: "Oficinas de teatro e dança para jovens na Várzea", leader: "Coletivo Várzea Viva", icon: "fa-masks-theater", bgGradient: "from-purple-600 to-indigo-600", lightBg: "bg-purple-50 text-purple-700", border: "border-purple-200", defaultScope: "regional2" },
+      { id: "meioambiente", name: "Meio Ambiente & Praças", shortDesc: "Mutirões de limpeza e mudas de árvores", leader: "Profª Helena Ramos", icon: "fa-tree", bgGradient: "from-emerald-600 to-teal-600", lightBg: "bg-emerald-50 text-emerald-700", border: "border-emerald-200", defaultScope: "regional1" },
+      { id: "sopao", name: "Ação Social & Sopão", shortDesc: "Alimentos preparados para pessoas em vulnerabilidade", leader: "Marcos Líder Social", icon: "fa-bowl-food", bgGradient: "from-rose-500 to-red-600", lightBg: "bg-rose-50 text-rose-700", border: "border-rose-200", defaultScope: "regional2_sul" },
+      { id: "saude", name: "Saúde nos Bairros", shortDesc: "Aferição de pressão e apoio preventivo comunitário", leader: "Jorge da Farmácia", icon: "fa-heart-pulse", bgGradient: "from-blue-600 to-cyan-600", lightBg: "bg-blue-50 text-blue-700", border: "border-blue-200", defaultScope: "regional1_sul" }
     ];
 
-    let electionDatabase = [
-      { id: 101, name: "Dr. Arthur Vinicius", role: "Candidato Majoritário", phone: "(81) 98111-1000", region: "Comitê Central", leader: "Nível de Comando", status: "Ativo", scope: "admin", badgeColor: "purple" },
-      { id: 102, name: "Ricardo Albuquerque", role: "Coordenação Geral de Campanha", phone: "(81) 98111-2000", region: "Estratégia Geral", leader: "Dr. Arthur Vinicius", status: "Ativo", scope: "admin", badgeColor: "emerald" },
-      { id: 103, name: "Valéria Santos", role: "Coordenação Geral de Campanha", phone: "(81) 98111-3000", region: "Mobilização Comunitária", leader: "Dr. Arthur Vinicius", status: "Ativo", scope: "admin", badgeColor: "emerald" },
-      { id: 104, name: "Jorge da Farmácia", role: "Coordenador Regional / Bairro", phone: "(81) 98222-4001", region: "Zona Sul", leader: "Ricardo Albuquerque", status: "Ativo", scope: "regional2", badgeColor: "blue" },
-      { id: 105, name: "Profª Helena Ramos", role: "Coordenador Regional / Bairro", phone: "(81) 98222-4002", region: "Zona Norte", leader: "Valéria Santos", status: "Ativo", scope: "regional1", badgeColor: "blue" },
-      { id: 106, name: "Marcos Líder Comunitário", role: "Liderança de Rua / Cabo", phone: "(81) 98333-5001", region: "Zona Sul", leader: "Jorge da Farmácia", status: "Ativo", scope: "regional2", badgeColor: "amber" },
-      { id: 107, name: "Dona Neide Morro", role: "Liderança de Rua / Cabo", phone: "(81) 98333-5002", region: "Zona Norte", leader: "Profª Helena Ramos", status: "Ativo", scope: "regional1", badgeColor: "amber" },
-      { id: 108, name: "Carlos Henrique", role: "Eleitor / Voto Confirmado", phone: "(81) 98444-6001", region: "Zona Sul", leader: "Marcos Líder Comunitário", status: "Ativo", scope: "regional2", badgeColor: "slate" },
-      { id: 109, name: "Vanessa Lins", role: "Eleitor / Voto Confirmado", phone: "(81) 98444-6002", region: "Zona Sul", leader: "Marcos Líder Comunitário", status: "Ativo", scope: "regional2", badgeColor: "slate" },
-      { id: 110, name: "João Pedro Silva", role: "Eleitor / Voto Confirmado", phone: "(81) 98444-6003", region: "Zona Norte", leader: "Dona Neide Morro", status: "Ativo", scope: "regional1", badgeColor: "slate" }
+    // BANCO CONCRETO DE 21 PESSOAS REAIS CADASTRADAS (TODOS COM NOME, BAIRRO E CAUSA)
+    let campaignDatabase = [
+      // Comando Geral
+      { id: 1, name: "Dr. Arthur Vinicius", role: "Comando Geral", phone: "(81) 98111-1000", region: "Recife (Geral)", leader: "Comando Geral", cause: "Diretrizes Gerais", donation: "Gestão do Projeto", scope: "admin", badgeColor: "purple" },
+      { id: 2, name: "Gleyson Pedrosa", role: "Coordenação Geral PE", phone: "(81) 98111-2000", region: "Recife (Geral)", leader: "Dr. Arthur Vinicius", cause: "Mobilização Comunitária", donation: "Articulação Geral", scope: "admin", badgeColor: "emerald" },
+
+      // Zona Norte (regional1)
+      { id: 3, name: "Profª Helena Ramos", role: "Coordenação Regional", phone: "(81) 98222-4002", region: "Casa Amarela", leader: "Gleyson Pedrosa", cause: "Meio Ambiente & Praças", donation: "Coordenação Norte", scope: "regional1", badgeColor: "blue" },
+      { id: 4, name: "Beatriz Souza", role: "Apoiador / Voluntário", phone: "(81) 98555-1001", region: "Casa Amarela", leader: "Profª Helena Ramos", cause: "Meio Ambiente & Praças", donation: "15 Mudas de Árvores", scope: "regional1", badgeColor: "emerald" },
+      { id: 5, name: "Fernando Lima", role: "Apoiador / Voluntário", phone: "(81) 98555-1002", region: "Casa Amarela", leader: "Profª Helena Ramos", cause: "Meio Ambiente & Praças", donation: "Sacos & Luvas de Limpeza", scope: "regional1", badgeColor: "emerald" },
+
+      // Núcleo Várzea sob liderança de Dona Maria (regional2)
+      { id: 6, name: "Dona Maria da Várzea", role: "Liderança / Ativista de Bairro", phone: "(81) 98333-5001", region: "Várzea", leader: "Profª Helena Ramos", cause: "Causa Animal (100 Gatos)", donation: "Acolhimento Comunitário", scope: "regional2", badgeColor: "amber" },
+      { id: 7, name: "Equipe Pão Nosso", role: "Equipe de Mini-Projeto", phone: "(81) 98444-1001", region: "Várzea", leader: "Dona Maria da Várzea", cause: "Pão Nosso & Fubá", donation: "Logística de Distribuição", scope: "regional2", badgeColor: "emerald" },
+      { id: 8, name: "Coletivo Várzea Viva", role: "Equipe de Mini-Projeto", phone: "(81) 98444-1002", region: "Várzea", leader: "Dona Maria da Várzea", cause: "Cultura & Dança", donation: "Espaço para Oficinas", scope: "regional2", badgeColor: "purple" },
+      { id: 9, name: "João Pedro Silva", role: "Apoiador / Doador", phone: "(81) 98777-2001", region: "Várzea", leader: "Equipe Pão Nosso", cause: "Pão Nosso & Fubá", donation: "5kg de Fubá", scope: "regional2", badgeColor: "slate" },
+      { id: 10, name: "Tiago Medeiros", role: "Apoiador / Doador", phone: "(81) 98777-2002", region: "Cordeiro", leader: "Equipe Pão Nosso", cause: "Pão Nosso & Fubá", donation: "2kg de Fubá", scope: "regional2", badgeColor: "slate" },
+      { id: 11, name: "Vanessa Lins", role: "Apoiador / Voluntário", phone: "(81) 98777-2003", region: "Várzea", leader: "Dona Maria da Várzea", cause: "Causa Animal (100 Gatos)", donation: "10kg de Ração", scope: "regional2", badgeColor: "slate" },
+      { id: 12, name: "Carla Mendonça", role: "Apoiador / Voluntário", phone: "(81) 98777-2004", region: "Várzea", leader: "Coletivo Várzea Viva", cause: "Cultura & Dança", donation: "Aulas Voluntárias de Teatro", scope: "regional2", badgeColor: "slate" },
+      { id: 13, name: "Rodrigo Alencar", role: "Apoiador / Doador", phone: "(81) 98777-2005", region: "Várzea", leader: "Dona Maria da Várzea", cause: "Causa Animal (100 Gatos)", donation: "Medicamentos Veterinários", scope: "regional2", badgeColor: "slate" },
+
+      // Zona Sul (regional1_sul & regional2_sul)
+      { id: 14, name: "Jorge da Farmácia", role: "Coordenação Regional", phone: "(81) 98222-4001", region: "Afogados", leader: "Gleyson Pedrosa", cause: "Saúde nos Bairros", donation: "Aparelho de Pressão", scope: "regional1_sul", badgeColor: "blue" },
+      { id: 15, name: "Amanda Cavalcanti", role: "Apoiador / Voluntário", phone: "(81) 98888-3001", region: "Afogados", leader: "Jorge da Farmácia", cause: "Saúde nos Bairros", donation: "Aferição Preventiva", scope: "regional1_sul", badgeColor: "emerald" },
+      { id: 16, name: "Roberto Fonseca", role: "Apoiador / Voluntário", phone: "(81) 98888-3002", region: "Imbiribeira", leader: "Jorge da Farmácia", cause: "Saúde nos Bairros", donation: "Tendas Comunitárias", scope: "regional1_sul", badgeColor: "emerald" },
+
+      { id: 17, name: "Marcos Líder Social", role: "Liderança / Ativista de Bairro", phone: "(81) 98333-5002", region: "Boa Viagem", leader: "Jorge da Farmácia", cause: "Ação Social & Sopão", donation: "Cozinha Solidária", scope: "regional2_sul", badgeColor: "amber" },
+      { id: 18, name: "Equipe Sopão da Noite", role: "Equipe de Mini-Projeto", phone: "(81) 98444-2001", region: "Boa Viagem", leader: "Marcos Líder Social", cause: "Ação Social & Sopão", donation: "Preparo de Alimentos", scope: "regional2_sul", badgeColor: "emerald" },
+      { id: 19, name: "Carlos Henrique", role: "Apoiador / Doador", phone: "(81) 98999-4001", region: "Boa Viagem", leader: "Marcos Líder Social", cause: "Ação Social & Sopão", donation: "Botijão de Gás", scope: "regional2_sul", badgeColor: "slate" },
+      { id: 20, name: "Mariana Bastos", role: "Apoiador / Doador", phone: "(81) 98999-4002", region: "Pina", leader: "Equipe Sopão da Noite", cause: "Ação Social & Sopão", donation: "15kg de Legumes & Fubá", scope: "regional2_sul", badgeColor: "slate" },
+      { id: 21, name: "Lucas Albuquerque", role: "Apoiador / Doador", phone: "(81) 98999-4003", region: "Boa Viagem", leader: "Marcos Líder Social", cause: "Ação Social & Sopão", donation: "Descartáveis & Copos", scope: "regional2_sul", badgeColor: "slate" }
     ];
 
-    const churchGoals = [
-      { name: "Associação Geral", sub: "1 liderança registada", pct: 95, color: "emerald" },
-      { name: "Ministério Pessoal", sub: "1 liderança registada", pct: 88, color: "emerald" },
-      { name: "Evangelismo & Jovens", sub: "1 liderança registada", pct: 90, color: "emerald" },
-      { name: "Distrito Sul", sub: "4 pessoas registadas", pct: 93, color: "emerald" },
-      { name: "Distrito Norte", sub: "3 pessoas registadas", pct: 82, color: "amber" },
-      { name: "Zona Norte", sub: "1 pessoa registada", pct: 100, color: "emerald" }
+    // EMPRESAS E ONGS PARCEIRAS (ITEM DO ÁUDIO)
+    const partnersList = [
+      { name: "PetShop Patas & Garras", neighborhood: "Várzea", type: "Empresa Parceira", cause: "Causa Animal (100 Gatos)", support: "Doação de 30kg de Ração", scope: "regional2" },
+      { name: "Panificadora Pão Dourado", neighborhood: "Cordeiro", type: "Comércio Apoiador", cause: "Pão Nosso & Fubá", support: "50 Pães diários", scope: "regional2" },
+      { name: "Associação Comunitária da Várzea", neighborhood: "Várzea", type: "ONG Local", cause: "Cultura & Dança", support: "Cedência de auditório", scope: "regional2" },
+      { name: "Mercadinho Compre Bem", neighborhood: "Casa Amarela", type: "Comércio Apoiador", cause: "Meio Ambiente & Praças", support: "Sacos de lixo e luvas", scope: "regional1" },
+      { name: "Distribuidora Bom Preço", neighborhood: "Boa Viagem", type: "Empresa Parceira", cause: "Ação Social & Sopão", support: "Legumes e gás", scope: "regional2_sul" }
     ];
-
-    const electionGoals = [
-      { name: "Comitê Central", sub: "1 liderança geral", pct: 98, color: "emerald" },
-      { name: "Estratégia Geral", sub: "1 coordenação geral", pct: 92, color: "emerald" },
-      { name: "Mobilização Comunitária", sub: "1 coordenação de campo", pct: 89, color: "emerald" },
-      { name: "Zona Sul", sub: "4 eleitores/cabos", pct: 94, color: "emerald" },
-      { name: "Zona Norte", sub: "3 eleitores/cabos", pct: 85, color: "amber" }
-    ];
-
-    const levelsChurch = [
-      { role: "Presidente da Associação", count: "1 ativos", icon: "fa-crown text-purple-600" },
-      { role: "Diretor Departamental", count: "2 ativos", icon: "fa-briefcase text-blue-600" },
-      { role: "Pastor Distrital", count: "2 ativos", icon: "fa-user-tie text-indigo-600" },
-      { role: "Primeiro Ancião / Diretor", count: "3 ativos", icon: "fa-person-chalkboard text-amber-600" },
-      { role: "Membro Ativo", count: "3 ativos", icon: "fa-user text-slate-600" }
-    ];
-
-    const levelsElection = [
-      { role: "Candidato Majoritário", count: "1 ativos", icon: "fa-crown text-purple-600" },
-      { role: "Coordenação Geral", count: "2 ativos", icon: "fa-briefcase text-blue-600" },
-      { role: "Coordenador Regional", count: "2 ativos", icon: "fa-user-tie text-indigo-600" },
-      { role: "Liderança de Rua / Cabo", count: "2 ativos", icon: "fa-person-chalkboard text-amber-600" },
-      { role: "Eleitor / Voto Confirmado", count: "3 ativos", icon: "fa-user text-slate-600" }
-    ];
-
-    function getCurrentDB() {
-      return systemMode === 'church' ? churchDatabase : electionDatabase;
-    }
 
     function toggleMobileMenu() {
       const menu = document.getElementById('mobileMenu');
@@ -725,27 +893,29 @@
       switchTab(tabId);
     }
 
+    function quickFillLogin(u, p) {
+      document.getElementById('loginUser').value = u;
+      document.getElementById('loginPass').value = p;
+    }
+
     function handleLogin(e) {
       e.preventDefault();
-      const u = document.getElementById('loginUser').value.trim();
+      const u = document.getElementById('loginUser').value.trim().toLowerCase();
       const p = document.getElementById('loginPass').value.trim();
       
       systemUsers = getStoredUsers();
-      const match = systemUsers.find(item => item.user === u && item.pass === p);
+      const match = systemUsers.find(item => item.user.toLowerCase() === u && item.pass === p);
 
       if (match) {
         currentSessionUser = match;
         currentScope = match.scope;
-        if (match.mode !== 'all') {
-          setMode(match.mode);
-        }
-        // Garante que o escopo permanece o do utilizador logado
-        currentScope = match.scope;
+
         document.getElementById('loginOverlay').classList.add('hidden');
         document.getElementById('loginAlert').classList.add('hidden');
         document.getElementById('loggedUserName').innerText = match.name;
         document.getElementById('loggedUserRole').innerText = match.role;
         document.getElementById('mobileLoggedUser').innerText = match.name;
+        
         updateScopeStatusUI();
         refreshAllViews();
       } else {
@@ -754,21 +924,28 @@
     }
 
     function handleLogout() {
-      if (confirm("Deseja sair da sua conta?")) {
+      if (confirm("Deseja sair do painel?")) {
         document.getElementById('loginOverlay').classList.remove('hidden');
         document.getElementById('loginPass').value = '';
       }
     }
 
     function switchTab(tabId) {
+      // Trava de segurança: somente admin geral pode acessar a gestão de senhas
+      if (tabId === 'usuarios' && currentScope !== 'admin') {
+        alert("Acesso restrito: Somente a Gestão Geral pode criar ou gerenciar senhas do sistema.");
+        return;
+      }
+
       activeTab = tabId;
       document.getElementById('tabContentVisaoGeral').classList.add('hidden');
+      document.getElementById('tabContentCausas').classList.add('hidden');
       document.getElementById('tabContentOrganograma').classList.add('hidden');
       document.getElementById('tabContentMembros').classList.add('hidden');
-      document.getElementById('tabContentMetas').classList.add('hidden');
+      document.getElementById('tabContentFiliacao').classList.add('hidden');
       document.getElementById('tabContentUsuarios').classList.add('hidden');
 
-      const tabs = ['visaoGeral', 'organograma', 'membros', 'metas', 'usuarios'];
+      const tabs = ['visaoGeral', 'causas', 'organograma', 'membros', 'filiacao', 'usuarios'];
       tabs.forEach(t => {
         const btn = document.getElementById(`nav${t.charAt(0).toUpperCase() + t.slice(1)}`);
         if (btn) {
@@ -778,10 +955,14 @@
 
       const activeBtn = document.getElementById(`nav${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`);
       if (activeBtn) {
-        activeBtn.className = "w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-blue-600 text-white transition shadow-sm";
+        activeBtn.className = "w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-emerald-600 text-white transition shadow-sm";
       }
 
       if (tabId === 'visaoGeral') document.getElementById('tabContentVisaoGeral').classList.remove('hidden');
+      if (tabId === 'causas') {
+        document.getElementById('tabContentCausas').classList.remove('hidden');
+        renderCausesFullGrid();
+      }
       if (tabId === 'organograma') {
         document.getElementById('tabContentOrganograma').classList.remove('hidden');
         renderOrganogramaTree();
@@ -790,9 +971,9 @@
         document.getElementById('tabContentMembros').classList.remove('hidden');
         renderMembersTable();
       }
-      if (tabId === 'metas') {
-        document.getElementById('tabContentMetas').classList.remove('hidden');
-        renderMetasCards();
+      if (tabId === 'filiacao') {
+        document.getElementById('tabContentFiliacao').classList.remove('hidden');
+        updateAffiliateLinkUI();
       }
       if (tabId === 'usuarios') {
         document.getElementById('tabContentUsuarios').classList.remove('hidden');
@@ -800,158 +981,9 @@
       }
     }
 
-    function setMode(mode) {
-      // Bloqueia alternar de modo se o utilizador logado não tiver permissão para ambos
-      if (currentSessionUser && currentSessionUser.mode !== 'all' && currentSessionUser.mode !== mode) {
-        alert("Acesso restrito: Sua conta possui permissão apenas para o modo " + (currentSessionUser.mode === 'church' ? "Adventista" : "Campanha") + ".");
-        return;
-      }
-
-      systemMode = mode;
-      const selectAccess = document.getElementById('accessLevelSelect');
-
-      if (mode === 'church') {
-        document.getElementById('btnChurchMode').className = "flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 shadow-sm flex items-center justify-center gap-1.5 transition";
-        document.getElementById('btnElectionMode').className = "flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center justify-center gap-1.5 transition";
-        document.getElementById('sideBrandTitle').innerText = "GESTÃO ADVENTISTA";
-        document.getElementById('sideBrandSub').innerText = "Associação / Campo Local";
-        document.getElementById('mobileBrandTitle').innerText = "GESTÃO ADVENTISTA";
-        document.getElementById('mobileBrandSub').innerText = "Associação / Campo Local";
-        document.getElementById('sideLogoIcon').innerHTML = `<i class="fa-solid fa-church"></i>`;
-        document.getElementById('mobileLogoIcon').innerHTML = `<i class="fa-solid fa-church"></i>`;
-        document.getElementById('navMembrosLabel').innerText = "Gestão de Membros";
-        document.querySelectorAll('.mobileMembrosText').forEach(el => el.innerText = "Gestão de Membros");
-        document.getElementById('btnTopNew').innerText = "Novo Membro";
-        
-        document.getElementById('bannerTag').innerText = "PAINEL DE MOBILIZAÇÃO E GESTÃO";
-        document.getElementById('bannerTitle').innerText = "Painel de Gestão da Associação";
-        document.getElementById('bannerSubtitle').innerText = "Estrutura eclesiástica: Presidência, Departamentos, Pastores Distritais, Anciãos e Membresia.";
-        document.getElementById('bannerWatermark').className = "fa-solid fa-church";
-
-        document.getElementById('cardLabel1').innerText = "TOTAL MEMBROS";
-        document.getElementById('cardVal1').innerText = "11";
-        document.getElementById('cardIcon1').className = "fa-solid fa-address-book";
-        
-        document.getElementById('cardLabel2').innerText = "LIDERANÇAS";
-        document.getElementById('cardVal2').innerText = "5";
-        document.getElementById('cardSub2').innerText = "Em campo";
-        document.getElementById('cardIcon2').className = "fa-solid fa-user-tie";
-
-        document.getElementById('cardLabel3').innerText = "DISTRITOS";
-        document.getElementById('cardVal3').innerText = "6";
-        document.getElementById('cardIcon3').className = "fa-solid fa-map-location-dot";
-
-        document.getElementById('cardLabel4').innerText = "META GLOBAL";
-        document.getElementById('cardVal4').innerText = "90%";
-        document.getElementById('cardIcon4').className = "fa-solid fa-chart-line";
-
-        if (!currentSessionUser) {
-          document.getElementById('loggedUserName').innerText = "Pr. Marcos Alencar";
-          document.getElementById('loggedUserRole').innerText = "Presidente da Associação";
-          document.getElementById('mobileLoggedUser').innerText = "Pr. Marcos Alencar";
-        }
-
-        selectAccess.innerHTML = `
-          <option value="admin">👑 Visão Geral (Presidente)</option>
-          <option value="regional1">📍 Pr. Distrital Norte (Thiago)</option>
-          <option value="regional2">📍 Pr. Distrital Sul (Samuel)</option>
-        `;
-        document.getElementById('treeHeadingTitle').innerText = "Estrutura Organizacional Hierárquica";
-      } else {
-        document.getElementById('btnElectionMode').className = "flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm flex items-center justify-center gap-1.5 transition";
-        document.getElementById('btnChurchMode').className = "flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center justify-center gap-1.5 transition";
-        document.getElementById('sideBrandTitle').innerText = "MOBILIZA ELEITORAL";
-        document.getElementById('sideBrandSub').innerText = "Comitê Central de Campanha";
-        document.getElementById('mobileBrandTitle').innerText = "MOBILIZA ELEITORAL";
-        document.getElementById('mobileBrandSub').innerText = "Comitê Central de Campanha";
-        document.getElementById('sideLogoIcon').innerHTML = `<i class="fa-solid fa-landmark"></i>`;
-        document.getElementById('mobileLogoIcon').innerHTML = `<i class="fa-solid fa-landmark"></i>`;
-        document.getElementById('navMembrosLabel').innerText = "Gestão de Eleitores";
-        document.querySelectorAll('.mobileMembrosText').forEach(el => el.innerText = "Gestão de Eleitores");
-        document.getElementById('btnTopNew').innerText = "Novo Eleitor";
-
-        document.getElementById('bannerTag').innerText = "CENTRAL DE MOBILIZAÇÃO E VOTOS";
-        document.getElementById('bannerTitle').innerText = "Painel de Gestão de Lideranças";
-        document.getElementById('bannerSubtitle').innerText = "Estrutura de Campanha: Candidato, Coordenação Geral, Coordenadores Regionais, Cabos Eleitorais e Eleitores.";
-        document.getElementById('bannerWatermark').className = "fa-solid fa-landmark";
-
-        document.getElementById('cardLabel1').innerText = "TOTAL ELEITORES";
-        document.getElementById('cardVal1').innerText = "10";
-        document.getElementById('cardIcon1').className = "fa-solid fa-check-to-slot";
-
-        document.getElementById('cardLabel2').innerText = "COORDENADORES";
-        document.getElementById('cardVal2').innerText = "6";
-        document.getElementById('cardSub2').innerText = "Mobilizando rua";
-        document.getElementById('cardIcon2').className = "fa-solid fa-bullhorn";
-
-        document.getElementById('cardLabel3').innerText = "ZONAS";
-        document.getElementById('cardVal3').innerText = "5";
-        document.getElementById('cardIcon3').className = "fa-solid fa-map-location-dot";
-
-        document.getElementById('cardLabel4').innerText = "META CAMPANHA";
-        document.getElementById('cardVal4').innerText = "88%";
-        document.getElementById('cardIcon4').className = "fa-solid fa-bullseye";
-
-        if (!currentSessionUser) {
-          document.getElementById('loggedUserName').innerText = "Dr. Arthur Vinicius";
-          document.getElementById('loggedUserRole').innerText = "Candidato Majoritário";
-          document.getElementById('mobileLoggedUser').innerText = "Dr. Arthur Vinicius";
-        }
-
-        selectAccess.innerHTML = `
-          <option value="admin">👑 Visão Geral (Candidato)</option>
-          <option value="regional1">📍 Coord. Zona Norte (Helena)</option>
-          <option value="regional2">📍 Coord. Zona Sul (Jorge)</option>
-        `;
-        document.getElementById('treeHeadingTitle').innerText = "Organograma de Lideranças Eleitorais";
-      }
-
-      // Se houver usuário logado, mantém o escopo e o nome dele NUNCA voltando para admin sozinho!
-      if (currentSessionUser) {
-        currentScope = currentSessionUser.scope;
-        document.getElementById('loggedUserName').innerText = currentSessionUser.name;
-        document.getElementById('loggedUserRole').innerText = currentSessionUser.role;
-        document.getElementById('mobileLoggedUser').innerText = currentSessionUser.name;
-      } else {
-        currentScope = 'admin';
-      }
-
-      if (selectAccess) {
-        selectAccess.value = currentScope;
-      }
-
-      updateScopeStatusUI();
-      populateSectorFilter();
-      refreshAllViews();
-    }
-
-    function populateSectorFilter() {
-      const select = document.getElementById('memberSectorFilter');
-      if (systemMode === 'church') {
-        select.innerHTML = `
-          <option value="all">Todos Setores (6)</option>
-          <option value="Associação Geral">Associação Geral</option>
-          <option value="Ministério Pessoal">Ministério Pessoal</option>
-          <option value="Evangelismo & Jovens">Evangelismo & Jovens</option>
-          <option value="Distrito Sul">Distrito Sul</option>
-          <option value="Distrito Norte">Distrito Norte</option>
-          <option value="Zona Norte">Zona Norte</option>
-        `;
-      } else {
-        select.innerHTML = `
-          <option value="all">Todos Setores (5)</option>
-          <option value="Comitê Central">Comitê Central</option>
-          <option value="Estratégia Geral">Estratégia Geral</option>
-          <option value="Mobilização Comunitária">Mobilização Comunitária</option>
-          <option value="Zona Sul">Zona Sul</option>
-          <option value="Zona Norte">Zona Norte</option>
-        `;
-      }
-    }
-
     function simulateAccessChange(val) {
       if (currentSessionUser && currentSessionUser.scope !== 'admin') {
-        alert("Apenas administradores podem simular outros perfis.");
+        alert("Apenas a Gestão Geral pode simular outras visões de acesso.");
         document.getElementById('accessLevelSelect').value = currentScope;
         return;
       }
@@ -968,275 +1000,385 @@
       const mobileNavUsuarios = document.getElementById('mobileNavUsuarios');
       const selectAccess = document.getElementById('accessLevelSelect');
 
-      if (selectAccess) {
-        selectAccess.value = currentScope;
-      }
+      if (selectAccess) selectAccess.value = currentScope;
 
       if (currentScope === 'admin') {
-        pill.innerText = "NÍVEL 1";
-        desc.innerText = "Visão consolidada do campo (Acesso Geral).";
+        pill.innerText = "VISÃO DO CANDIDATO";
+        pill.className = "bg-purple-100 text-purple-800 font-bold px-2 py-0.5 rounded text-[10px] uppercase shrink-0";
+        desc.innerText = "Acesso Total: Exibindo números consolidados de toda a cidade (Arthur Vinicius).";
         if (btnCriarSenha) btnCriarSenha.classList.remove('hidden');
         if (navUsuarios) navUsuarios.classList.remove('hidden');
         if (mobileNavUsuarios) mobileNavUsuarios.classList.remove('hidden');
-      } else {
-        if (currentScope === 'regional1') {
-          pill.innerText = "NÍVEL 2 - NORTE";
-          desc.innerText = "Exibindo apenas dados sob liderança da Zona Norte.";
-        } else {
-          pill.innerText = "NÍVEL 2 - SUL";
-          desc.innerText = "Exibindo apenas dados sob liderança da Zona Sul.";
-        }
-        // Oculta completamente botões e abas de senhas para não-admin
+      } else if (currentScope === 'regional1' || currentScope === 'regional1_sul') {
+        pill.innerText = "VISÃO DA COORDENAÇÃO REGIONAL";
+        pill.className = "bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded text-[10px] uppercase shrink-0";
+        desc.innerText = "Acesso Limitado: Exibindo estritamente ativistas, doações e pessoas da Zona Norte.";
         if (btnCriarSenha) btnCriarSenha.classList.add('hidden');
         if (navUsuarios) navUsuarios.classList.add('hidden');
         if (mobileNavUsuarios) mobileNavUsuarios.classList.add('hidden');
-        
-        // Se a pessoa estiver na aba de usuários, volta para a visão geral
-        if (activeTab === 'usuarios') {
-          switchTab('visaoGeral');
-        }
+        if (activeTab === 'usuarios') switchTab('visaoGeral');
+      } else {
+        pill.innerText = "VISÃO DO ATIVISTA DE BAIRRO";
+        pill.className = "bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded text-[10px] uppercase shrink-0";
+        desc.innerText = "Acesso Restrito: Exibindo apenas apoiadores e doações do seu projeto (Várzea / Causa Animal).";
+        if (btnCriarSenha) btnCriarSenha.classList.add('hidden');
+        if (navUsuarios) navUsuarios.classList.add('hidden');
+        if (mobileNavUsuarios) mobileNavUsuarios.classList.add('hidden');
+        if (activeTab === 'usuarios') switchTab('visaoGeral');
       }
     }
 
+    // FILTRO DE ESCOPO: O CORAÇÃO DO SISTEMA
+    function getScopedRecords() {
+      return campaignDatabase.filter(r => {
+        if (currentScope === 'admin') return true;
+        if (currentScope === 'regional1') {
+          return r.scope === 'regional1' || r.scope === 'regional2';
+        }
+        if (currentScope === 'regional1_sul') {
+          return r.scope === 'regional1_sul' || r.scope === 'regional2_sul';
+        }
+        if (currentScope === 'regional2') {
+          return r.scope === 'regional2';
+        }
+        if (currentScope === 'regional2_sul') {
+          return r.scope === 'regional2_sul';
+        }
+        return false;
+      });
+    }
+
+    function getScopedPartners() {
+      return partnersList.filter(p => {
+        if (currentScope === 'admin') return true;
+        if (currentScope === 'regional1') {
+          return p.scope === 'regional1' || p.scope === 'regional2';
+        }
+        if (currentScope === 'regional1_sul') {
+          return p.scope === 'regional1_sul' || p.scope === 'regional2_sul';
+        }
+        if (currentScope === 'regional2') {
+          return p.scope === 'regional2';
+        }
+        if (currentScope === 'regional2_sul') {
+          return p.scope === 'regional2_sul';
+        }
+        return false;
+      });
+    }
+
+    // CÁLCULO DINÂMICO DOS NÚMEROS DO TOPO CONFORME O ESCOPO
+    function calculateAndRenderMetrics() {
+      const records = getScopedRecords();
+      const partners = getScopedPartners();
+
+      // 1. Total Apoiadores
+      document.getElementById('metricTotalSupporters').innerText = records.length;
+      
+      // 2. Líderes e Ativistas
+      const leadersCount = records.filter(r => r.role.includes("Liderança") || r.role.includes("Coordenação") || r.role.includes("Equipe")).length;
+      document.getElementById('metricLeadersCount').innerText = leadersCount;
+
+      // 3. Causas distintas sob responsabilidade deste usuário
+      const distinctCauses = new Set(records.map(r => r.cause).filter(c => c !== "Diretrizes Gerais" && c !== "Mobilização Comunitária"));
+      document.getElementById('metricCausesCount').innerText = distinctCauses.size;
+
+      // 4. Doações registradas (quantas pessoas doaram recursos)
+      const donationsWithItems = records.filter(r => r.donation && !r.donation.includes("Coordenação") && !r.donation.includes("Gestão") && !r.donation.includes("Articulação")).length;
+      document.getElementById('metricDonationsCount').innerText = donationsWithItems;
+
+      document.getElementById('partnersBadgeCount').innerText = partners.length;
+    }
+
     function refreshAllViews() {
-      renderOverviewLevels();
+      calculateAndRenderMetrics();
+      renderBigCauses();
       renderOverviewTable();
+      renderPartnersList();
+      if (activeTab === 'causas') renderCausesFullGrid();
       if (activeTab === 'organograma') renderOrganogramaTree();
       if (activeTab === 'membros') renderMembersTable();
-      if (activeTab === 'metas') renderMetasCards();
       if (activeTab === 'usuarios') renderUsersTable();
     }
 
-    function renderOverviewLevels() {
-      const container = document.getElementById('hierarchyLevelsContainer');
-      const levels = systemMode === 'church' ? levelsChurch : levelsElection;
-      container.innerHTML = levels.map(l => `
-        <div class="flex items-center justify-between text-xs py-1">
-          <div class="flex items-center space-x-2">
-            <i class="fa-solid ${l.icon} w-3.5 text-center"></i>
-            <span class="font-semibold text-slate-800">${l.role}</span>
+    // CARDS GRANDES DE CAUSAS (VISUAL JOVEM, CATIVANTE E BEM LEGÍVEL)
+    function renderBigCauses() {
+      const container = document.getElementById('bigCausesGrid');
+      const records = getScopedRecords();
+
+      container.innerHTML = causesCatalog.map(c => {
+        // Conta quantas pessoas cadastradas existem especificamente sob esta causa no escopo
+        const countInCause = records.filter(r => r.cause === c.name).length;
+        const isCurrentScopeInterested = currentScope === 'admin' || records.some(r => r.cause === c.name);
+
+        return `
+          <div onclick="filterByCause('${c.name}')" class="big-cause-card ${activeCauseFilter === c.name ? 'active' : ''} ${!isCurrentScopeInterested ? 'opacity-40' : ''} bg-white rounded-3xl p-5 border-2 ${activeCauseFilter === c.name ? 'border-emerald-500' : 'border-slate-100'} shadow-xs hover:border-emerald-300 cursor-pointer flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr ${c.bgGradient} text-white flex items-center justify-center text-2xl shadow-md">
+                  <i class="fa-solid ${c.icon}"></i>
+                </div>
+                <div class="text-right">
+                  <span class="text-xl font-black text-slate-900">${countInCause}</span>
+                  <p class="text-[9px] font-black text-slate-400 uppercase">Apoiadores</p>
+                </div>
+              </div>
+
+              <h3 class="text-base font-black text-slate-900 leading-snug">${c.name}</h3>
+              <p class="text-xs text-slate-500 mt-1">${c.shortDesc}</p>
+            </div>
+
+            <div class="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between">
+              <span class="text-[10px] font-bold text-slate-400 truncate">Líder: ${c.leader}</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black ${c.lightBg}">Ativa</span>
+            </div>
           </div>
-          <span class="text-slate-500 font-medium text-[11px]">${l.count}</span>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
+    function filterByCause(causeName) {
+      if (activeCauseFilter === causeName) {
+        activeCauseFilter = null;
+      } else {
+        activeCauseFilter = causeName;
+      }
+      refreshAllViews();
+    }
+
+    function resetCauseFilter() {
+      activeCauseFilter = null;
+      refreshAllViews();
+    }
+
+    // TABELA RESUMIDA DA VISÃO GERAL
     function renderOverviewTable() {
       const tbody = document.getElementById('overviewTableBody');
-      const db = getCurrentDB();
-      const filtered = db.filter(r => currentScope === 'admin' || r.scope === currentScope).slice(0, 5);
+      const records = getScopedRecords();
+
+      const filtered = records.filter(r => {
+        if (activeCauseFilter && r.cause !== activeCauseFilter) return false;
+        return true;
+      }).slice(0, 6);
+
       tbody.innerHTML = '';
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400 font-bold">Nenhum apoiador registrado sob sua incumbência.</td></tr>`;
+        return;
+      }
 
       filtered.forEach(r => {
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-50/80 transition";
         tr.innerHTML = `
-          <td class="py-2.5 px-3">
-            <p class="font-bold text-slate-900">${r.name}</p>
-            <p class="text-[10px] text-slate-400 font-mono">${r.phone}</p>
+          <td class="py-3 px-3">
+            <p class="font-black text-slate-900 text-xs">${r.name}</p>
+            <p class="text-[10px] text-emerald-700 font-bold mt-0.5"><i class="fa-solid fa-tag text-[9px] mr-1"></i>${r.cause}</p>
           </td>
-          <td class="py-2.5 px-3 text-slate-600">${r.region}</td>
-          <td class="py-2.5 px-3 text-slate-700">${r.leader}</td>
-          <td class="py-2.5 px-3">
-            <span class="inline-flex items-center gap-1 font-semibold text-emerald-700 text-[11px]">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-              ${r.status}
+          <td class="py-3 px-3 text-slate-600 font-semibold">${r.region}</td>
+          <td class="py-3 px-3 text-slate-800 font-bold">${r.leader}</td>
+          <td class="py-3 px-3">
+            <span class="inline-flex items-center gap-1 font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded text-[11px]">
+              <i class="fa-solid fa-gift text-purple-600 text-[10px]"></i>
+              ${r.donation || 'Apoio Comunitário'}
             </span>
           </td>
-          <td class="py-2.5 px-3 text-right">
-            <div class="flex items-center justify-end gap-1.5">
-              <button onclick="openModalForEdit(${r.id})" class="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Editar">
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
-              <button onclick="deleteRecord(${r.id})" class="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition" title="Eliminar">
-                <i class="fa-solid fa-trash-can"></i>
-              </button>
-            </div>
+          <td class="py-3 px-3 text-right">
+            <button onclick="openModalForEdit(${r.id})" class="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg transition" title="Editar">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
           </td>
         `;
         tbody.appendChild(tr);
       });
     }
 
+    // LISTA DE EMPRESAS E ONGS PARCEIRAS (ITEM DO ÁUDIO)
+    function renderPartnersList() {
+      const container = document.getElementById('partnersListContainer');
+      const partners = getScopedPartners();
+      container.innerHTML = '';
+
+      if (partners.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">Nenhuma parceria registrada neste escopo.</p>`;
+        return;
+      }
+
+      container.innerHTML = partners.map(p => `
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-1">
+          <div class="flex items-center justify-between">
+            <h4 class="font-black text-slate-900 text-xs truncate">${p.name}</h4>
+            <span class="px-1.5 py-0.5 bg-teal-100 text-teal-800 font-bold text-[9px] rounded">${p.neighborhood}</span>
+          </div>
+          <p class="text-[11px] text-emerald-700 font-bold">${p.support}</p>
+          <p class="text-[10px] text-slate-400 truncate">${p.cause}</p>
+        </div>
+      `).join('');
+    }
+
+    // RENDERIZAR CAUSAS DETALHADAS (ABA 2)
+    function renderCausesFullGrid() {
+      const grid = document.getElementById('causesFullGrid');
+      const records = getScopedRecords();
+
+      grid.innerHTML = causesCatalog.map(c => {
+        const countInCause = records.filter(r => r.cause === c.name).length;
+        return `
+          <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-2xs hover:shadow-md transition space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr ${c.bgGradient} text-white flex items-center justify-center text-xl shadow-md">
+                <i class="fa-solid ${c.icon}"></i>
+              </div>
+              <span class="bg-emerald-100 text-emerald-800 text-[10px] font-black px-3 py-1 rounded-full uppercase">
+                ${countInCause} Apoiadores
+              </span>
+            </div>
+
+            <div>
+              <h3 class="font-black text-slate-900 text-base leading-snug">${c.name}</h3>
+              <p class="text-xs text-slate-500 mt-1">${c.shortDesc}</p>
+            </div>
+
+            <div class="pt-2.5 border-t border-slate-100 space-y-1 text-xs">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] text-slate-400 font-bold uppercase">Ativista Responsável:</span>
+                <span class="font-bold text-slate-800">${c.leader}</span>
+              </div>
+            </div>
+
+            <button onclick="shareCauseWhatsApp('${c.name}')" class="w-full py-2 bg-slate-50 hover:bg-emerald-50 text-emerald-700 border border-slate-200 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
+              <i class="fa-brands fa-whatsapp text-sm"></i>
+              <span>Convidar pelo WhatsApp</span>
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function shareCauseWhatsApp(causeName) {
+      const link = window.location.href.split('#')[0] + "#filiacao";
+      const text = encodeURIComponent(
+        `Olá! Estou te convidando para apoiar o projeto *${causeName}* com a nossa equipe comunitária.
+
+Cadastre-se e participe pelo link rápido:
+👉 ${link}
+
+Sua ajuda faz toda a diferença!`
+      );
+      window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+    }
+
+    // ORGANOGRAMA EM ÁRVORE (QUEM RESPONDE A QUEM)
     function renderOrganogramaTree() {
       const container = document.getElementById('treeContainer');
-      if (systemMode === 'church') {
-        container.innerHTML = `
-          <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-2xs">
-            <div class="flex items-center space-x-2.5">
-              <div class="w-7 h-7 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-crown"></i></div>
+      container.innerHTML = `
+        <!-- NÍVEL 1: CANDIDATO -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-2xs">
+          <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-sm font-bold shrink-0"><i class="fa-solid fa-crown"></i></div>
+            <div class="truncate">
+              <h4 class="font-black text-slate-900 text-xs truncate">Dr. Arthur Vinicius</h4>
+              <p class="text-[10px] text-slate-500 truncate">Comando Geral &bull; <span class="text-emerald-600 font-bold">Acesso Total a Toda a Rede (21 Cadastrados)</span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tree-branch space-y-3">
+          <!-- NÍVEL 2: COORDENAÇÃO GERAL -->
+          <div class="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-2xs">
+            <div class="flex items-center space-x-3">
+              <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold shrink-0"><i class="fa-solid fa-briefcase"></i></div>
               <div class="truncate">
-                <div class="flex items-center gap-1.5 truncate">
-                  <h4 class="font-bold text-slate-900 text-xs truncate">Pr. Marcos Alencar</h4>
-                  <span class="bg-purple-100 text-purple-700 text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0">Presidente</span>
-                </div>
-                <p class="text-[10px] text-slate-500 mt-0.5 truncate">Associação Geral &bull; <span class="text-blue-600 font-semibold">2 subordinados</span></p>
+                <h4 class="font-black text-slate-900 text-xs truncate">Gleyson Pedrosa</h4>
+                <p class="text-[10px] text-slate-500 truncate">Coordenação Geral PE &bull; <span class="text-emerald-600 font-bold">Articulação Regional</span></p>
               </div>
             </div>
           </div>
 
-          <div class="tree-branch space-y-2.5">
-            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-2xs">
-              <div class="flex items-center space-x-2.5">
-                <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-briefcase"></i></div>
+          <div class="tree-branch space-y-3">
+            <!-- NÍVEL 2 REGIONAL: PROF HELENA -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-2xs">
+              <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold shrink-0"><i class="fa-solid fa-map-location-dot"></i></div>
                 <div class="truncate">
-                  <div class="flex items-center gap-1.5 truncate">
-                    <h4 class="font-bold text-slate-900 text-xs truncate">Pr. Carlos Eduardo</h4>
-                    <span class="bg-blue-100 text-blue-700 text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0">Departamental</span>
-                  </div>
-                  <p class="text-[10px] text-slate-500 mt-0.5 truncate">Ministério Pessoal &bull; <span class="text-blue-600 font-semibold">1 subordinado</span></p>
+                  <h4 class="font-black text-slate-900 text-xs truncate">Profª Helena Ramos</h4>
+                  <p class="text-[10px] text-slate-500 truncate">Coordenação Zona Norte &bull; <span class="text-blue-600 font-bold">Casa Amarela & Várzea</span></p>
                 </div>
               </div>
             </div>
 
-            <div class="tree-branch space-y-2.5">
-              <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-2xs">
-                <div class="flex items-center space-x-2.5">
-                  <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-user-tie"></i></div>
+            <div class="tree-branch space-y-3">
+              <!-- NÍVEL 3 ATIVISTA: DONA MARIA -->
+              <div class="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-2xs">
+                <div class="flex items-center space-x-3">
+                  <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold shrink-0"><i class="fa-solid fa-paw"></i></div>
                   <div class="truncate">
-                    <div class="flex items-center gap-1.5 truncate">
-                      <h4 class="font-bold text-slate-900 text-xs truncate">Pr. Samuel Ribeiro</h4>
-                      <span class="bg-indigo-100 text-indigo-700 text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0">Distrital Sul</span>
-                    </div>
-                    <p class="text-[10px] text-slate-500 mt-0.5 truncate">Distrito Sul &bull; <span class="text-blue-600 font-semibold">1 subordinado</span></p>
+                    <h4 class="font-black text-slate-900 text-xs truncate">Dona Maria da Várzea</h4>
+                    <p class="text-[10px] text-slate-500 truncate">Ativista Local &bull; <span class="text-amber-700 font-bold">Causa Animal (100 Gatos) & Pão Nosso</span></p>
                   </div>
                 </div>
               </div>
 
-              <div class="tree-branch space-y-2.5">
-                <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-2xs">
-                  <div class="flex items-center space-x-2.5">
-                    <div class="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-person-chalkboard"></i></div>
-                    <div class="truncate">
-                      <div class="flex items-center gap-1.5 truncate">
-                        <h4 class="font-bold text-slate-900 text-xs truncate">Ancião Paulo Souza</h4>
-                        <span class="bg-amber-100 text-amber-700 text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0">Primeiro Ancião</span>
-                      </div>
-                      <p class="text-[10px] text-slate-500 mt-0.5 truncate">Distrito Sul &bull; <span class="text-blue-600 font-semibold">2 membros</span></p>
-                    </div>
+              <!-- EQUIPES E VOLUNTÁRIOS -->
+              <div class="tree-branch space-y-2">
+                <div class="bg-white border border-slate-200 rounded-xl p-2.5 shadow-2xs flex items-center justify-between">
+                  <div>
+                    <span class="font-bold text-slate-900 text-xs">🍞 Equipe Pão Nosso & Fubá</span>
+                    <p class="text-[10px] text-slate-400">Mini-Projeto &bull; Arrecadação de Fubá</p>
                   </div>
+                  <span class="bg-emerald-100 text-emerald-800 text-[9px] font-black px-2 py-0.5 rounded">Equipe</span>
                 </div>
 
                 <div class="tree-branch space-y-2">
-                  <div class="bg-white border border-slate-200 rounded-xl p-2.5 shadow-2xs flex items-center justify-between">
-                    <span class="font-bold text-slate-900 text-xs">Mariana Costa</span>
-                    <span class="bg-slate-100 text-slate-600 text-[9px] font-bold px-1.5 py-0.5 rounded">Membro</span>
-                  </div>
-                  <div class="bg-white border border-slate-200 rounded-xl p-2.5 shadow-2xs flex items-center justify-between">
-                    <span class="font-bold text-slate-900 text-xs">Lucas Fernandes</span>
-                    <span class="bg-slate-100 text-slate-600 text-[9px] font-bold px-1.5 py-0.5 rounded">Membro</span>
-                  </div>
-                  <div class="tree-branch space-y-2">
-                    <div class="bg-white border border-slate-200 rounded-xl p-2.5 shadow-2xs flex items-center justify-between">
-                      <span class="font-bold text-slate-900 text-xs">LISANDRO VINICIOS DA SILVA</span>
-                      <span class="bg-amber-100 text-amber-700 text-[9px] font-bold px-1.5 py-0.5 rounded">Primeiro Ancião</span>
+                  <div class="bg-white border border-slate-200 rounded-xl p-2 shadow-2xs flex items-center justify-between">
+                    <div>
+                      <span class="font-bold text-slate-800 text-xs">João Pedro Silva</span>
+                      <p class="text-[9px] text-purple-700 font-bold">Doador de 5kg de Fubá</p>
                     </div>
+                    <span class="bg-slate-100 text-slate-600 text-[9px] font-bold px-1.5 py-0.5 rounded">Apoiador</span>
+                  </div>
+                  <div class="bg-white border border-slate-200 rounded-xl p-2 shadow-2xs flex items-center justify-between">
+                    <div>
+                      <span class="font-bold text-slate-800 text-xs">Tiago Medeiros</span>
+                      <p class="text-[9px] text-purple-700 font-bold">Doador de 2kg de Fubá</p>
+                    </div>
+                    <span class="bg-slate-100 text-slate-600 text-[9px] font-bold px-1.5 py-0.5 rounded">Apoiador</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        `;
-      } else {
-        container.innerHTML = `
-          <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-2xs">
-            <div class="flex items-center space-x-2.5">
-              <div class="w-7 h-7 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-crown"></i></div>
-              <div class="truncate">
-                <div class="flex items-center gap-1.5 truncate">
-                  <h4 class="font-bold text-slate-900 text-xs truncate">Dr. Arthur Vinicius</h4>
-                  <span class="bg-purple-100 text-purple-700 text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0">Candidato</span>
-                </div>
-                <p class="text-[10px] text-slate-500 mt-0.5 truncate">Comitê Central &bull; <span class="text-emerald-600 font-semibold">2 coordenadores</span></p>
-              </div>
-            </div>
-          </div>
-
-          <div class="tree-branch space-y-2.5">
-            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-2xs">
-              <div class="flex items-center space-x-2.5">
-                <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-briefcase"></i></div>
-                <div class="truncate">
-                  <div class="flex items-center gap-1.5 truncate">
-                    <h4 class="font-bold text-slate-900 text-xs truncate">Ricardo Albuquerque</h4>
-                    <span class="bg-emerald-100 text-emerald-700 text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0">Coord. Geral</span>
-                  </div>
-                  <p class="text-[10px] text-slate-500 mt-0.5 truncate">Estratégia Geral &bull; <span class="text-emerald-600 font-semibold">1 coord. regional</span></p>
-                </div>
-              </div>
-            </div>
-
-            <div class="tree-branch space-y-2.5">
-              <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-2xs">
-                <div class="flex items-center space-x-2.5">
-                  <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-user-tie"></i></div>
-                  <div class="truncate">
-                    <div class="flex items-center gap-1.5 truncate">
-                      <h4 class="font-bold text-slate-900 text-xs truncate">Jorge da Farmácia</h4>
-                      <span class="bg-blue-100 text-blue-700 text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0">Coord. Bairro</span>
-                    </div>
-                    <p class="text-[10px] text-slate-500 mt-0.5 truncate">Zona Sul &bull; <span class="text-emerald-600 font-semibold">1 liderança de rua</span></p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="tree-branch space-y-2.5">
-                <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-2xs">
-                  <div class="flex items-center space-x-2.5">
-                    <div class="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-person-chalkboard"></i></div>
-                    <div class="truncate">
-                      <div class="flex items-center gap-1.5 truncate">
-                        <h4 class="font-bold text-slate-900 text-xs truncate">Marcos Líder Comunitário</h4>
-                        <span class="bg-amber-100 text-amber-700 text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0">Líder de Rua</span>
-                      </div>
-                      <p class="text-[10px] text-slate-500 mt-0.5 truncate">Zona Sul &bull; <span class="text-emerald-600 font-semibold">2 eleitores confirmados</span></p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="tree-branch space-y-2">
-                  <div class="bg-white border border-slate-200 rounded-xl p-2.5 shadow-2xs flex items-center justify-between">
-                    <span class="font-bold text-slate-900 text-xs">Carlos Henrique</span>
-                    <span class="bg-slate-100 text-slate-600 text-[9px] font-bold px-1.5 py-0.5 rounded">Eleitor</span>
-                  </div>
-                  <div class="bg-white border border-slate-200 rounded-xl p-2.5 shadow-2xs flex items-center justify-between">
-                    <span class="font-bold text-slate-900 text-xs">Vanessa Lins</span>
-                    <span class="bg-slate-100 text-slate-600 text-[9px] font-bold px-1.5 py-0.5 rounded">Eleitor</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      }
+        </div>
+      `;
     }
 
     function expandAllTree(expand) {
-      const branches = document.querySelectorAll('.tree-branch');
-      branches.forEach(b => {
+      document.querySelectorAll('.tree-branch').forEach(b => {
         b.style.display = expand ? 'block' : 'none';
       });
     }
 
+    // TABELA COMPLETA DE APOIADORES
     function renderMembersTable() {
       const tbody = document.getElementById('fullMembersTableBody');
       const search = (document.getElementById('memberSearchInput').value || '').toLowerCase();
       const sectorFilter = document.getElementById('memberSectorFilter').value;
-      const db = getCurrentDB();
-      tbody.innerHTML = '';
+      const records = getScopedRecords();
 
-      const filtered = db.filter(item => {
-        if (currentScope !== 'admin' && item.scope !== currentScope) return false;
-        if (sectorFilter !== 'all' && item.region !== sectorFilter) return false;
-        return item.name.toLowerCase().includes(search) ||
-               item.phone.includes(search) ||
-               item.leader.toLowerCase().includes(search) ||
-               item.role.toLowerCase().includes(search) ||
-               item.region.toLowerCase().includes(search);
+      const filtered = records.filter(r => {
+        if (sectorFilter !== 'all' && r.region !== sectorFilter) return false;
+        if (activeCauseFilter && r.cause !== activeCauseFilter) return false;
+        return r.name.toLowerCase().includes(search) ||
+               r.phone.includes(search) ||
+               r.leader.toLowerCase().includes(search) ||
+               r.role.toLowerCase().includes(search) ||
+               r.cause.toLowerCase().includes(search) ||
+               r.region.toLowerCase().includes(search);
       });
 
+      tbody.innerHTML = '';
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400">Nenhum registo encontrado.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-400 font-bold">Nenhum registro encontrado.</td></tr>`;
         return;
       }
 
@@ -1245,27 +1387,33 @@
         if (r.badgeColor === 'purple') badgeClass = "bg-purple-100 text-purple-700";
         if (r.badgeColor === 'emerald') badgeClass = "bg-emerald-100 text-emerald-700";
         if (r.badgeColor === 'blue') badgeClass = "bg-blue-100 text-blue-700";
-        if (r.badgeColor === 'indigo') badgeClass = "bg-indigo-100 text-indigo-700";
         if (r.badgeColor === 'amber') badgeClass = "bg-amber-100 text-amber-700";
 
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-50/80 transition";
         tr.innerHTML = `
-          <td class="py-2.5 px-3">
-            <p class="font-bold text-slate-900">${r.name}</p>
+          <td class="py-3 px-3">
+            <p class="font-black text-slate-900 text-xs">${r.name}</p>
             <p class="text-[10px] text-slate-400 font-mono">${r.phone}</p>
+            <p class="text-[10px] text-emerald-700 font-bold mt-0.5"><i class="fa-solid fa-tag text-[9px] mr-1"></i>${r.cause}</p>
           </td>
-          <td class="py-2.5 px-3">
-            <span class="${badgeClass} text-[10px] font-bold px-2 py-0.5 rounded">${r.role}</span>
+          <td class="py-3 px-3">
+            <span class="${badgeClass} text-[10px] font-black px-2 py-0.5 rounded">${r.role}</span>
           </td>
-          <td class="py-2.5 px-3 text-slate-600">${r.region}</td>
-          <td class="py-2.5 px-3 text-slate-500 italic text-[11px]">${r.leader}</td>
-          <td class="py-2.5 px-3 text-right">
+          <td class="py-3 px-3 text-slate-600 font-semibold">${r.region}</td>
+          <td class="py-3 px-3 text-slate-800 font-bold">${r.leader}</td>
+          <td class="py-3 px-3">
+            <span class="inline-flex items-center gap-1 font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded text-[11px]">
+              <i class="fa-solid fa-gift text-purple-500 text-[10px]"></i>
+              ${r.donation || 'Apoio Comunitário'}
+            </span>
+          </td>
+          <td class="py-3 px-3 text-right">
             <div class="flex items-center justify-end gap-1.5">
-              <button onclick="openModalForEdit(${r.id})" class="p-1 text-slate-500 hover:text-blue-600 transition" title="Editar">
+              <button onclick="openModalForEdit(${r.id})" class="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg transition" title="Editar">
                 <i class="fa-solid fa-pen-to-square"></i>
               </button>
-              <button onclick="deleteRecord(${r.id})" class="p-1 text-slate-400 hover:text-rose-600 transition" title="Eliminar">
+              <button onclick="deleteRecord(${r.id})" class="p-1.5 text-slate-400 hover:text-rose-600 transition" title="Eliminar">
                 <i class="fa-solid fa-trash-can"></i>
               </button>
             </div>
@@ -1275,60 +1423,112 @@
       });
     }
 
-    function renderMetasCards() {
-      const grid = document.getElementById('metasCardsGrid');
-      const goals = systemMode === 'church' ? churchGoals : electionGoals;
-      grid.innerHTML = goals.map(g => `
-        <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs">
-          <div class="flex items-center justify-between mb-1">
-            <h4 class="font-bold text-slate-900 text-xs">${g.name}</h4>
-            <span class="font-extrabold text-xs ${g.color === 'emerald' ? 'text-emerald-600' : 'text-amber-600'}">${g.pct}%</span>
-          </div>
-          <p class="text-[10px] text-slate-400 mb-2">${g.sub}</p>
-          <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
-            <div class="${g.color === 'emerald' ? 'bg-emerald-500' : 'bg-amber-500'} h-1.5 rounded-full" style="width: ${g.pct}%"></div>
-          </div>
-        </div>
-      `).join('');
+    // PONTO DE FILIAÇÃO
+    function updateAffiliateLinkUI() {
+      const leaderVal = document.getElementById('affiliateLeaderSelect').value;
+      const base = window.location.href.split('#')[0];
+      const link = `${base}#cadastro?ref=${leaderVal}`;
+      document.getElementById('generatedLinkInput').value = link;
+
+      const leaderNames = {
+        donamaria: "Dona Maria da Várzea (Causa Animal)",
+        marcoslider: "Marcos Líder Social (Ação Social & Sopão)",
+        paonosso: "Equipe Pão Nosso (Alimentos & Fubá)",
+        helenaramos: "Profª Helena Ramos (Zona Norte)"
+      };
+
+      document.getElementById('publicFormReferralText').innerText = `Convidado por: ${leaderNames[leaderVal] || 'Liderança Comunitária'}`;
     }
 
-    // GESTÃO DE SENHAS E ACESSOS (TABELA & CRIAÇÃO DIRETO NA TELA)
+    function copyGeneratedLink() {
+      const copyText = document.getElementById("generatedLinkInput");
+      copyText.select();
+      copyText.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(copyText.value);
+      alert("Link copiado com sucesso! Já pode colar e enviar no WhatsApp.");
+    }
+
+    function shareLinkWhatsApp() {
+      const link = document.getElementById('generatedLinkInput').value;
+      const leaderVal = document.getElementById('affiliateLeaderSelect').value;
+      const leaderNames = {
+        donamaria: "Dona Maria da Várzea",
+        marcoslider: "Marcos Líder Social",
+        paonosso: "Equipe Pão Nosso",
+        helenaramos: "Profª Helena Ramos"
+      };
+      const nomeLider = leaderNames[leaderVal] || 'Nossa Equipe';
+
+      const text = encodeURIComponent(
+        `Olá! Aqui é da equipe de *${nomeLider}*.
+
+Estamos cadastrando voluntários e recebendo doações de mantimentos para apoiar as ações no nosso bairro.
+
+Clique no link rápido para confirmar seu apoio:
+👉 ${link}
+
+Juntos fazemos a diferença!`
+      );
+      window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+    }
+
+    function handlePublicRegistration(e) {
+      e.preventDefault();
+      const name = document.getElementById('pubName').value.trim();
+      const phone = document.getElementById('pubPhone').value.trim();
+      const region = document.getElementById('pubNeighborhood').value.trim();
+      const cause = document.getElementById('pubCause').value;
+      const donation = document.getElementById('pubDonation').value.trim();
+      const leaderVal = document.getElementById('affiliateLeaderSelect').value;
+      const leaderNames = {
+        donamaria: "Dona Maria da Várzea",
+        marcoslider: "Marcos Líder Social",
+        paonosso: "Equipe Pão Nosso",
+        helenaramos: "Profª Helena Ramos"
+      };
+
+      campaignDatabase.unshift({
+        id: Date.now(),
+        name,
+        phone,
+        role: "Apoiador / Voluntário",
+        region,
+        leader: leaderNames[leaderVal] || "Dona Maria da Várzea",
+        cause,
+        donation: donation || "Voluntariado de Campo",
+        status: "Ativo",
+        scope: "regional2",
+        badgeColor: "emerald"
+      });
+
+      alert(`Parabéns, ${name}! Seu cadastro foi recebido com sucesso na rede de ${leaderNames[leaderVal]}!`);
+      document.getElementById('pubName').value = '';
+      document.getElementById('pubPhone').value = '';
+      document.getElementById('pubNeighborhood').value = '';
+      document.getElementById('pubDonation').value = '';
+      refreshAllViews();
+    }
+
+    // GESTÃO DE SENHAS (ADMIN)
     function renderUsersTable() {
       const tbody = document.getElementById('usersTableBody');
       systemUsers = getStoredUsers();
       tbody.innerHTML = '';
 
-      // Filtra estritamente pelo modo ativo (Igreja só vê Igreja, Campanha só vê Campanha)
-      const visibleUsers = systemUsers.map((u, idx) => ({ ...u, originalIndex: idx }))
-        .filter(u => {
-          if (systemMode === 'church') {
-            return u.mode === 'church' || u.mode === 'all';
-          } else {
-            return u.mode === 'election' || u.mode === 'all';
-          }
-        });
-
-      if (visibleUsers.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-400">Nenhum acesso registado para este módulo.</td></tr>`;
-        return;
-      }
-
-      visibleUsers.forEach(u => {
-        const idx = u.originalIndex;
-        let scopeBadge = `<span class="bg-purple-100 text-purple-700 text-[10px] font-bold px-2 py-0.5 rounded">Acesso Total</span>`;
-        if (u.scope === 'regional1') scopeBadge = `<span class="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded">Zona Norte</span>`;
-        if (u.scope === 'regional2') scopeBadge = `<span class="bg-indigo-100 text-indigo-700 text-[10px] font-bold px-2 py-0.5 rounded">Zona Sul</span>`;
+      systemUsers.forEach((u, idx) => {
+        let scopeBadge = `<span class="bg-purple-100 text-purple-700 text-[10px] font-black px-2 py-0.5 rounded">Acesso Total (Candidato)</span>`;
+        if (u.scope.includes('regional1')) scopeBadge = `<span class="bg-blue-100 text-blue-700 text-[10px] font-black px-2 py-0.5 rounded">Coord. Regional</span>`;
+        if (u.scope.includes('regional2')) scopeBadge = `<span class="bg-amber-100 text-amber-700 text-[10px] font-black px-2 py-0.5 rounded">Ativista Local</span>`;
 
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-50/80 transition";
         tr.innerHTML = `
           <td class="py-2.5 px-3">
-            <p class="font-bold text-slate-900">${u.name}</p>
-            <p class="text-[10px] text-slate-400 uppercase font-semibold">${u.mode === 'all' ? 'Igreja & Campanha' : u.mode === 'church' ? 'Igreja' : 'Campanha'}</p>
+            <p class="font-black text-slate-900">${u.name}</p>
           </td>
-          <td class="py-2.5 px-3 font-mono font-semibold text-blue-600">${u.user}</td>
+          <td class="py-2.5 px-3 font-mono font-bold text-emerald-700">${u.user}</td>
           <td class="py-2.5 px-3 font-mono font-semibold text-slate-600">${u.pass}</td>
-          <td class="py-2.5 px-3 text-slate-700">${u.role}</td>
+          <td class="py-2.5 px-3 text-slate-700 font-medium">${u.role}</td>
           <td class="py-2.5 px-3">${scopeBadge}</td>
           <td class="py-2.5 px-3 text-right">
             <div class="flex items-center justify-end gap-1.5">
@@ -1352,7 +1552,6 @@
       document.getElementById('editUserIndex').value = '';
       document.getElementById('userForm').reset();
       document.getElementById('userModalHeading').innerText = "Criar Novo Login e Senha";
-      document.getElementById('userFormMode').value = systemMode;
       document.getElementById('userModal').classList.remove('hidden');
       document.getElementById('userModal').classList.add('flex');
       generateRandomPass();
@@ -1369,7 +1568,6 @@
       document.getElementById('userFormPassword').value = u.pass;
       document.getElementById('userFormRole').value = u.role;
       document.getElementById('userFormScope').value = u.scope;
-      document.getElementById('userFormMode').value = u.mode;
       document.getElementById('userModalHeading').innerText = "Alterar Credencial";
 
       document.getElementById('userModal').classList.remove('hidden');
@@ -1398,24 +1596,26 @@
       const pass = document.getElementById('userFormPassword').value.trim();
       const role = document.getElementById('userFormRole').value.trim();
       const scope = document.getElementById('userFormScope').value;
-      const mode = document.getElementById('userFormMode').value;
 
       systemUsers = getStoredUsers();
 
       if (idx !== '') {
-        systemUsers[idx] = { name, user, pass, role, scope, mode };
+        systemUsers[idx] = { name, user, pass, role, scope };
       } else {
-        // Verifica se usuário já existe
         if (systemUsers.some(u => u.user === user)) {
           alert("Atenção: Já existe um login cadastrado com esse usuário!");
           return;
         }
-        systemUsers.unshift({ name, user, pass, role, scope, mode });
+        systemUsers.unshift({ name, user, pass, role, scope });
       }
 
       saveStoredUsers(systemUsers);
       closeUserModal();
-      alert(`Credencial guardada com sucesso!\n\nUsuário: ${user}\nSenha: ${pass}\nA pessoa já pode entrar imediatamente no sistema com estes dados.`);
+      alert(`Credencial guardada!
+
+Usuário: ${user}
+Senha: ${pass}
+A pessoa já pode entrar imediatamente no sistema.`);
       renderUsersTable();
     }
 
@@ -1433,14 +1633,22 @@
       const u = systemUsers[idx];
       const link = window.location.href.split('#')[0];
       const text = encodeURIComponent(
-        `Olá, ${u.name}!\n\nSeu acesso ao *Painel de Gestão Hierárquica* foi configurado:\n\n🌐 *Link do Site:* ${link}\n👤 *Usuário:* ${u.user}\n🔑 *Senha:* ${u.pass}\n🛡️ *Nível:* ${u.role}\n\nGuarde sua credencial com segurança!`
+        `Olá, ${u.name}!
+
+Seu acesso ao *MOBILIZA - Painel Comunitário* foi configurado:
+
+🌐 *Link do Site:* ${link}
+👤 *Usuário:* ${u.user}
+🔑 *Senha:* ${u.pass}
+🛡️ *Nível:* ${u.role}
+
+Guarde sua credencial com segurança!`
       );
       window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
     }
 
     function openModalForEdit(id) {
-      const db = getCurrentDB();
-      const rec = db.find(r => r.id === id);
+      const rec = campaignDatabase.find(r => r.id === id);
       if (!rec) return;
 
       document.getElementById('recordId').value = rec.id;
@@ -1449,8 +1657,9 @@
       document.getElementById('fieldRole').value = rec.role;
       document.getElementById('fieldRegion').value = rec.region;
       document.getElementById('fieldLeader').value = rec.leader;
-      document.getElementById('fieldStatus').value = rec.status;
-      document.getElementById('modalHeading').innerText = "Alterar Registo";
+      document.getElementById('fieldCause').value = rec.cause;
+      document.getElementById('fieldDonation').value = rec.donation || '';
+      document.getElementById('modalHeading').innerText = "Alterar Cadastro";
 
       document.getElementById('editModal').classList.remove('hidden');
       document.getElementById('editModal').classList.add('flex');
@@ -1459,7 +1668,7 @@
     function openModalForNew() {
       document.getElementById('recordId').value = "";
       document.getElementById('editForm').reset();
-      document.getElementById('modalHeading').innerText = systemMode === 'church' ? "Novo Membro" : "Novo Eleitor";
+      document.getElementById('modalHeading').innerText = "Novo Cadastro Manual";
 
       document.getElementById('editModal').classList.remove('hidden');
       document.getElementById('editModal').classList.add('flex');
@@ -1475,39 +1684,41 @@
       const id = document.getElementById('recordId').value;
       const name = document.getElementById('fieldName').value.trim();
       const phone = document.getElementById('fieldPhone').value.trim();
-      const role = document.getElementById('fieldRole').value.trim();
+      const role = document.getElementById('fieldRole').value;
       const region = document.getElementById('fieldRegion').value.trim();
       const leader = document.getElementById('fieldLeader').value.trim();
-      const status = document.getElementById('fieldStatus').value;
+      const cause = document.getElementById('fieldCause').value;
+      const donation = document.getElementById('fieldDonation').value.trim() || 'Apoio de Campo';
 
       let scope = "admin";
-      if (region.toLowerCase().includes("norte")) scope = "regional1";
-      if (region.toLowerCase().includes("sul")) scope = "regional2";
-
-      const db = getCurrentDB();
+      if (role.includes("Regional")) scope = "regional1";
+      if (role.includes("Ativista") || role.includes("Mini-Projeto") || role.includes("Apoiador")) scope = "regional2";
 
       if (id) {
-        const idx = db.findIndex(r => r.id == id);
+        const idx = campaignDatabase.findIndex(r => r.id == id);
         if (idx !== -1) {
-          db[idx].name = name;
-          db[idx].phone = phone;
-          db[idx].role = role;
-          db[idx].region = region;
-          db[idx].leader = leader;
-          db[idx].status = status;
-          db[idx].scope = scope;
+          campaignDatabase[idx].name = name;
+          campaignDatabase[idx].phone = phone;
+          campaignDatabase[idx].role = role;
+          campaignDatabase[idx].region = region;
+          campaignDatabase[idx].leader = leader;
+          campaignDatabase[idx].cause = cause;
+          campaignDatabase[idx].donation = donation;
+          campaignDatabase[idx].scope = scope;
         }
       } else {
-        db.unshift({
+        campaignDatabase.unshift({
           id: Date.now(),
           name,
           phone,
           role,
           region,
           leader,
-          status,
+          cause,
+          donation,
+          status: "Ativo",
           scope,
-          badgeColor: "slate"
+          badgeColor: "emerald"
         });
       }
 
@@ -1517,16 +1728,14 @@
 
     function deleteRecord(id) {
       if (confirm("Deseja realmente eliminar este registo?")) {
-        if (systemMode === 'church') {
-          churchDatabase = churchDatabase.filter(r => r.id !== id);
-        } else {
-          electionDatabase = electionDatabase.filter(r => r.id !== id);
-        }
+        campaignDatabase = campaignDatabase.filter(r => r.id !== id);
         refreshAllViews();
       }
     }
 
-    setMode('church');
+    // Inicialização
+    updateScopeStatusUI();
+    refreshAllViews();
   </script>
 </body>
 </html>
