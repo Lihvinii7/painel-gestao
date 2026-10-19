@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>MOBILIZA | Gestão Comunitária, Causas & Lideranças</title>
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,12 +62,9 @@
 </head>
 <body class="bg-[#f8fafc] text-slate-800 antialiased min-h-screen font-sans">
 
-  <!-- ========================================== -->
-  <!-- 1. PÁGINA PÚBLICA DE CADASTRO (SEM SENHA)  -->
-  <!-- ========================================== -->
+  <!-- 1. PÁGINA PÚBLICA DE CADASTRO (SEM SENHA) -->
   <div id="publicRegisterView" class="hidden min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-[#0c1322] flex items-center justify-center p-4 sm:p-6 w-full">
     <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 w-full max-w-lg overflow-hidden p-6 sm:p-8 relative">
-      
       <div class="text-center mb-6">
         <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center text-3xl mx-auto shadow-lg shadow-emerald-600/30 mb-3">
           <i class="fa-solid fa-handshake-angle"></i>
@@ -145,16 +140,12 @@
           Iniciativa Popular Comunitária &bull; MOBILIZA SOCIAL
         </p>
       </div>
-
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- 2. MODAL DE LOGIN INTERNO (COORDENADORES) -->
-  <!-- ========================================== -->
+  <!-- 2. MODAL DE LOGIN INTERNO -->
   <div id="loginOverlay" class="fixed inset-0 bg-[#090d16]/90 backdrop-blur-md flex items-center justify-center p-4 z-[100]">
     <div class="bg-white rounded-3xl shadow-2xl border border-slate-200/80 w-full max-w-md overflow-hidden p-6 sm:p-8 relative">
-      
       <div class="text-center mb-6">
         <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center text-3xl mx-auto shadow-lg shadow-emerald-600/30 mb-3">
           <i class="fa-solid fa-people-roof"></i>
@@ -208,13 +199,10 @@
           </button>
         </div>
       </div>
-
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- 3. CONTAINER DO PAINEL INTERNO DE GESTÃO   -->
-  <!-- ========================================== -->
+  <!-- 3. CONTAINER DO PAINEL INTERNO DE GESTÃO -->
   <div id="appContainer" class="flex flex-col md:flex-row w-full min-h-screen">
 
     <!-- CABEÇALHO MOBILE -->
@@ -261,7 +249,7 @@
       </div>
     </div>
 
-    <!-- SIDEBAR FIXA (DESKTOP) -->
+    <!-- SIDEBAR FIXA -->
     <aside class="hidden md:flex w-64 bg-[#0a1120] text-slate-300 flex-col shrink-0 min-h-screen">
       <div class="p-5 border-b border-slate-800/80 flex items-center space-x-3">
         <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center text-xl font-bold shadow-md shadow-emerald-500/20">
@@ -329,9 +317,8 @@
     <!-- ÁREA PRINCIPAL -->
     <div class="flex-1 flex flex-col min-w-0 overflow-y-auto w-full">
 
-      <!-- BARRA SUPERIOR -->
+      <!-- BARRA SUPERIOR COM OS DOIS BOTÕES SEPARADOS -->
       <header class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3 sticky top-0 md:relative z-20">
-        
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold">
             <i class="fa-solid fa-handshake-angle"></i>
@@ -357,13 +344,13 @@
             <span>Criar Senha</span>
           </button>
 
-          <!-- BOTÃO 1: NOVA CAUSA -->
+          <!-- BOTÃO 1: CRIA A CAUSA (PROJETO) -->
           <button onclick="openNewCauseModal()" class="px-2.5 sm:px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white text-[11px] sm:text-xs font-bold rounded-lg shadow-sm flex items-center gap-1 shrink-0" title="Cadastrar nova causa/projeto">
             <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i>
             <span>Nova Causa</span>
           </button>
 
-          <!-- BOTÃO 2: NOVO APOIADOR -->
+          <!-- BOTÃO 2: CADASTRA A PESSOA (VOLUNTÁRIO) -->
           <button onclick="openModalForNew()" class="px-2.5 sm:px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs font-bold rounded-lg shadow-sm flex items-center gap-1 shrink-0" title="Cadastrar novo apoiador">
             <i class="fa-solid fa-user-plus text-[10px]"></i>
             <span>Novo Apoiador</span>
@@ -371,7 +358,7 @@
         </div>
       </header>
 
-      <!-- Sub-Barra de Limitação de Escopo -->
+      <!-- Sub-Barra de Escopo -->
       <div class="bg-slate-100/70 border-b border-slate-200 px-4 sm:px-6 py-2 flex flex-wrap items-center justify-between gap-1 text-xs">
         <div class="flex items-center space-x-2 truncate">
           <span id="tagLevelPill" class="bg-purple-100 text-purple-800 font-bold px-2 py-0.5 rounded text-[10px] uppercase shrink-0">VISÃO GERAL</span>
@@ -387,7 +374,6 @@
 
         <!-- ABA 1: VISÃO GERAL -->
         <section id="tabContentVisaoGeral" class="space-y-5">
-          
           <div class="relative bg-gradient-to-r from-[#0a1120] to-[#122338] text-white rounded-3xl p-5 sm:p-7 shadow-sm overflow-hidden border border-slate-800">
             <div class="relative z-10 max-w-2xl">
               <span class="inline-block bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider mb-2">
@@ -473,7 +459,6 @@
 
           <!-- LISTA CONCRETA DE APOIADORES & PARCERIAS COM EMPRESAS/ONGS -->
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-            
             <div class="lg:col-span-8 bg-white rounded-3xl border border-slate-200 p-5 shadow-xs flex flex-col">
               <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
                 <div>
@@ -524,20 +509,18 @@
                 </button>
               </div>
             </div>
-
           </div>
-
         </section>
 
         <!-- ABA 2: HUB DETALHADO DE CAUSAS & MINI-PROJETOS -->
         <section id="tabContentCausas" class="hidden space-y-5">
           <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
-            
             <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
               <div>
                 <h2 class="text-base sm:text-lg font-black text-slate-900">Causas, Mini-Projetos & Ações em Campo</h2>
                 <p class="text-xs text-slate-400">Cada projeto reúne ativistas, doações de mantimentos e voluntários de bairro</p>
               </div>
+              <!-- BOTÃO QUE CHAMA EXCLUSIVAMENTE O CADASTRO DA CAUSA -->
               <button onclick="openNewCauseModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-600/25 flex items-center justify-center gap-1.5 shrink-0">
                 <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
                 <span>+ Criar Nova Causa</span>
@@ -545,14 +528,12 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5" id="causesFullGrid"></div>
-
           </div>
         </section>
 
         <!-- ABA 3: ORGANOGRAMA EM ÁRVORE -->
         <section id="tabContentOrganograma" class="hidden space-y-5">
           <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
-            
             <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100 mb-4">
               <div class="flex items-center space-x-3">
                 <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold">
@@ -574,14 +555,12 @@
             </div>
 
             <div id="treeContainer" class="p-1 space-y-3"></div>
-
           </div>
         </section>
 
         <!-- ABA 4: REDE COMPLETA DE APOIADORES -->
         <section id="tabContentMembros" class="hidden space-y-5">
           <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
-            
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 mb-4">
               <div class="relative flex-1">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
@@ -621,14 +600,12 @@
                 <tbody id="fullMembersTableBody" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
               </table>
             </div>
-
           </div>
         </section>
 
-        <!-- ABA 5: PONTO DE FILIAÇÃO (LINK DO ATIVISTA & WHATSAPP) -->
+        <!-- ABA 5: PONTO DE FILIAÇÃO -->
         <section id="tabContentFiliacao" class="hidden space-y-5">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-            
             <div class="lg:col-span-5 bg-white rounded-3xl border border-slate-200 p-6 shadow-xs space-y-4">
               <div class="pb-3 border-b border-slate-100">
                 <span class="inline-block px-3 py-1 bg-teal-50 text-teal-700 text-[10px] font-black rounded-full uppercase mb-1">
@@ -667,7 +644,6 @@
               </button>
             </div>
 
-            <!-- Como Funciona a Captação Sem Senha -->
             <div class="lg:col-span-7 bg-white rounded-3xl border border-slate-200 p-6 shadow-xs flex flex-col justify-between space-y-4">
               <div>
                 <div class="pb-3 border-b border-slate-100 flex items-center justify-between mb-4">
@@ -712,14 +688,12 @@
                 </button>
               </div>
             </div>
-
           </div>
         </section>
 
-        <!-- ABA 6: GESTÃO DE SENHAS (SOMENTE ADMIN) -->
+        <!-- ABA 6: GESTÃO DE SENHAS -->
         <section id="tabContentUsuarios" class="hidden space-y-5">
           <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
-            
             <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
               <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl shadow-xs">
@@ -751,19 +725,15 @@
                 <tbody id="usersTableBody" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
               </table>
             </div>
-
           </div>
         </section>
-
       </main>
-
     </div>
   </div>
 
   <!-- MODAL DE CRIAÇÃO/EDIÇÃO DE USUÁRIO E SENHA -->
   <div id="userModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
     <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden p-5 sm:p-6">
-      
       <div class="pb-3 border-b border-slate-100 flex items-center justify-between">
         <div class="flex items-center space-x-2.5">
           <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold">
@@ -821,10 +791,9 @@
     </div>
   </div>
 
-  <!-- MODAL DE CADASTRO MANUAL DE APOIADOR -->
+  <!-- MODAL DE CADASTRO MANUAL DE APOIADOR (ABERTO POR "NOVO APOIADOR") -->
   <div id="editModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
     <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden p-5 sm:p-6">
-      
       <div class="pb-3 border-b border-slate-100 flex items-center justify-between">
         <div>
           <h3 id="modalHeading" class="font-black text-slate-900 text-sm">Registrar Novo Apoiador</h3>
@@ -893,10 +862,9 @@
     </div>
   </div>
 
-  <!-- MODAL DE CADASTRO INTELIGENTE DE NOVA CAUSA (DETECÇÃO AUTOMÁTICA DE ÍCONE) -->
+  <!-- MODAL DE CADASTRO DE NOVA CAUSA (ABERTO POR "NOVA CAUSA") -->
   <div id="causeModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
     <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden p-6 relative">
-      
       <div class="pb-3 border-b border-slate-100 flex items-center justify-between">
         <div class="flex items-center space-x-2.5">
           <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg font-bold">
@@ -910,7 +878,7 @@
         <button onclick="closeCauseModal()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
-      <!-- Preview Dinâmico do Card da Causa -->
+      <!-- Preview do Card da Causa -->
       <div class="mt-4 p-4 bg-slate-50 rounded-2xl border border-slate-200">
         <span class="text-[10px] font-black uppercase text-slate-400 tracking-wider block mb-2">Pré-Visualização do Card Gerado:</span>
         <div id="causePreviewCard" class="bg-white rounded-2xl p-4 border border-slate-200 flex items-center gap-3.5 shadow-xs">
@@ -928,22 +896,22 @@
       <form id="causeForm" onsubmit="handleSaveCause(event)" class="mt-4 space-y-3.5">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Nome da Causa / Projeto *</label>
-          <input type="text" id="causeNameInput" oninput="onCauseNameTyped(this.value)" required placeholder="Ex: Escolinha de Futebol da Várzea, Apoio a Mães Solo, Reforço Escolar" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:outline-none focus:border-emerald-600 focus:bg-white transition shadow-2xs">
+          <input type="text" id="causeNameInput" oninput="onCauseNameTyped(this.value)" required placeholder="Ex: Apoio contra as Drogas, Escolinha de Futebol, Reforço Escolar" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:outline-none focus:border-emerald-600 focus:bg-white transition shadow-2xs">
         </div>
 
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Breve Descrição da Ação</label>
-          <input type="text" id="causeDescInput" oninput="document.getElementById('causePreviewDesc').innerText = this.value || 'Descrição do projeto comunitário'" placeholder="Ex: Treinos de futebol e disciplina para crianças aos sábados" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white transition">
+          <input type="text" id="causeDescInput" oninput="document.getElementById('causePreviewDesc').innerText = this.value || 'Descrição do projeto comunitário'" placeholder="Ex: Acolhimento, conscientização e recuperação de jovens" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white transition">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Líder / Ativista Responsável</label>
-            <input type="text" id="causeLeaderInput" required placeholder="Ex: Prof. Carlos / Dona Maria" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white">
+            <input type="text" id="causeLeaderInput" required placeholder="Ex: Marcos Líder / Dona Maria" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white">
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Recurso / Doações Típicas</label>
-            <input type="text" id="causeDonationInput" placeholder="Ex: Bolas e coletes / 2kg de fubá" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white">
+            <input type="text" id="causeDonationInput" placeholder="Ex: Cestas básicas, atendimento psicológico, 2kg de fubá" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white">
           </div>
         </div>
 
@@ -952,12 +920,14 @@
             <span class="text-[11px] font-bold text-slate-600">Ou escolha um ícone manualmente:</span>
             <span id="detectedThemeLabel" class="text-[10px] text-emerald-600 font-bold">Identificado automaticamente</span>
           </div>
-          <div class="grid grid-cols-8 gap-1.5" id="manualIconChoices">
-            <button type="button" onclick="selectCauseVisual('fa-futbol', 'from-emerald-500 to-green-600', 'bg-emerald-50 text-emerald-700', 'Esporte & Lazer')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-emerald-100 text-slate-700 flex items-center justify-center text-xs transition" title="Esporte"><i class="fa-solid fa-futbol"></i></button>
+          <div class="grid grid-cols-10 gap-1.5" id="manualIconChoices">
+            <button type="button" onclick="selectCauseVisual('fa-shield-heart', 'from-indigo-600 to-violet-700', 'bg-indigo-50 text-indigo-700', 'Apoio contra Drogas')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-indigo-100 text-slate-700 flex items-center justify-center text-xs transition" title="Apoio contra Drogas & Superação"><i class="fa-solid fa-shield-heart"></i></button>
             <button type="button" onclick="selectCauseVisual('fa-paw', 'from-amber-500 to-orange-500', 'bg-amber-50 text-amber-700', 'Causa Animal')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-amber-100 text-slate-700 flex items-center justify-center text-xs transition" title="Animal"><i class="fa-solid fa-paw"></i></button>
+            <button type="button" onclick="selectCauseVisual('fa-futbol', 'from-emerald-500 to-green-600', 'bg-emerald-50 text-emerald-700', 'Esporte & Lazer')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-emerald-100 text-slate-700 flex items-center justify-center text-xs transition" title="Esporte"><i class="fa-solid fa-futbol"></i></button>
             <button type="button" onclick="selectCauseVisual('fa-bowl-food', 'from-rose-500 to-red-600', 'bg-rose-50 text-rose-700', 'Alimentação & Sopão')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-rose-100 text-slate-700 flex items-center justify-center text-xs transition" title="Alimentação"><i class="fa-solid fa-bowl-food"></i></button>
             <button type="button" onclick="selectCauseVisual('fa-heart-pulse', 'from-blue-600 to-cyan-600', 'bg-blue-50 text-blue-700', 'Saúde Comunitária')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-blue-100 text-slate-700 flex items-center justify-center text-xs transition" title="Saúde"><i class="fa-solid fa-heart-pulse"></i></button>
             <button type="button" onclick="selectCauseVisual('fa-graduation-cap', 'from-indigo-600 to-blue-700', 'bg-indigo-50 text-indigo-700', 'Educação & Cursos')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-indigo-100 text-slate-700 flex items-center justify-center text-xs transition" title="Educação"><i class="fa-solid fa-graduation-cap"></i></button>
+            <button type="button" onclick="selectCauseVisual('fa-briefcase', 'from-amber-600 to-yellow-600', 'bg-amber-50 text-amber-800', 'Emprego & Renda')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-amber-100 text-slate-700 flex items-center justify-center text-xs transition" title="Emprego & Renda"><i class="fa-solid fa-briefcase"></i></button>
             <button type="button" onclick="selectCauseVisual('fa-masks-theater', 'from-purple-600 to-indigo-600', 'bg-purple-50 text-purple-700', 'Cultura & Juventude')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-purple-100 text-slate-700 flex items-center justify-center text-xs transition" title="Cultura"><i class="fa-solid fa-masks-theater"></i></button>
             <button type="button" onclick="selectCauseVisual('fa-tree', 'from-teal-600 to-emerald-700', 'bg-teal-50 text-teal-700', 'Meio Ambiente')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-teal-100 text-slate-700 flex items-center justify-center text-xs transition" title="Meio Ambiente"><i class="fa-solid fa-tree"></i></button>
             <button type="button" onclick="selectCauseVisual('fa-people-roof', 'from-pink-500 to-rose-600', 'bg-pink-50 text-pink-700', 'Família & Mulheres')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-pink-100 text-slate-700 flex items-center justify-center text-xs transition" title="Família & Mulheres"><i class="fa-solid fa-people-roof"></i></button>
@@ -1012,7 +982,7 @@
       { id: "animal", name: "Causa Animal (100 Gatos)", shortDesc: "Acolhimento, vacina e castração na Várzea", leader: "Dona Maria da Várzea", icon: "fa-paw", bgGradient: "from-amber-500 to-orange-500", lightBg: "bg-amber-50 text-amber-700", border: "border-amber-200" },
       { id: "paonosso", name: "Pão Nosso & Fubá", shortDesc: "Arrecadação de fubá, pães e cestas na periferia", leader: "Equipe Pão Nosso", icon: "fa-bread-slice", bgGradient: "from-orange-500 to-amber-600", lightBg: "bg-orange-50 text-orange-700", border: "border-orange-200" },
       { id: "cultura", name: "Cultura & Dança", shortDesc: "Oficinas de teatro e dança para jovens na Várzea", leader: "Coletivo Várzea Viva", icon: "fa-masks-theater", bgGradient: "from-purple-600 to-indigo-600", lightBg: "bg-purple-50 text-purple-700", border: "border-purple-200" },
-      { id: "meioambiente", name: "Meio Ambiente & Praças", shortDesc: "Mutirões de limpeza e mudas de árvores", leader: "Profª Helena Ramos", icon: "fa-tree", bgGradient: "from-emerald-600 to-teal-600", lightBg: "bg-emerald-50 text-emerald-700", border: "border-emerald-200" },
+      { id: "meioambiente", name: "Meio Ambiente & Praças", shortDesc: "Mutirões de limpeza e mudas de árvores", leader: "Profª Helena Ramos", icon: "fa-tree", bgGradient: "from-teal-600 to-emerald-700", lightBg: "bg-teal-50 text-teal-700", border: "border-emerald-200" },
       { id: "sopao", name: "Ação Social & Sopão", shortDesc: "Alimentos preparados para pessoas em vulnerabilidade", leader: "Marcos Líder Social", icon: "fa-bowl-food", bgGradient: "from-rose-500 to-red-600", lightBg: "bg-rose-50 text-rose-700", border: "border-rose-200" },
       { id: "saude", name: "Saúde nos Bairros", shortDesc: "Aferição de pressão e apoio preventivo comunitário", leader: "Jorge da Farmácia", icon: "fa-heart-pulse", bgGradient: "from-blue-600 to-cyan-600", lightBg: "bg-blue-50 text-blue-700", border: "border-blue-200" }
     ];
@@ -1054,6 +1024,13 @@
     // ==========================================
     const causeSemanticDictionary = [
       {
+        keywords: ["droga", "drogas", "vicio", "vício", "dependen", "reabilita", "sobriedade", "narcot", "alcool", "álcool", "fumo", "terapeutica", "terapêutica", "recupera", "acolhimento"],
+        icon: "fa-shield-heart",
+        bgGradient: "from-indigo-600 to-violet-700",
+        lightBg: "bg-indigo-50 text-indigo-700",
+        category: "Apoio contra Drogas & Superação"
+      },
+      {
         keywords: ["animal", "gato", "cachorro", "pet", "abrigo", "castra", "resgate", "bicho", "cavalo", "adocao", "adoção"],
         icon: "fa-paw",
         bgGradient: "from-amber-500 to-orange-500",
@@ -1093,21 +1070,35 @@
         icon: "fa-tree",
         bgGradient: "from-teal-600 to-emerald-700",
         lightBg: "bg-teal-50 text-teal-700",
-        category: "Meio Ambiente"
+        category: "Meio Ambiente & Praças"
       },
       {
         keywords: ["educacao", "educação", "escola", "reforço", "reforco", "aula", "curso", "capacitacao", "capacitação", "livro", "estudo", "ensino"],
         icon: "fa-graduation-cap",
         bgGradient: "from-indigo-600 to-blue-700",
         lightBg: "bg-indigo-50 text-indigo-700",
-        category: "Educação & Capacitação"
+        category: "Educação & Cursos"
       },
       {
-        keywords: ["mulher", "mãe", "mae", "infantil", "criança", "crianca", "idoso", "familia", "família", "creche", "comunidade"],
+        keywords: ["emprego", "renda", "trabalho", "negocio", "negócio", "empreende", "costura", "artesanato", "vagas"],
+        icon: "fa-briefcase",
+        bgGradient: "from-amber-600 to-yellow-600",
+        lightBg: "bg-amber-50 text-amber-800",
+        category: "Emprego & Renda"
+      },
+      {
+        keywords: ["idoso", "idosos", "melhor idade", "velhice", "asilo", "geriatria", "aposentado"],
+        icon: "fa-person-cane",
+        bgGradient: "from-slate-600 to-slate-800",
+        lightBg: "bg-slate-100 text-slate-700",
+        category: "Terceira Idade & Idosos"
+      },
+      {
+        keywords: ["mulher", "mãe", "mae", "infantil", "criança", "crianca", "bebe", "bebê", "fralda", "creche", "familia", "família"],
         icon: "fa-people-roof",
         bgGradient: "from-pink-500 to-rose-600",
         lightBg: "bg-pink-50 text-pink-700",
-        category: "Família & Social"
+        category: "Família & Mães"
       }
     ];
 
@@ -2003,7 +1994,7 @@ Sua ajuda faz toda a diferença!`
     function openModalForNew() {
       document.getElementById('recordId').value = "";
       document.getElementById('editForm').reset();
-      document.getElementById('modalHeading').innerText = "Novo Cadastro de Apoiador";
+      document.getElementById('modalHeading').innerText = "Novo Cadastro Manual";
 
       document.getElementById('editModal').classList.remove('hidden');
       document.getElementById('editModal').classList.add('flex');
