@@ -62,9 +62,96 @@
     }
   </style>
 </head>
-<body class="bg-[#f8fafc] text-slate-800 antialiased min-h-screen flex flex-col md:flex-row font-sans">
+<body class="bg-[#f8fafc] text-slate-800 antialiased min-h-screen font-sans">
 
-  <!-- MODAL DE LOGIN (NEUTRO, MODERNO E FOCO SOCIAL) -->
+  <!-- ========================================== -->
+  <!-- 1. PÁGINA PÚBLICA DE CADASTRO (SEM SENHA)  -->
+  <!-- ========================================== -->
+  <div id="publicRegisterView" class="hidden min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-[#0c1322] flex items-center justify-center p-4 sm:p-6 w-full">
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 w-full max-w-lg overflow-hidden p-6 sm:p-8 relative">
+      
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center text-3xl mx-auto shadow-lg shadow-emerald-600/30 mb-3">
+          <i class="fa-solid fa-handshake-angle"></i>
+        </div>
+        <span class="inline-block px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-black rounded-full uppercase tracking-wider mb-1">
+          Apoio Comunitário & Causas Sociais
+        </span>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Participe do Movimento</h1>
+        <p id="publicInviteLeaderBadge" class="text-xs text-emerald-700 font-bold mt-1 bg-emerald-50 inline-block px-3 py-1 rounded-xl">
+          Você foi convidado por: <span id="publicLeaderNameDisplay">Dona Maria da Várzea</span>
+        </p>
+      </div>
+
+      <form id="publicSignupForm" onsubmit="handlePublicRegistration(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Seu Nome Completo *</label>
+          <input type="text" id="publicName" required placeholder="Digite como prefere ser chamado" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white transition shadow-2xs">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Seu WhatsApp *</label>
+            <div class="relative">
+              <i class="fa-brands fa-whatsapp absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+              <input type="text" id="publicPhone" required placeholder="(81) 99999-0000" class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white transition shadow-2xs">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Bairro Onde Mora *</label>
+            <input type="text" id="publicRegion" required placeholder="Ex: Várzea / Cordeiro / Pina" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white transition shadow-2xs">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Qual Causa Você Mais se Identifica? *</label>
+          <select id="publicCauseSelect" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-emerald-600 cursor-pointer">
+            <option value="Causa Animal (100 Gatos)">🐾 Causa Animal (100 Gatos da Várzea / Castração e Ração)</option>
+            <option value="Pão Nosso & Fubá">🍞 Pão Nosso & Fubá (Arrecadação e Cestas de Alimentos)</option>
+            <option value="Ação Social & Sopão">🍲 Ação Social & Sopão Comunitário</option>
+            <option value="Cultura & Dança">🎭 Cultura, Teatro & Dança para Jovens</option>
+            <option value="Meio Ambiente & Praças">🌱 Meio Ambiente & Limpeza de Praças</option>
+            <option value="Saúde nos Bairros">🩺 Saúde Preventiva Comunitária</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Pode Colaborar com Alguma Doação ou Recurso? (Opcional)</label>
+          <input type="text" id="publicDonation" placeholder="Ex: 2kg de fubá / pacote de ração / trabalho voluntário" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white transition shadow-2xs">
+          <p class="text-[10px] text-slate-400 mt-1">Sua contribuição material ou de tempo fortalece diretamente as famílias da nossa comunidade.</p>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-xl text-sm shadow-lg shadow-emerald-600/30 transition flex items-center justify-center gap-2">
+          <span>Confirmar Meu Apoio</span>
+          <i class="fa-solid fa-check"></i>
+        </button>
+      </form>
+
+      <div id="publicSuccessMsg" class="hidden text-center py-6 space-y-3">
+        <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto">
+          <i class="fa-solid fa-heart"></i>
+        </div>
+        <h3 class="text-lg font-black text-slate-900">Muito Obrigado pelo Seu Apoio!</h3>
+        <p class="text-xs text-slate-500 max-w-sm mx-auto">
+          Seu cadastro foi recebido com sucesso pela equipe comunitária. Nossa liderança entrará em contato com você pelo WhatsApp para alinhar as ações no bairro.
+        </p>
+        <button onclick="resetPublicForm()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
+          Fazer Outro Cadastro
+        </button>
+      </div>
+
+      <div class="mt-6 pt-4 border-t border-slate-100 text-center">
+        <p class="text-[10px] text-slate-400">
+          Iniciativa Popular Comunitária &bull; MOBILIZA SOCIAL
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 2. MODAL DE LOGIN INTERNO (COORDENADORES) -->
+  <!-- ========================================== -->
   <div id="loginOverlay" class="fixed inset-0 bg-[#090d16]/90 backdrop-blur-md flex items-center justify-center p-4 z-[100]">
     <div class="bg-white rounded-3xl shadow-2xl border border-slate-200/80 w-full max-w-md overflow-hidden p-6 sm:p-8 relative">
       
@@ -73,10 +160,10 @@
           <i class="fa-solid fa-people-roof"></i>
         </div>
         <span class="inline-block px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-black rounded-full tracking-wider uppercase mb-1">
-          Plataforma de Mobilização Comunitária
+          Acesso dos Coordenadores & Lideranças
         </span>
         <h2 class="text-2xl font-black text-slate-900 tracking-tight">MOBILIZA SOCIAL</h2>
-        <p class="text-xs text-slate-500 mt-1">Gestão Integrada de Lideranças, Causas & Voluntariado</p>
+        <p class="text-xs text-slate-500 mt-1">Área restrita de gestão de lideranças e causas</p>
       </div>
 
       <div id="loginAlert" class="hidden mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium flex items-center gap-2">
@@ -86,10 +173,10 @@
 
       <form onsubmit="handleLogin(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Seu Usuário de Acesso</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Usuário da Liderança</label>
           <div class="relative">
             <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
-            <input type="text" id="loginUser" required placeholder="Digite o usuário" class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white transition shadow-2xs">
+            <input type="text" id="loginUser" required placeholder="Digite seu login" class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white transition shadow-2xs">
           </div>
         </div>
 
@@ -102,14 +189,13 @@
         </div>
 
         <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md shadow-emerald-600/30 transition flex items-center justify-center gap-2">
-          <span>Acessar Painel</span>
+          <span>Acessar Painel de Gestão</span>
           <i class="fa-solid fa-arrow-right text-[11px]"></i>
         </button>
       </form>
 
-      <!-- Botões de Demonstração Rápidos com Isolamento de Acesso -->
       <div class="mt-6 pt-5 border-t border-slate-100">
-        <p class="text-[11px] font-black text-slate-400 uppercase tracking-wider text-center mb-2.5">Entrar como Perfil de Demonstração:</p>
+        <p class="text-[11px] font-black text-slate-400 uppercase tracking-wider text-center mb-2.5">Perfis para Demonstração:</p>
         <div class="grid grid-cols-3 gap-2">
           <button type="button" onclick="quickFillLogin('arthur.vinicius', 'eleicoes2026')" class="px-2 py-2 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-xl text-[10px] font-bold text-purple-700 transition truncate text-center">
             👑 Gestão Geral (Vê Tudo)
@@ -126,547 +212,552 @@
     </div>
   </div>
 
-  <!-- CABEÇALHO MOBILE -->
-  <div class="md:hidden bg-[#0a1120] text-white p-3.5 flex items-center justify-between border-b border-slate-800 sticky top-0 z-40">
-    <div class="flex items-center space-x-2.5">
-      <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow">
-        <i class="fa-solid fa-people-roof"></i>
-      </div>
-      <div>
-        <h2 class="text-xs font-bold leading-none tracking-wide text-white">MOBILIZA SOCIAL</h2>
-        <p class="text-[9px] text-emerald-400 mt-0.5">Gestão Comunitária & Causas</p>
-      </div>
-    </div>
-    <button onclick="toggleMobileMenu()" class="p-2 text-slate-300 hover:text-white rounded-lg focus:outline-none">
-      <i class="fa-solid fa-bars text-lg"></i>
-    </button>
-  </div>
+  <!-- ========================================== -->
+  <!-- 3. CONTAINER DO PAINEL INTERNO DE GESTÃO   -->
+  <!-- ========================================== -->
+  <div id="appContainer" class="flex flex-col md:flex-row w-full min-h-screen">
 
-  <!-- MENU MOBILE EXPANSÍVEL -->
-  <div id="mobileMenu" class="hidden md:hidden bg-[#0a1120] border-b border-slate-800 px-4 py-3 space-y-2.5 z-30">
-    <div class="space-y-1">
-      <button onclick="switchTabMobile('visaoGeral')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
-        <i class="fa-solid fa-chart-pie w-4 text-emerald-400"></i> Visão Geral & Números
-      </button>
-      <button onclick="switchTabMobile('causas')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
-        <i class="fa-solid fa-icons w-4 text-emerald-400"></i> Causas & Mini-Projetos
-      </button>
-      <button onclick="switchTabMobile('organograma')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
-        <i class="fa-solid fa-sitemap w-4 text-emerald-400"></i> Árvore de Liderança
-      </button>
-      <button onclick="switchTabMobile('membros')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
-        <i class="fa-solid fa-users w-4 text-emerald-400"></i> Rede de Apoiadores
-      </button>
-      <button onclick="switchTabMobile('filiacao')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-teal-300 hover:bg-slate-800 flex items-center gap-2">
-        <i class="fa-solid fa-share-nodes w-4"></i> Link de Filiação & Cadastro
-      </button>
-      <button id="mobileNavUsuarios" onclick="switchTabMobile('usuarios')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-amber-400 hover:bg-slate-800 flex items-center gap-2">
-        <i class="fa-solid fa-user-shield w-4"></i> Gestão de Senhas
-      </button>
-    </div>
-    <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
-      <span id="mobileLoggedUser" class="text-[11px] text-slate-400 font-semibold truncate">Dr. Arthur Vinicius</span>
-      <button onclick="handleLogout()" class="text-xs text-rose-400 font-bold"><i class="fa-solid fa-right-from-bracket mr-1"></i>Sair</button>
-    </div>
-  </div>
-
-  <!-- SIDEBAR FIXA (DESKTOP) -->
-  <aside class="hidden md:flex w-64 bg-[#0a1120] text-slate-300 flex-col shrink-0 min-h-screen">
-    <div class="p-5 border-b border-slate-800/80 flex items-center space-x-3">
-      <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center text-xl font-bold shadow-md shadow-emerald-500/20">
-        <i class="fa-solid fa-people-roof"></i>
-      </div>
-      <div>
-        <h2 class="text-sm font-black text-white tracking-wide leading-tight">MOBILIZA SOCIAL</h2>
-        <p class="text-[10px] text-emerald-400 font-semibold">Gestão Comunitária & Causas</p>
-      </div>
-    </div>
-
-    <!-- Navegação Sidebar -->
-    <div class="px-3 py-5 space-y-6 flex-1">
-      <div>
-        <span class="px-3 text-[10px] font-bold tracking-wider text-slate-500 uppercase">Seu Trabalho de Campo</span>
-        <div class="mt-2 space-y-1">
-          <button onclick="switchTab('visaoGeral')" id="navVisaoGeral" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-emerald-600 text-white transition shadow-sm">
-            <i class="fa-solid fa-chart-pie w-4 text-center"></i>
-            <span>Visão Geral & Números</span>
-          </button>
-          <button onclick="switchTab('causas')" id="navCausas" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
-            <i class="fa-solid fa-icons w-4 text-center"></i>
-            <span>Causas & Mini-Projetos</span>
-          </button>
-          <button onclick="switchTab('organograma')" id="navOrganograma" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
-            <i class="fa-solid fa-sitemap w-4 text-center"></i>
-            <span>Árvore de Liderança</span>
-          </button>
-          <button onclick="switchTab('membros')" id="navMembros" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
-            <i class="fa-solid fa-users w-4 text-center"></i>
-            <span>Rede de Apoiadores</span>
-          </button>
-        </div>
-      </div>
-
-      <div>
-        <span class="px-3 text-[10px] font-bold tracking-wider text-slate-500 uppercase">Captação & Segurança</span>
-        <div class="mt-2 space-y-1">
-          <button onclick="switchTab('filiacao')" id="navFiliacao" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-teal-400 hover:text-teal-300 hover:bg-slate-800/60 transition">
-            <i class="fa-solid fa-share-nodes w-4 text-center"></i>
-            <span>Ponto de Filiação (Link)</span>
-          </button>
-          <button onclick="switchTab('usuarios')" id="navUsuarios" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-amber-400 hover:text-amber-300 hover:bg-slate-800/60 transition">
-            <i class="fa-solid fa-user-shield w-4 text-center"></i>
-            <span>Gestão de Senhas</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Rodapé Sidebar -->
-    <div class="p-4 border-t border-slate-800/80 bg-[#070b14]">
-      <div class="flex items-center justify-between mb-2">
-        <div class="flex items-center space-x-2">
-          <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-          <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Perfil Conectado:</span>
-        </div>
-        <button onclick="handleLogout()" class="text-[10px] text-rose-400 hover:text-rose-300 font-semibold" title="Sair">
-          <i class="fa-solid fa-arrow-right-from-bracket mr-0.5"></i> Sair
-        </button>
-      </div>
-      <p id="loggedUserName" class="text-xs font-bold text-white truncate">Dr. Arthur Vinicius</p>
-      <p id="loggedUserRole" class="text-[11px] text-emerald-400 truncate">Comando Geral</p>
-    </div>
-  </aside>
-
-  <!-- ÁREA PRINCIPAL -->
-  <div class="flex-1 flex flex-col min-w-0 overflow-y-auto w-full">
-
-    <!-- BARRA SUPERIOR -->
-    <header class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3 sticky top-0 md:relative z-20">
-      
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold">
-          <i class="fa-solid fa-handshake-angle"></i>
+    <!-- CABEÇALHO MOBILE -->
+    <div class="md:hidden bg-[#0a1120] text-white p-3.5 flex items-center justify-between border-b border-slate-800 sticky top-0 z-40">
+      <div class="flex items-center space-x-2.5">
+        <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow">
+          <i class="fa-solid fa-people-roof"></i>
         </div>
         <div>
-          <h1 class="text-xs sm:text-sm font-bold text-slate-900 leading-tight">Programa Comunitário de Mobilização Social</h1>
-          <p class="text-[10px] text-slate-400">Acompanhamento e Métricas em Tempo Real</p>
+          <h2 class="text-xs font-bold leading-none tracking-wide text-white">MOBILIZA SOCIAL</h2>
+          <p class="text-[9px] text-emerald-400 mt-0.5">Gestão Comunitária & Causas</p>
         </div>
       </div>
-
-      <!-- Simulador de Perfil (Restrito a Admin) & Ações -->
-      <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
-        <div class="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs flex-1 sm:flex-none">
-          <i class="fa-solid fa-filter text-slate-400 mr-1.5 text-[11px]"></i>
-          <select id="accessLevelSelect" onchange="simulateAccessChange(this.value)" class="bg-transparent text-slate-800 font-bold focus:outline-none cursor-pointer text-[11px] w-full sm:w-auto truncate">
-            <option value="admin">👑 Visão do Candidato (Acesso a Tudo)</option>
-            <option value="regional1">📍 Coord. Zona Norte (Apenas Norte)</option>
-            <option value="regional2">🐾 Líder Várzea (Apenas Várzea / Causa)</option>
-          </select>
-        </div>
-
-        <button id="btnCriarSenha" onclick="openNewUserModal()" class="px-2.5 sm:px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-[11px] sm:text-xs font-semibold rounded-lg shadow-sm flex items-center gap-1 shrink-0" title="Criar login de acesso">
-          <i class="fa-solid fa-key text-[10px]"></i>
-          <span>Criar Senha</span>
-        </button>
-
-        <button onclick="openModalForNew()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm flex items-center gap-1 shrink-0">
-          <i class="fa-solid fa-plus text-[10px]"></i>
-          <span>Novo Cadastro</span>
-        </button>
-      </div>
-    </header>
-
-    <!-- Sub-Barra de Limitação de Escopo -->
-    <div class="bg-slate-100/70 border-b border-slate-200 px-4 sm:px-6 py-2 flex flex-wrap items-center justify-between gap-1 text-xs">
-      <div class="flex items-center space-x-2 truncate">
-        <span id="tagLevelPill" class="bg-purple-100 text-purple-800 font-bold px-2 py-0.5 rounded text-[10px] uppercase shrink-0">VISÃO GERAL</span>
-        <span id="tagLevelDescription" class="text-slate-600 font-semibold text-[11px] truncate">Exibindo números consolidados de toda a cidade (Acesso Geral do Candidato).</span>
-      </div>
-      <button onclick="switchTab('filiacao')" class="text-emerald-700 hover:text-emerald-800 font-bold text-[11px] flex items-center gap-1">
-        <i class="fa-solid fa-link text-xs"></i> Link de Cadastro da sua Equipe
+      <button onclick="toggleMobileMenu()" class="p-2 text-slate-300 hover:text-white rounded-lg focus:outline-none">
+        <i class="fa-solid fa-bars text-lg"></i>
       </button>
     </div>
 
-    <!-- CONTEÚDO PRINCIPAL -->
-    <main class="p-3 sm:p-6 space-y-5 max-w-7xl w-full">
+    <!-- MENU MOBILE EXPANSÍVEL -->
+    <div id="mobileMenu" class="hidden md:hidden bg-[#0a1120] border-b border-slate-800 px-4 py-3 space-y-2.5 z-30">
+      <div class="space-y-1">
+        <button onclick="switchTabMobile('visaoGeral')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-chart-pie w-4 text-emerald-400"></i> Visão Geral & Números
+        </button>
+        <button onclick="switchTabMobile('causas')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-icons w-4 text-emerald-400"></i> Causas & Mini-Projetos
+        </button>
+        <button onclick="switchTabMobile('organograma')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-sitemap w-4 text-emerald-400"></i> Árvore de Liderança
+        </button>
+        <button onclick="switchTabMobile('membros')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-users w-4 text-emerald-400"></i> Rede de Apoiadores
+        </button>
+        <button onclick="switchTabMobile('filiacao')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-teal-300 hover:bg-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-share-nodes w-4"></i> Link de Filiação & Cadastro
+        </button>
+        <button id="mobileNavUsuarios" onclick="switchTabMobile('usuarios')" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-amber-400 hover:bg-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-user-shield w-4"></i> Gestão de Senhas
+        </button>
+      </div>
+      <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
+        <span id="mobileLoggedUser" class="text-[11px] text-slate-400 font-semibold truncate">Dr. Arthur Vinicius</span>
+        <button onclick="handleLogout()" class="text-xs text-rose-400 font-bold"><i class="fa-solid fa-right-from-bracket mr-1"></i>Sair</button>
+      </div>
+    </div>
 
-      <!-- ABA 1: VISÃO GERAL -->
-      <section id="tabContentVisaoGeral" class="space-y-5">
+    <!-- SIDEBAR FIXA (DESKTOP) -->
+    <aside class="hidden md:flex w-64 bg-[#0a1120] text-slate-300 flex-col shrink-0 min-h-screen">
+      <div class="p-5 border-b border-slate-800/80 flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center text-xl font-bold shadow-md shadow-emerald-500/20">
+          <i class="fa-solid fa-people-roof"></i>
+        </div>
+        <div>
+          <h2 class="text-sm font-black text-white tracking-wide leading-tight">MOBILIZA SOCIAL</h2>
+          <p class="text-[10px] text-emerald-400 font-semibold">Gestão Comunitária & Causas</p>
+        </div>
+      </div>
+
+      <div class="px-3 py-5 space-y-6 flex-1">
+        <div>
+          <span class="px-3 text-[10px] font-bold tracking-wider text-slate-500 uppercase">Seu Trabalho de Campo</span>
+          <div class="mt-2 space-y-1">
+            <button onclick="switchTab('visaoGeral')" id="navVisaoGeral" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-emerald-600 text-white transition shadow-sm">
+              <i class="fa-solid fa-chart-pie w-4 text-center"></i>
+              <span>Visão Geral & Números</span>
+            </button>
+            <button onclick="switchTab('causas')" id="navCausas" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+              <i class="fa-solid fa-icons w-4 text-center"></i>
+              <span>Causas & Mini-Projetos</span>
+            </button>
+            <button onclick="switchTab('organograma')" id="navOrganograma" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+              <i class="fa-solid fa-sitemap w-4 text-center"></i>
+              <span>Árvore de Liderança</span>
+            </button>
+            <button onclick="switchTab('membros')" id="navMembros" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+              <i class="fa-solid fa-users w-4 text-center"></i>
+              <span>Rede de Apoiadores</span>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <span class="px-3 text-[10px] font-bold tracking-wider text-slate-500 uppercase">Captação & Segurança</span>
+          <div class="mt-2 space-y-1">
+            <button onclick="switchTab('filiacao')" id="navFiliacao" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-teal-400 hover:text-teal-300 hover:bg-slate-800/60 transition">
+              <i class="fa-solid fa-share-nodes w-4 text-center"></i>
+              <span>Ponto de Filiação (Link)</span>
+            </button>
+            <button onclick="switchTab('usuarios')" id="navUsuarios" class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-amber-400 hover:text-amber-300 hover:bg-slate-800/60 transition">
+              <i class="fa-solid fa-user-shield w-4 text-center"></i>
+              <span>Gestão de Senhas</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-slate-800/80 bg-[#070b14]">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center space-x-2">
+            <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+            <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Perfil Conectado:</span>
+          </div>
+          <button onclick="handleLogout()" class="text-[10px] text-rose-400 hover:text-rose-300 font-semibold" title="Sair">
+            <i class="fa-solid fa-arrow-right-from-bracket mr-0.5"></i> Sair
+          </button>
+        </div>
+        <p id="loggedUserName" class="text-xs font-bold text-white truncate">Dr. Arthur Vinicius</p>
+        <p id="loggedUserRole" class="text-[11px] text-emerald-400 truncate">Comando Geral</p>
+      </div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto w-full">
+
+      <!-- BARRA SUPERIOR -->
+      <header class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3 sticky top-0 md:relative z-20">
         
-        <!-- Banner Informativo Dinâmico -->
-        <div class="relative bg-gradient-to-r from-[#0a1120] to-[#122338] text-white rounded-3xl p-5 sm:p-7 shadow-sm overflow-hidden border border-slate-800">
-          <div class="relative z-10 max-w-2xl">
-            <span class="inline-block bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider mb-2">
-              PAINEL DE RESULTADOS & MOBILIZAÇÃO
-            </span>
-            <h1 id="bannerTitle" class="text-xl sm:text-2xl font-black text-white leading-tight">Visão Geral da Rede Comunitária</h1>
-            <p id="bannerSubtitle" class="text-xs text-slate-300 mt-1.5 leading-relaxed">
-              Métricas calculadas exclusivamente com base nas pessoas e projetos sob sua responsabilidade.
-            </p>
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-handshake-angle"></i>
           </div>
-          <div class="absolute right-4 -bottom-6 text-white/5 text-8xl sm:text-9xl pointer-events-none">
-            <i class="fa-solid fa-hands-holding-circle"></i>
+          <div>
+            <h1 class="text-xs sm:text-sm font-bold text-slate-900 leading-tight">Programa Comunitário de Mobilização Social</h1>
+            <p class="text-[10px] text-slate-400">Acompanhamento e Métricas em Tempo Real</p>
           </div>
         </div>
 
-        <!-- 4 CARTÕES DE MÉTRICAS 100% DINÂMICOS & CONCRETOS -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-          <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
-            <div>
-              <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">APOIADORES REAIS</p>
-              <p id="metricTotalSupporters" class="text-2xl sm:text-3xl font-black text-slate-900 mt-0.5">0</p>
-              <p id="metricScopeNotice" class="text-[10px] text-emerald-600 font-bold mt-0.5">Calculado do seu escopo</p>
-            </div>
-            <div class="w-11 h-11 sm:w-12 sm:h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl">
-              <i class="fa-solid fa-users"></i>
-            </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+          <div class="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs flex-1 sm:flex-none">
+            <i class="fa-solid fa-filter text-slate-400 mr-1.5 text-[11px]"></i>
+            <select id="accessLevelSelect" onchange="simulateAccessChange(this.value)" class="bg-transparent text-slate-800 font-bold focus:outline-none cursor-pointer text-[11px] w-full sm:w-auto truncate">
+              <option value="admin">👑 Visão do Candidato (Acesso a Tudo)</option>
+              <option value="regional1">📍 Coord. Zona Norte (Apenas Norte)</option>
+              <option value="regional2">🐾 Líder Várzea (Apenas Várzea / Causa)</option>
+            </select>
           </div>
 
-          <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
-            <div>
-              <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">LÍDERES & ATIVISTAS</p>
-              <p id="metricLeadersCount" class="text-2xl sm:text-3xl font-black text-slate-900 mt-0.5">0</p>
-              <p class="text-[10px] text-slate-500 font-medium mt-0.5">Em campo no bairro</p>
-            </div>
-            <div class="w-11 h-11 sm:w-12 sm:h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl">
-              <i class="fa-solid fa-bullhorn"></i>
-            </div>
-          </div>
+          <button id="btnCriarSenha" onclick="openNewUserModal()" class="px-2.5 sm:px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-[11px] sm:text-xs font-semibold rounded-lg shadow-sm flex items-center gap-1 shrink-0" title="Criar login de acesso">
+            <i class="fa-solid fa-key text-[10px]"></i>
+            <span>Criar Senha</span>
+          </button>
 
-          <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
-            <div>
-              <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">CAUSAS ATIVAS</p>
-              <p id="metricCausesCount" class="text-2xl sm:text-3xl font-black text-slate-900 mt-0.5">0</p>
-              <p class="text-[10px] text-amber-600 font-medium mt-0.5">Projetos em andamento</p>
-            </div>
-            <div class="w-11 h-11 sm:w-12 sm:h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-xl">
-              <i class="fa-solid fa-seedling"></i>
-            </div>
-          </div>
+          <!-- BOTÃO 1: NOVA CAUSA -->
+          <button onclick="openNewCauseModal()" class="px-2.5 sm:px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white text-[11px] sm:text-xs font-bold rounded-lg shadow-sm flex items-center gap-1 shrink-0" title="Cadastrar nova causa/projeto">
+            <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i>
+            <span>Nova Causa</span>
+          </button>
 
-          <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
-            <div>
-              <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">DOAÇÕES / RECURSOS</p>
-              <p id="metricDonationsCount" class="text-2xl sm:text-3xl font-black text-slate-900 mt-0.5">0</p>
-              <p class="text-[10px] text-purple-600 font-medium mt-0.5">Itens & alimentos</p>
-            </div>
-            <div class="w-11 h-11 sm:w-12 sm:h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center text-xl">
-              <i class="fa-solid fa-box-open"></i>
-            </div>
-          </div>
+          <!-- BOTÃO 2: NOVO APOIADOR -->
+          <button onclick="openModalForNew()" class="px-2.5 sm:px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs font-bold rounded-lg shadow-sm flex items-center gap-1 shrink-0" title="Cadastrar novo apoiador">
+            <i class="fa-solid fa-user-plus text-[10px]"></i>
+            <span>Novo Apoiador</span>
+          </button>
         </div>
+      </header>
 
-        <!-- HUB VISUAL COM CARDS GRANDES DE CAUSAS (VISUAL JOVEM, CATIVANTE E DE FÁCIL COMPREENSÃO) -->
-        <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs space-y-4">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-            <div>
-              <h2 class="text-base sm:text-lg font-black text-slate-900">Selecione uma Causa para Filtrar a Rede</h2>
-              <p class="text-xs text-slate-400">Toque no card grande da causa para ver as pessoas e doações vinculadas</p>
-            </div>
-            <button onclick="resetCauseFilter()" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition">
-              Mostrar Todas
-            </button>
-          </div>
-
-          <!-- Cards Grandes e Ilustrados -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5" id="bigCausesGrid"></div>
+      <!-- Sub-Barra de Limitação de Escopo -->
+      <div class="bg-slate-100/70 border-b border-slate-200 px-4 sm:px-6 py-2 flex flex-wrap items-center justify-between gap-1 text-xs">
+        <div class="flex items-center space-x-2 truncate">
+          <span id="tagLevelPill" class="bg-purple-100 text-purple-800 font-bold px-2 py-0.5 rounded text-[10px] uppercase shrink-0">VISÃO GERAL</span>
+          <span id="tagLevelDescription" class="text-slate-600 font-semibold text-[11px] truncate">Exibindo números consolidados de toda a cidade (Acesso Geral do Candidato).</span>
         </div>
+        <button onclick="openPublicRegistrationLinkDirect()" class="text-emerald-700 hover:text-emerald-800 font-bold text-[11px] flex items-center gap-1">
+          <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Abrir Link Público de Rua
+        </button>
+      </div>
 
-        <!-- LISTA CONCRETA DE APOIADORES & PARCERIAS COM EMPRESAS/ONGS -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      <!-- CONTEÚDO PRINCIPAL -->
+      <main class="p-3 sm:p-6 space-y-5 max-w-7xl w-full">
+
+        <!-- ABA 1: VISÃO GERAL -->
+        <section id="tabContentVisaoGeral" class="space-y-5">
           
-          <!-- Tabela com Nomes Reais Concretos -->
-          <div class="lg:col-span-8 bg-white rounded-3xl border border-slate-200 p-5 shadow-xs flex flex-col">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
-              <div>
-                <h3 class="font-black text-slate-900 text-sm">Pessoas Registradas sob seu Comando</h3>
-                <p class="text-[11px] text-slate-400">Mostrando registros reais do banco de dados</p>
-              </div>
-              <button onclick="switchTab('membros')" class="text-xs font-bold text-emerald-600 hover:text-emerald-700">Ver todas na tabela</button>
-            </div>
-
-            <div class="overflow-x-auto -mx-5 sm:mx-0">
-              <table class="w-full text-left border-collapse text-xs min-w-[500px]">
-                <thead>
-                  <tr class="text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100">
-                    <th class="py-2.5 px-3 font-bold">NOME / CAUSA</th>
-                    <th class="py-2.5 px-3 font-bold">BAIRRO</th>
-                    <th class="py-2.5 px-3 font-bold">LÍDER RESPONSÁVEL</th>
-                    <th class="py-2.5 px-3 font-bold">DOAÇÃO / APOIO</th>
-                    <th class="py-2.5 px-3 font-bold text-right">AÇÃO</th>
-                  </tr>
-                </thead>
-                <tbody id="overviewTableBody" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Empresas e ONGs Parceiras (Item do Áudio) -->
-          <div class="lg:col-span-4 bg-white rounded-3xl border border-slate-200 p-5 shadow-xs flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
-                <div class="flex items-center space-x-2">
-                  <div class="w-7 h-7 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center text-xs font-bold">
-                    <i class="fa-solid fa-building-ngo"></i>
-                  </div>
-                  <div>
-                    <h3 class="font-black text-slate-900 text-xs uppercase">Empresas & ONGs</h3>
-                    <p class="text-[10px] text-slate-400">Parcerias e Apoio Local</p>
-                  </div>
-                </div>
-                <span id="partnersBadgeCount" class="px-2 py-0.5 bg-teal-100 text-teal-800 text-[10px] font-bold rounded-full">0</span>
-              </div>
-
-              <div class="space-y-2.5" id="partnersListContainer"></div>
-            </div>
-
-            <div class="mt-4 pt-3 border-t border-slate-100">
-              <button onclick="switchTab('filiacao')" class="w-full py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-qrcode text-xs"></i>
-                <span>Gerar Link para Captação de Rua</span>
-              </button>
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- ABA 2: HUB DETALHADO DE CAUSAS & MINI-PROJETOS -->
-      <section id="tabContentCausas" class="hidden space-y-5">
-        <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
-          
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
-            <div>
-              <h2 class="text-base sm:text-lg font-black text-slate-900">Causas, Mini-Projetos & Ações em Campo</h2>
-              <p class="text-xs text-slate-400">Cada projeto reúne ativistas, doações de mantimentos e voluntários de bairro</p>
-            </div>
-            <button onclick="openModalForNew()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm flex items-center justify-center gap-1.5 shrink-0">
-              <i class="fa-solid fa-plus text-[10px]"></i>
-              <span>Vincular Nova Causa / Equipe</span>
-            </button>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5" id="causesFullGrid"></div>
-
-        </div>
-      </section>
-
-      <!-- ABA 3: ORGANOGRAMA EM ÁRVORE (QUEM RESPONDE A QUEM) -->
-      <section id="tabContentOrganograma" class="hidden space-y-5">
-        <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
-          
-          <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100 mb-4">
-            <div class="flex items-center space-x-3">
-              <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold">
-                <i class="fa-solid fa-sitemap"></i>
-              </div>
-              <div>
-                <h2 class="text-sm sm:text-base font-black text-slate-900">Linha de Comando & Articulação de Bairro</h2>
-                <p class="text-xs text-slate-400">Acompanhe quem coordena cada ativista e equipe</p>
-              </div>
-            </div>
-            <div class="flex items-center gap-1.5">
-              <button onclick="expandAllTree(true)" class="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition">
-                Expandir Tudo
-              </button>
-              <button onclick="expandAllTree(false)" class="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition">
-                Recolher
-              </button>
-            </div>
-          </div>
-
-          <div id="treeContainer" class="p-1 space-y-3"></div>
-
-        </div>
-      </section>
-
-      <!-- ABA 4: REDE COMPLETA DE APOIADORES & FILTROS -->
-      <section id="tabContentMembros" class="hidden space-y-5">
-        <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
-          
-          <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 mb-4">
-            <div class="relative flex-1">
-              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
-              <input type="text" id="memberSearchInput" oninput="renderMembersTable()" placeholder="Pesquisar por nome, telefone, líder, causa ou bairro..." class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white transition">
-            </div>
-
-            <div class="flex items-center gap-2">
-              <select id="memberSectorFilter" onchange="renderMembersTable()" class="flex-1 sm:flex-none px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none cursor-pointer">
-                <option value="all">Todos os Bairros</option>
-                <option value="Várzea">Várzea</option>
-                <option value="Cordeiro">Cordeiro</option>
-                <option value="Casa Amarela">Casa Amarela</option>
-                <option value="Boa Viagem">Boa Viagem</option>
-                <option value="Pina">Pina</option>
-                <option value="Afogados">Afogados</option>
-              </select>
-
-              <button onclick="openModalForNew()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm flex items-center justify-center gap-1 shrink-0">
-                <i class="fa-solid fa-plus text-[10px]"></i>
-                <span>Novo Apoiador</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Tabela Completa -->
-          <div class="overflow-x-auto -mx-5 sm:mx-0">
-            <table class="w-full text-left border-collapse text-xs min-w-[650px]">
-              <thead>
-                <tr class="text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100 bg-slate-50/50">
-                  <th class="py-3 px-3 font-bold">NOME / CAUSA VINCULADA</th>
-                  <th class="py-3 px-3 font-bold">FUNÇÃO / PAPEL</th>
-                  <th class="py-3 px-3 font-bold">BAIRRO</th>
-                  <th class="py-3 px-3 font-bold">LÍDER DIRETO</th>
-                  <th class="py-3 px-3 font-bold">DOAÇÃO / RECURSO</th>
-                  <th class="py-3 px-3 font-bold text-right">AÇÕES</th>
-                </tr>
-              </thead>
-              <tbody id="fullMembersTableBody" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
-            </table>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- ABA 5: PONTO DE FILIAÇÃO (LINK DO ATIVISTA & WHATSAPP) -->
-      <section id="tabContentFiliacao" class="hidden space-y-5">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-          
-          <div class="lg:col-span-5 bg-white rounded-3xl border border-slate-200 p-6 shadow-xs space-y-4">
-            <div class="pb-3 border-b border-slate-100">
-              <span class="inline-block px-3 py-1 bg-teal-50 text-teal-700 text-[10px] font-black rounded-full uppercase mb-1">
-                Captação Direta de Rua
+          <div class="relative bg-gradient-to-r from-[#0a1120] to-[#122338] text-white rounded-3xl p-5 sm:p-7 shadow-sm overflow-hidden border border-slate-800">
+            <div class="relative z-10 max-w-2xl">
+              <span class="inline-block bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider mb-2">
+                PAINEL DE RESULTADOS & MOBILIZAÇÃO
               </span>
-              <h2 class="text-base font-black text-slate-900">Gerador de Link de Filiação</h2>
-              <p class="text-xs text-slate-400">Cada ativista tem o seu próprio link para cadastrar apoiadores no bairro.</p>
+              <h1 id="bannerTitle" class="text-xl sm:text-2xl font-black text-white leading-tight">Visão Geral da Rede Comunitária</h1>
+              <p id="bannerSubtitle" class="text-xs text-slate-300 mt-1.5 leading-relaxed">
+                Métricas calculadas exclusivamente com base nas pessoas e projetos sob sua responsabilidade.
+              </p>
+            </div>
+            <div class="absolute right-4 -bottom-6 text-white/5 text-8xl sm:text-9xl pointer-events-none">
+              <i class="fa-solid fa-hands-holding-circle"></i>
+            </div>
+          </div>
+
+          <!-- 4 CARTÕES DE MÉTRICAS -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
+              <div>
+                <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">APOIADORES REAIS</p>
+                <p id="metricTotalSupporters" class="text-2xl sm:text-3xl font-black text-slate-900 mt-0.5">0</p>
+                <p id="metricScopeNotice" class="text-[10px] text-emerald-600 font-bold mt-0.5">Calculado do seu escopo</p>
+              </div>
+              <div class="w-11 h-11 sm:w-12 sm:h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl">
+                <i class="fa-solid fa-users"></i>
+              </div>
             </div>
 
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Liderança / Ativista que vai convidar:</label>
-              <select id="affiliateLeaderSelect" onchange="updateAffiliateLinkUI()" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-emerald-600">
-                <option value="donamaria">🐾 Dona Maria da Várzea (Causa Animal)</option>
-                <option value="marcoslider">🍲 Marcos Líder Social (Ação Social & Sopão)</option>
-                <option value="paonosso">🍞 Equipe Pão Nosso (Alimentos & Fubá)</option>
-                <option value="helenaramos">🌳 Profª Helena Ramos (Zona Norte)</option>
-              </select>
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
+              <div>
+                <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">LÍDERES & ATIVISTAS</p>
+                <p id="metricLeadersCount" class="text-2xl sm:text-3xl font-black text-slate-900 mt-0.5">0</p>
+                <p class="text-[10px] text-slate-500 font-medium mt-0.5">Em campo no bairro</p>
+              </div>
+              <div class="w-11 h-11 sm:w-12 sm:h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl">
+                <i class="fa-solid fa-bullhorn"></i>
+              </div>
             </div>
 
-            <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2">
-              <p class="text-[10px] font-bold text-slate-400 uppercase">Link Rastreável da Liderança:</p>
-              <div class="flex items-center gap-1.5">
-                <input type="text" id="generatedLinkInput" readonly class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-mono text-emerald-700 select-all" value="https://painel-gestao.vercel.app/#cadastro?ref=donamaria">
-                <button onclick="copyGeneratedLink()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shrink-0">
-                  <i class="fa-solid fa-copy"></i>
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
+              <div>
+                <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">CAUSAS ATIVAS</p>
+                <p id="metricCausesCount" class="text-2xl sm:text-3xl font-black text-slate-900 mt-0.5">0</p>
+                <p class="text-[10px] text-amber-600 font-medium mt-0.5">Projetos em andamento</p>
+              </div>
+              <div class="w-11 h-11 sm:w-12 sm:h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-xl">
+                <i class="fa-solid fa-seedling"></i>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex items-center justify-between">
+              <div>
+                <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">DOAÇÕES / RECURSOS</p>
+                <p id="metricDonationsCount" class="text-2xl sm:text-3xl font-black text-slate-900 mt-0.5">0</p>
+                <p class="text-[10px] text-purple-600 font-medium mt-0.5">Itens & alimentos</p>
+              </div>
+              <div class="w-11 h-11 sm:w-12 sm:h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center text-xl">
+                <i class="fa-solid fa-box-open"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- HUB VISUAL COM CARDS GRANDES DE CAUSAS -->
+          <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div>
+                <h2 class="text-base sm:text-lg font-black text-slate-900">Selecione uma Causa para Filtrar a Rede</h2>
+                <p class="text-xs text-slate-400">Toque no card grande da causa para ver as pessoas e doações vinculadas</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="openNewCauseModal()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition flex items-center gap-1 shadow-xs">
+                  <i class="fa-solid fa-plus text-[10px]"></i>
+                  <span>Nova Causa</span>
+                </button>
+                <button onclick="resetCauseFilter()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition">
+                  Mostrar Todas
                 </button>
               </div>
             </div>
 
-            <button onclick="shareLinkWhatsApp()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition">
-              <i class="fa-brands fa-whatsapp text-sm"></i>
-              <span>Enviar pelo WhatsApp da Pessoa</span>
-            </button>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5" id="bigCausesGrid"></div>
           </div>
 
-          <!-- Simulador do Formulário de Rua -->
-          <div class="lg:col-span-7 bg-white rounded-3xl border border-slate-200 p-6 shadow-xs">
-            <div class="pb-3 border-b border-slate-100 flex items-center justify-between mb-4">
-              <div>
-                <h3 class="text-sm font-black text-slate-900">Formulário de Rua (Visão do Apoiador)</h3>
-                <p class="text-xs text-slate-400">Preenchido em menos de 1 minuto pelo celular</p>
+          <!-- LISTA CONCRETA DE APOIADORES & PARCERIAS COM EMPRESAS/ONGS -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            
+            <div class="lg:col-span-8 bg-white rounded-3xl border border-slate-200 p-5 shadow-xs flex flex-col">
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
+                <div>
+                  <h3 class="font-black text-slate-900 text-sm">Pessoas Registradas sob seu Comando</h3>
+                  <p class="text-[11px] text-slate-400">Mostrando registros reais do banco de dados</p>
+                </div>
+                <button onclick="switchTab('membros')" class="text-xs font-bold text-emerald-600 hover:text-emerald-700">Ver todas na tabela</button>
               </div>
-              <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-black rounded-md">LINK PÚBLICO</span>
+
+              <div class="overflow-x-auto -mx-5 sm:mx-0">
+                <table class="w-full text-left border-collapse text-xs min-w-[500px]">
+                  <thead>
+                    <tr class="text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100">
+                      <th class="py-2.5 px-3 font-bold">NOME / CAUSA</th>
+                      <th class="py-2.5 px-3 font-bold">BAIRRO</th>
+                      <th class="py-2.5 px-3 font-bold">LÍDER RESPONSÁVEL</th>
+                      <th class="py-2.5 px-3 font-bold">DOAÇÃO / APOIO</th>
+                      <th class="py-2.5 px-3 font-bold text-right">AÇÃO</th>
+                    </tr>
+                  </thead>
+                  <tbody id="overviewTableBody" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
+                </table>
+              </div>
             </div>
 
-            <form onsubmit="handlePublicRegistration(event)" class="space-y-3.5 bg-slate-50 p-5 rounded-2xl border border-slate-200">
-              <div class="text-center pb-2.5 border-b border-slate-200">
-                <p class="text-xs font-black text-slate-800">Participe das Ações Comunitárias</p>
-                <p id="publicFormReferralText" class="text-[11px] text-emerald-600 font-bold mt-0.5">Convidado por: Dona Maria da Várzea</p>
+            <div class="lg:col-span-4 bg-white rounded-3xl border border-slate-200 p-5 shadow-xs flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
+                  <div class="flex items-center space-x-2">
+                    <div class="w-7 h-7 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center text-xs font-bold">
+                      <i class="fa-solid fa-building-ngo"></i>
+                    </div>
+                    <div>
+                      <h3 class="font-black text-slate-900 text-xs uppercase">Empresas & ONGs</h3>
+                      <p class="text-[10px] text-slate-400">Parcerias e Apoio Local</p>
+                    </div>
+                  </div>
+                  <span id="partnersBadgeCount" class="px-2 py-0.5 bg-teal-100 text-teal-800 text-[10px] font-bold rounded-full">0</span>
+                </div>
+
+                <div class="space-y-2.5" id="partnersListContainer"></div>
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-slate-100">
+                <button onclick="switchTab('filiacao')" class="w-full py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
+                  <i class="fa-solid fa-share-nodes text-xs"></i>
+                  <span>Gerar Link do seu Ativista</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- ABA 2: HUB DETALHADO DE CAUSAS & MINI-PROJETOS -->
+        <section id="tabContentCausas" class="hidden space-y-5">
+          <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+              <div>
+                <h2 class="text-base sm:text-lg font-black text-slate-900">Causas, Mini-Projetos & Ações em Campo</h2>
+                <p class="text-xs text-slate-400">Cada projeto reúne ativistas, doações de mantimentos e voluntários de bairro</p>
+              </div>
+              <button onclick="openNewCauseModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-600/25 flex items-center justify-center gap-1.5 shrink-0">
+                <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
+                <span>+ Criar Nova Causa</span>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5" id="causesFullGrid"></div>
+
+          </div>
+        </section>
+
+        <!-- ABA 3: ORGANOGRAMA EM ÁRVORE -->
+        <section id="tabContentOrganograma" class="hidden space-y-5">
+          <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
+            
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100 mb-4">
+              <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold">
+                  <i class="fa-solid fa-sitemap"></i>
+                </div>
+                <div>
+                  <h2 class="text-sm sm:text-base font-black text-slate-900">Linha de Comando & Articulação de Bairro</h2>
+                  <p class="text-xs text-slate-400">Acompanhe quem coordena cada ativista e equipe</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button onclick="expandAllTree(true)" class="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition">
+                  Expandir Tudo
+                </button>
+                <button onclick="expandAllTree(false)" class="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition">
+                  Recolher
+                </button>
+              </div>
+            </div>
+
+            <div id="treeContainer" class="p-1 space-y-3"></div>
+
+          </div>
+        </section>
+
+        <!-- ABA 4: REDE COMPLETA DE APOIADORES -->
+        <section id="tabContentMembros" class="hidden space-y-5">
+          <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
+            
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 mb-4">
+              <div class="relative flex-1">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                <input type="text" id="memberSearchInput" oninput="renderMembersTable()" placeholder="Pesquisar por nome, telefone, líder, causa ou bairro..." class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white transition">
+              </div>
+
+              <div class="flex items-center gap-2">
+                <select id="memberSectorFilter" onchange="renderMembersTable()" class="flex-1 sm:flex-none px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none cursor-pointer">
+                  <option value="all">Todos os Bairros</option>
+                  <option value="Várzea">Várzea</option>
+                  <option value="Cordeiro">Cordeiro</option>
+                  <option value="Casa Amarela">Casa Amarela</option>
+                  <option value="Boa Viagem">Boa Viagem</option>
+                  <option value="Pina">Pina</option>
+                  <option value="Afogados">Afogados</option>
+                </select>
+
+                <button onclick="openModalForNew()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm flex items-center justify-center gap-1 shrink-0">
+                  <i class="fa-solid fa-plus text-[10px]"></i>
+                  <span>Novo Apoiador</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto -mx-5 sm:mx-0">
+              <table class="w-full text-left border-collapse text-xs min-w-[650px]">
+                <thead>
+                  <tr class="text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100 bg-slate-50/50">
+                    <th class="py-3 px-3 font-bold">NOME / CAUSA VINCULADA</th>
+                    <th class="py-3 px-3 font-bold">FUNÇÃO / PAPEL</th>
+                    <th class="py-3 px-3 font-bold">BAIRRO</th>
+                    <th class="py-3 px-3 font-bold">LÍDER DIRETO</th>
+                    <th class="py-3 px-3 font-bold">DOAÇÃO / RECURSO</th>
+                    <th class="py-3 px-3 font-bold text-right">AÇÕES</th>
+                  </tr>
+                </thead>
+                <tbody id="fullMembersTableBody" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
+              </table>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ABA 5: PONTO DE FILIAÇÃO (LINK DO ATIVISTA & WHATSAPP) -->
+        <section id="tabContentFiliacao" class="hidden space-y-5">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            
+            <div class="lg:col-span-5 bg-white rounded-3xl border border-slate-200 p-6 shadow-xs space-y-4">
+              <div class="pb-3 border-b border-slate-100">
+                <span class="inline-block px-3 py-1 bg-teal-50 text-teal-700 text-[10px] font-black rounded-full uppercase mb-1">
+                  Captação Direta de Rua
+                </span>
+                <h2 class="text-base font-black text-slate-900">Gerador de Link de Filiação</h2>
+                <p class="text-xs text-slate-400">Cada ativista tem o seu próprio link para cadastrar apoiadores no bairro.</p>
               </div>
 
               <div>
-                <label class="block text-[11px] font-bold text-slate-700 mb-1">Seu Nome Completo</label>
-                <input type="text" id="pubName" required placeholder="Digite seu nome completo" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600">
-              </div>
-
-              <div class="grid grid-cols-2 gap-2.5">
-                <div>
-                  <label class="block text-[11px] font-bold text-slate-700 mb-1">WhatsApp</label>
-                  <input type="text" id="pubPhone" required placeholder="(81) 99999-0000" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600">
-                </div>
-                <div>
-                  <label class="block text-[11px] font-bold text-slate-700 mb-1">Bairro Onde Mora</label>
-                  <input type="text" id="pubNeighborhood" required placeholder="Ex: Várzea / Cordeiro" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600">
-                </div>
-              </div>
-
-              <div>
-                <label class="block text-[11px] font-bold text-slate-700 mb-1">Qual Causa Deseja Apoiar?</label>
-                <select id="pubCause" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-emerald-600">
-                  <option value="Causa Animal (100 Gatos)">🐾 Causa Animal (100 Gatos da Várzea)</option>
-                  <option value="Ação Social & Sopão">🍲 Ação Social & Sopão Comunitário</option>
-                  <option value="Pão Nosso & Fubá">🍞 Pão Nosso de Cada Dia (Alimentos / Fubá)</option>
-                  <option value="Cultura & Dança">🎭 Cultura, Dança & Teatro para Jovens</option>
-                  <option value="Meio Ambiente & Praças">🌱 Meio Ambiente & Limpeza de Praças</option>
-                  <option value="Saúde nos Bairros">🩺 Saúde Comunitária nos Bairros</option>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Liderança / Ativista que vai convidar:</label>
+                <select id="affiliateLeaderSelect" onchange="updateAffiliateLinkUI()" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-emerald-600">
+                  <option value="donamaria">🐾 Dona Maria da Várzea (Causa Animal)</option>
+                  <option value="marcoslider">🍲 Marcos Líder Social (Ação Social & Sopão)</option>
+                  <option value="paonosso">🍞 Equipe Pão Nosso (Alimentos & Fubá)</option>
+                  <option value="helenaramos">🌳 Profª Helena Ramos (Zona Norte)</option>
                 </select>
               </div>
 
-              <div>
-                <label class="block text-[11px] font-bold text-slate-700 mb-1">Doação ou Recurso para a Ação:</label>
-                <input type="text" id="pubDonation" placeholder="Ex: 2kg de fubá / pacote de ração / voluntariado" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600">
+              <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2">
+                <p class="text-[10px] font-bold text-slate-400 uppercase">Link Rastreável da Liderança:</p>
+                <div class="flex items-center gap-1.5">
+                  <input type="text" id="generatedLinkInput" readonly class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-mono text-emerald-700 select-all" value="">
+                  <button onclick="copyGeneratedLink()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shrink-0" title="Copiar link">
+                    <i class="fa-solid fa-copy"></i>
+                  </button>
+                  <button onclick="openCurrentGeneratedLink()" class="px-3.5 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-xl shrink-0" title="Testar link público">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  </button>
+                </div>
               </div>
 
-              <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md transition">
-                Confirmar Cadastro & Apoio
+              <button onclick="shareLinkWhatsApp()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+                <span>Enviar pelo WhatsApp da Pessoa</span>
               </button>
-            </form>
-          </div>
+            </div>
 
-        </div>
-      </section>
-
-      <!-- ABA 6: GESTÃO DE SENHAS (SOMENTE ADMIN) -->
-      <section id="tabContentUsuarios" class="hidden space-y-5">
-        <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
-          
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
-            <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl shadow-xs">
-                <i class="fa-solid fa-key"></i>
-              </div>
+            <!-- Como Funciona a Captação Sem Senha -->
+            <div class="lg:col-span-7 bg-white rounded-3xl border border-slate-200 p-6 shadow-xs flex flex-col justify-between space-y-4">
               <div>
-                <h2 class="text-sm sm:text-base font-black text-slate-900">Gestão de Senhas e Acessos</h2>
-                <p class="text-xs text-slate-400">Controle de credenciais de coordenadores e ativistas.</p>
+                <div class="pb-3 border-b border-slate-100 flex items-center justify-between mb-4">
+                  <div>
+                    <h3 class="text-sm font-black text-slate-900">Como Funciona o Link Sem Senha para o Apoiador</h3>
+                    <p class="text-xs text-slate-400">Fluxo simplificado para uso rápido na rua</p>
+                  </div>
+                  <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-black rounded-md">ACESSO PÚBLICO</span>
+                </div>
+
+                <div class="space-y-3">
+                  <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-bold shrink-0">1</div>
+                    <div>
+                      <h4 class="text-xs font-bold text-slate-800">Envio Direto pelo WhatsApp</h4>
+                      <p class="text-[11px] text-slate-500 mt-0.5">O ativista clica em "Enviar pelo WhatsApp" e manda o link para o vizinho ou comerciante.</p>
+                    </div>
+                  </div>
+
+                  <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-sm font-bold shrink-0">2</div>
+                    <div>
+                      <h4 class="text-xs font-bold text-slate-800">Abertura Sem Senha</h4>
+                      <p class="text-[11px] text-slate-500 mt-0.5">O apoiador abre o link no celular e NÃO precisa de login nem senha. Ele vê apenas a página de cadastro do movimento.</p>
+                    </div>
+                  </div>
+
+                  <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-sm font-bold shrink-0">3</div>
+                    <div>
+                      <h4 class="text-xs font-bold text-slate-800">Confirmação Imediata no Painel</h4>
+                      <p class="text-[11px] text-slate-500 mt-0.5">Ao preencher nome, bairro e doação (ex: 2kg de fubá), o cadastro cai direto na árvore do líder que enviou o link.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-3 border-t border-slate-100">
+                <button onclick="openCurrentGeneratedLink()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-mobile-screen-button"></i>
+                  <span>Testar Tela Pública do Apoiador Agora</span>
+                </button>
               </div>
             </div>
-            <button onclick="openNewUserModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm flex items-center justify-center gap-1.5 shrink-0">
-              <i class="fa-solid fa-plus text-[10px]"></i>
-              <span>Criar Novo Login</span>
-            </button>
+
           </div>
+        </section>
 
-          <div class="mt-4 overflow-x-auto -mx-5 sm:mx-0">
-            <table class="w-full text-left border-collapse text-xs min-w-[600px]">
-              <thead>
-                <tr class="text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100 bg-slate-50/50">
-                  <th class="py-2.5 px-3 font-bold">NOME / IDENTIFICAÇÃO</th>
-                  <th class="py-2.5 px-3 font-bold">LOGIN</th>
-                  <th class="py-2.5 px-3 font-bold">SENHA</th>
-                  <th class="py-2.5 px-3 font-bold">PAPEL ATRIBUÍDO</th>
-                  <th class="py-2.5 px-3 font-bold">ESCOPO DE VISÃO</th>
-                  <th class="py-2.5 px-3 font-bold text-right">AÇÕES</th>
-                </tr>
-              </thead>
-              <tbody id="usersTableBody" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
-            </table>
+        <!-- ABA 6: GESTÃO DE SENHAS (SOMENTE ADMIN) -->
+        <section id="tabContentUsuarios" class="hidden space-y-5">
+          <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl shadow-xs">
+                  <i class="fa-solid fa-key"></i>
+                </div>
+                <div>
+                  <h2 class="text-sm sm:text-base font-black text-slate-900">Gestão de Senhas e Acessos</h2>
+                  <p class="text-xs text-slate-400">Controle de credenciais de coordenadores e ativistas.</p>
+                </div>
+              </div>
+              <button onclick="openNewUserModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm flex items-center justify-center gap-1.5 shrink-0">
+                <i class="fa-solid fa-plus text-[10px]"></i>
+                <span>Criar Novo Login</span>
+              </button>
+            </div>
+
+            <div class="mt-4 overflow-x-auto -mx-5 sm:mx-0">
+              <table class="w-full text-left border-collapse text-xs min-w-[600px]">
+                <thead>
+                  <tr class="text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100 bg-slate-50/50">
+                    <th class="py-2.5 px-3 font-bold">NOME / IDENTIFICAÇÃO</th>
+                    <th class="py-2.5 px-3 font-bold">LOGIN</th>
+                    <th class="py-2.5 px-3 font-bold">SENHA</th>
+                    <th class="py-2.5 px-3 font-bold">PAPEL ATRIBUÍDO</th>
+                    <th class="py-2.5 px-3 font-bold">ESCOPO DE VISÃO</th>
+                    <th class="py-2.5 px-3 font-bold text-right">AÇÕES</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
+              </table>
+            </div>
+
           </div>
+        </section>
 
-        </div>
-      </section>
+      </main>
 
-    </main>
-
+    </div>
   </div>
 
   <!-- MODAL DE CRIAÇÃO/EDIÇÃO DE USUÁRIO E SENHA -->
@@ -730,14 +821,14 @@
     </div>
   </div>
 
-  <!-- MODAL DE CADASTRO MANUAL -->
+  <!-- MODAL DE CADASTRO MANUAL DE APOIADOR -->
   <div id="editModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
     <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden p-5 sm:p-6">
       
       <div class="pb-3 border-b border-slate-100 flex items-center justify-between">
         <div>
           <h3 id="modalHeading" class="font-black text-slate-900 text-sm">Registrar Novo Apoiador</h3>
-          <p class="text-[10px] text-slate-400">Preencha os dados de campo</p>
+          <p class="text-[10px] text-slate-400">Preencha os dados do voluntário</p>
         </div>
         <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
       </div>
@@ -746,13 +837,13 @@
         <input type="hidden" id="recordId" value="">
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Nome Completo</label>
-          <input type="text" id="fieldName" required placeholder="Digite o nome" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white">
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nome Completo *</label>
+          <input type="text" id="fieldName" required placeholder="Digite o nome completo da pessoa" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white">
         </div>
 
         <div class="grid grid-cols-2 gap-2.5">
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">WhatsApp</label>
+            <label class="block text-xs font-bold text-slate-700 mb-1">WhatsApp *</label>
             <input type="text" id="fieldPhone" required placeholder="(81) 99999-0000" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white">
           </div>
           <div>
@@ -768,17 +859,17 @@
 
         <div class="grid grid-cols-2 gap-2.5">
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Bairro</label>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Bairro *</label>
             <input type="text" id="fieldRegion" required placeholder="Ex: Várzea / Cordeiro" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Líder Direto</label>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Líder Direto *</label>
             <input type="text" id="fieldLeader" required placeholder="Ex: Dona Maria da Várzea" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-600 focus:bg-white">
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Causa</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Causa que irá apoiar *</label>
           <select id="fieldCause" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-emerald-600">
             <option value="Causa Animal (100 Gatos)">🐾 Causa Animal (100 Gatos)</option>
             <option value="Ação Social & Sopão">🍲 Ação Social & Sopão</option>
@@ -796,15 +887,93 @@
 
         <div class="pt-2 border-t border-slate-100 flex justify-end gap-2">
           <button type="button" onclick="closeEditModal()" class="px-3.5 py-2 text-xs text-slate-600 hover:bg-slate-100 rounded-xl font-bold">Cancelar</button>
-          <button type="submit" class="px-4 py-2 text-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-sm">Guardar</button>
+          <button type="submit" class="px-4 py-2 text-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-sm">Guardar Apoiador</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- JAVASCRIPT DINÂMICO COM MÉTRICAS 100% REAIS E ISOLADAS POR ESCOPO -->
+  <!-- MODAL DE CADASTRO INTELIGENTE DE NOVA CAUSA (DETECÇÃO AUTOMÁTICA DE ÍCONE) -->
+  <div id="causeModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden p-6 relative">
+      
+      <div class="pb-3 border-b border-slate-100 flex items-center justify-between">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg font-bold">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-slate-900 text-sm">Criar Nova Causa / Projeto</h3>
+            <p class="text-[10px] text-slate-400">O sistema identifica o tema e escolhe o ícone automaticamente</p>
+          </div>
+        </div>
+        <button onclick="closeCauseModal()" class="text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Preview Dinâmico do Card da Causa -->
+      <div class="mt-4 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+        <span class="text-[10px] font-black uppercase text-slate-400 tracking-wider block mb-2">Pré-Visualização do Card Gerado:</span>
+        <div id="causePreviewCard" class="bg-white rounded-2xl p-4 border border-slate-200 flex items-center gap-3.5 shadow-xs">
+          <div id="causePreviewIconBox" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-500 text-white flex items-center justify-center text-xl shadow-md shrink-0">
+            <i id="causePreviewIcon" class="fa-solid fa-handshake-angle"></i>
+          </div>
+          <div class="truncate flex-1">
+            <h4 id="causePreviewTitle" class="font-black text-slate-900 text-xs sm:text-sm truncate">Nome da Causa</h4>
+            <p id="causePreviewDesc" class="text-[11px] text-slate-400 truncate mt-0.5">Descrição do projeto comunitário</p>
+          </div>
+          <span id="causePreviewCategory" class="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-bold rounded-lg shrink-0">Comunitário</span>
+        </div>
+      </div>
+
+      <form id="causeForm" onsubmit="handleSaveCause(event)" class="mt-4 space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nome da Causa / Projeto *</label>
+          <input type="text" id="causeNameInput" oninput="onCauseNameTyped(this.value)" required placeholder="Ex: Escolinha de Futebol da Várzea, Apoio a Mães Solo, Reforço Escolar" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:outline-none focus:border-emerald-600 focus:bg-white transition shadow-2xs">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Breve Descrição da Ação</label>
+          <input type="text" id="causeDescInput" oninput="document.getElementById('causePreviewDesc').innerText = this.value || 'Descrição do projeto comunitário'" placeholder="Ex: Treinos de futebol e disciplina para crianças aos sábados" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white transition">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Líder / Ativista Responsável</label>
+            <input type="text" id="causeLeaderInput" required placeholder="Ex: Prof. Carlos / Dona Maria" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Recurso / Doações Típicas</label>
+            <input type="text" id="causeDonationInput" placeholder="Ex: Bolas e coletes / 2kg de fubá" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-emerald-600 focus:bg-white">
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-[11px] font-bold text-slate-600">Ou escolha um ícone manualmente:</span>
+            <span id="detectedThemeLabel" class="text-[10px] text-emerald-600 font-bold">Identificado automaticamente</span>
+          </div>
+          <div class="grid grid-cols-8 gap-1.5" id="manualIconChoices">
+            <button type="button" onclick="selectCauseVisual('fa-futbol', 'from-emerald-500 to-green-600', 'bg-emerald-50 text-emerald-700', 'Esporte & Lazer')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-emerald-100 text-slate-700 flex items-center justify-center text-xs transition" title="Esporte"><i class="fa-solid fa-futbol"></i></button>
+            <button type="button" onclick="selectCauseVisual('fa-paw', 'from-amber-500 to-orange-500', 'bg-amber-50 text-amber-700', 'Causa Animal')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-amber-100 text-slate-700 flex items-center justify-center text-xs transition" title="Animal"><i class="fa-solid fa-paw"></i></button>
+            <button type="button" onclick="selectCauseVisual('fa-bowl-food', 'from-rose-500 to-red-600', 'bg-rose-50 text-rose-700', 'Alimentação & Sopão')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-rose-100 text-slate-700 flex items-center justify-center text-xs transition" title="Alimentação"><i class="fa-solid fa-bowl-food"></i></button>
+            <button type="button" onclick="selectCauseVisual('fa-heart-pulse', 'from-blue-600 to-cyan-600', 'bg-blue-50 text-blue-700', 'Saúde Comunitária')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-blue-100 text-slate-700 flex items-center justify-center text-xs transition" title="Saúde"><i class="fa-solid fa-heart-pulse"></i></button>
+            <button type="button" onclick="selectCauseVisual('fa-graduation-cap', 'from-indigo-600 to-blue-700', 'bg-indigo-50 text-indigo-700', 'Educação & Cursos')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-indigo-100 text-slate-700 flex items-center justify-center text-xs transition" title="Educação"><i class="fa-solid fa-graduation-cap"></i></button>
+            <button type="button" onclick="selectCauseVisual('fa-masks-theater', 'from-purple-600 to-indigo-600', 'bg-purple-50 text-purple-700', 'Cultura & Juventude')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-purple-100 text-slate-700 flex items-center justify-center text-xs transition" title="Cultura"><i class="fa-solid fa-masks-theater"></i></button>
+            <button type="button" onclick="selectCauseVisual('fa-tree', 'from-teal-600 to-emerald-700', 'bg-teal-50 text-teal-700', 'Meio Ambiente')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-teal-100 text-slate-700 flex items-center justify-center text-xs transition" title="Meio Ambiente"><i class="fa-solid fa-tree"></i></button>
+            <button type="button" onclick="selectCauseVisual('fa-people-roof', 'from-pink-500 to-rose-600', 'bg-pink-50 text-pink-700', 'Família & Mulheres')" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-pink-100 text-slate-700 flex items-center justify-center text-xs transition" title="Família & Mulheres"><i class="fa-solid fa-people-roof"></i></button>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
+          <button type="button" onclick="closeCauseModal()" class="px-4 py-2 text-xs text-slate-600 hover:bg-slate-100 rounded-xl font-bold">Cancelar</button>
+          <button type="submit" class="px-5 py-2 text-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black shadow-md shadow-emerald-600/30">Salvar e Ativar Causa</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT DINÂMICO COMPLETO -->
   <script>
-    // Usuários cadastrados
     const defaultUsers = [
       { user: "arthur.vinicius", pass: "eleicoes2026", name: "Dr. Arthur Vinicius", role: "Comando Geral", scope: "admin" },
       { user: "helena.ramos", pass: "campanha1", name: "Profª Helena Ramos", role: "Coord. Regional Zona Norte", scope: "regional1" },
@@ -830,29 +999,30 @@
     let currentScope = 'admin';
     let activeTab = 'visaoGeral';
     let activeCauseFilter = null;
+    let currentPublicLeaderKey = 'donamaria';
 
-    // Catálogo Oficial de Causas com Cores e Ícones Grandes
+    const leaderCatalog = {
+      donamaria: { name: "Dona Maria da Várzea", cause: "Causa Animal (100 Gatos)", scope: "regional2", region: "Várzea" },
+      marcoslider: { name: "Marcos Líder Social", cause: "Ação Social & Sopão", scope: "regional2_sul", region: "Boa Viagem" },
+      paonosso: { name: "Equipe Pão Nosso", cause: "Pão Nosso & Fubá", scope: "regional2", region: "Várzea" },
+      helenaramos: { name: "Profª Helena Ramos", cause: "Meio Ambiente & Praças", scope: "regional1", region: "Casa Amarela" }
+    };
+
     const causesCatalog = [
-      { id: "animal", name: "Causa Animal (100 Gatos)", shortDesc: "Acolhimento, vacina e castração na Várzea", leader: "Dona Maria da Várzea", icon: "fa-paw", bgGradient: "from-amber-500 to-orange-500", lightBg: "bg-amber-50 text-amber-700", border: "border-amber-200", defaultScope: "regional2" },
-      { id: "paonosso", name: "Pão Nosso & Fubá", shortDesc: "Arrecadação de fubá, pães e cestas na periferia", leader: "Equipe Pão Nosso", icon: "fa-bread-slice", bgGradient: "from-orange-500 to-amber-600", lightBg: "bg-orange-50 text-orange-700", border: "border-orange-200", defaultScope: "regional2" },
-      { id: "cultura", name: "Cultura & Dança", shortDesc: "Oficinas de teatro e dança para jovens na Várzea", leader: "Coletivo Várzea Viva", icon: "fa-masks-theater", bgGradient: "from-purple-600 to-indigo-600", lightBg: "bg-purple-50 text-purple-700", border: "border-purple-200", defaultScope: "regional2" },
-      { id: "meioambiente", name: "Meio Ambiente & Praças", shortDesc: "Mutirões de limpeza e mudas de árvores", leader: "Profª Helena Ramos", icon: "fa-tree", bgGradient: "from-emerald-600 to-teal-600", lightBg: "bg-emerald-50 text-emerald-700", border: "border-emerald-200", defaultScope: "regional1" },
-      { id: "sopao", name: "Ação Social & Sopão", shortDesc: "Alimentos preparados para pessoas em vulnerabilidade", leader: "Marcos Líder Social", icon: "fa-bowl-food", bgGradient: "from-rose-500 to-red-600", lightBg: "bg-rose-50 text-rose-700", border: "border-rose-200", defaultScope: "regional2_sul" },
-      { id: "saude", name: "Saúde nos Bairros", shortDesc: "Aferição de pressão e apoio preventivo comunitário", leader: "Jorge da Farmácia", icon: "fa-heart-pulse", bgGradient: "from-blue-600 to-cyan-600", lightBg: "bg-blue-50 text-blue-700", border: "border-blue-200", defaultScope: "regional1_sul" }
+      { id: "animal", name: "Causa Animal (100 Gatos)", shortDesc: "Acolhimento, vacina e castração na Várzea", leader: "Dona Maria da Várzea", icon: "fa-paw", bgGradient: "from-amber-500 to-orange-500", lightBg: "bg-amber-50 text-amber-700", border: "border-amber-200" },
+      { id: "paonosso", name: "Pão Nosso & Fubá", shortDesc: "Arrecadação de fubá, pães e cestas na periferia", leader: "Equipe Pão Nosso", icon: "fa-bread-slice", bgGradient: "from-orange-500 to-amber-600", lightBg: "bg-orange-50 text-orange-700", border: "border-orange-200" },
+      { id: "cultura", name: "Cultura & Dança", shortDesc: "Oficinas de teatro e dança para jovens na Várzea", leader: "Coletivo Várzea Viva", icon: "fa-masks-theater", bgGradient: "from-purple-600 to-indigo-600", lightBg: "bg-purple-50 text-purple-700", border: "border-purple-200" },
+      { id: "meioambiente", name: "Meio Ambiente & Praças", shortDesc: "Mutirões de limpeza e mudas de árvores", leader: "Profª Helena Ramos", icon: "fa-tree", bgGradient: "from-emerald-600 to-teal-600", lightBg: "bg-emerald-50 text-emerald-700", border: "border-emerald-200" },
+      { id: "sopao", name: "Ação Social & Sopão", shortDesc: "Alimentos preparados para pessoas em vulnerabilidade", leader: "Marcos Líder Social", icon: "fa-bowl-food", bgGradient: "from-rose-500 to-red-600", lightBg: "bg-rose-50 text-rose-700", border: "border-rose-200" },
+      { id: "saude", name: "Saúde nos Bairros", shortDesc: "Aferição de pressão e apoio preventivo comunitário", leader: "Jorge da Farmácia", icon: "fa-heart-pulse", bgGradient: "from-blue-600 to-cyan-600", lightBg: "bg-blue-50 text-blue-700", border: "border-blue-200" }
     ];
 
-    // BANCO CONCRETO DE 21 PESSOAS REAIS CADASTRADAS (TODOS COM NOME, BAIRRO E CAUSA)
     let campaignDatabase = [
-      // Comando Geral
       { id: 1, name: "Dr. Arthur Vinicius", role: "Comando Geral", phone: "(81) 98111-1000", region: "Recife (Geral)", leader: "Comando Geral", cause: "Diretrizes Gerais", donation: "Gestão do Projeto", scope: "admin", badgeColor: "purple" },
       { id: 2, name: "Gleyson Pedrosa", role: "Coordenação Geral PE", phone: "(81) 98111-2000", region: "Recife (Geral)", leader: "Dr. Arthur Vinicius", cause: "Mobilização Comunitária", donation: "Articulação Geral", scope: "admin", badgeColor: "emerald" },
-
-      // Zona Norte (regional1)
       { id: 3, name: "Profª Helena Ramos", role: "Coordenação Regional", phone: "(81) 98222-4002", region: "Casa Amarela", leader: "Gleyson Pedrosa", cause: "Meio Ambiente & Praças", donation: "Coordenação Norte", scope: "regional1", badgeColor: "blue" },
       { id: 4, name: "Beatriz Souza", role: "Apoiador / Voluntário", phone: "(81) 98555-1001", region: "Casa Amarela", leader: "Profª Helena Ramos", cause: "Meio Ambiente & Praças", donation: "15 Mudas de Árvores", scope: "regional1", badgeColor: "emerald" },
       { id: 5, name: "Fernando Lima", role: "Apoiador / Voluntário", phone: "(81) 98555-1002", region: "Casa Amarela", leader: "Profª Helena Ramos", cause: "Meio Ambiente & Praças", donation: "Sacos & Luvas de Limpeza", scope: "regional1", badgeColor: "emerald" },
-
-      // Núcleo Várzea sob liderança de Dona Maria (regional2)
       { id: 6, name: "Dona Maria da Várzea", role: "Liderança / Ativista de Bairro", phone: "(81) 98333-5001", region: "Várzea", leader: "Profª Helena Ramos", cause: "Causa Animal (100 Gatos)", donation: "Acolhimento Comunitário", scope: "regional2", badgeColor: "amber" },
       { id: 7, name: "Equipe Pão Nosso", role: "Equipe de Mini-Projeto", phone: "(81) 98444-1001", region: "Várzea", leader: "Dona Maria da Várzea", cause: "Pão Nosso & Fubá", donation: "Logística de Distribuição", scope: "regional2", badgeColor: "emerald" },
       { id: 8, name: "Coletivo Várzea Viva", role: "Equipe de Mini-Projeto", phone: "(81) 98444-1002", region: "Várzea", leader: "Dona Maria da Várzea", cause: "Cultura & Dança", donation: "Espaço para Oficinas", scope: "regional2", badgeColor: "purple" },
@@ -861,12 +1031,9 @@
       { id: 11, name: "Vanessa Lins", role: "Apoiador / Voluntário", phone: "(81) 98777-2003", region: "Várzea", leader: "Dona Maria da Várzea", cause: "Causa Animal (100 Gatos)", donation: "10kg de Ração", scope: "regional2", badgeColor: "slate" },
       { id: 12, name: "Carla Mendonça", role: "Apoiador / Voluntário", phone: "(81) 98777-2004", region: "Várzea", leader: "Coletivo Várzea Viva", cause: "Cultura & Dança", donation: "Aulas Voluntárias de Teatro", scope: "regional2", badgeColor: "slate" },
       { id: 13, name: "Rodrigo Alencar", role: "Apoiador / Doador", phone: "(81) 98777-2005", region: "Várzea", leader: "Dona Maria da Várzea", cause: "Causa Animal (100 Gatos)", donation: "Medicamentos Veterinários", scope: "regional2", badgeColor: "slate" },
-
-      // Zona Sul (regional1_sul & regional2_sul)
       { id: 14, name: "Jorge da Farmácia", role: "Coordenação Regional", phone: "(81) 98222-4001", region: "Afogados", leader: "Gleyson Pedrosa", cause: "Saúde nos Bairros", donation: "Aparelho de Pressão", scope: "regional1_sul", badgeColor: "blue" },
       { id: 15, name: "Amanda Cavalcanti", role: "Apoiador / Voluntário", phone: "(81) 98888-3001", region: "Afogados", leader: "Jorge da Farmácia", cause: "Saúde nos Bairros", donation: "Aferição Preventiva", scope: "regional1_sul", badgeColor: "emerald" },
       { id: 16, name: "Roberto Fonseca", role: "Apoiador / Voluntário", phone: "(81) 98888-3002", region: "Imbiribeira", leader: "Jorge da Farmácia", cause: "Saúde nos Bairros", donation: "Tendas Comunitárias", scope: "regional1_sul", badgeColor: "emerald" },
-
       { id: 17, name: "Marcos Líder Social", role: "Liderança / Ativista de Bairro", phone: "(81) 98333-5002", region: "Boa Viagem", leader: "Jorge da Farmácia", cause: "Ação Social & Sopão", donation: "Cozinha Solidária", scope: "regional2_sul", badgeColor: "amber" },
       { id: 18, name: "Equipe Sopão da Noite", role: "Equipe de Mini-Projeto", phone: "(81) 98444-2001", region: "Boa Viagem", leader: "Marcos Líder Social", cause: "Ação Social & Sopão", donation: "Preparo de Alimentos", scope: "regional2_sul", badgeColor: "emerald" },
       { id: 19, name: "Carlos Henrique", role: "Apoiador / Doador", phone: "(81) 98999-4001", region: "Boa Viagem", leader: "Marcos Líder Social", cause: "Ação Social & Sopão", donation: "Botijão de Gás", scope: "regional2_sul", badgeColor: "slate" },
@@ -874,7 +1041,6 @@
       { id: 21, name: "Lucas Albuquerque", role: "Apoiador / Doador", phone: "(81) 98999-4003", region: "Boa Viagem", leader: "Marcos Líder Social", cause: "Ação Social & Sopão", donation: "Descartáveis & Copos", scope: "regional2_sul", badgeColor: "slate" }
     ];
 
-    // EMPRESAS E ONGS PARCEIRAS (ITEM DO ÁUDIO)
     const partnersList = [
       { name: "PetShop Patas & Garras", neighborhood: "Várzea", type: "Empresa Parceira", cause: "Causa Animal (100 Gatos)", support: "Doação de 30kg de Ração", scope: "regional2" },
       { name: "Panificadora Pão Dourado", neighborhood: "Cordeiro", type: "Comércio Apoiador", cause: "Pão Nosso & Fubá", support: "50 Pães diários", scope: "regional2" },
@@ -883,6 +1049,264 @@
       { name: "Distribuidora Bom Preço", neighborhood: "Boa Viagem", type: "Empresa Parceira", cause: "Ação Social & Sopão", support: "Legumes e gás", scope: "regional2_sul" }
     ];
 
+    // ==========================================
+    // DETECÇÃO AUTOMÁTICA DE TEMA E ÍCONE DE CAUSA
+    // ==========================================
+    const causeSemanticDictionary = [
+      {
+        keywords: ["animal", "gato", "cachorro", "pet", "abrigo", "castra", "resgate", "bicho", "cavalo", "adocao", "adoção"],
+        icon: "fa-paw",
+        bgGradient: "from-amber-500 to-orange-500",
+        lightBg: "bg-amber-50 text-amber-700",
+        category: "Causa Animal"
+      },
+      {
+        keywords: ["esporte", "futebol", "bola", "corrida", "arena", "treino", "luta", "jiu", "campo", "volei", "vôlei", "basquete", "atleta"],
+        icon: "fa-futbol",
+        bgGradient: "from-emerald-500 to-green-600",
+        lightBg: "bg-emerald-50 text-emerald-700",
+        category: "Esporte & Lazer"
+      },
+      {
+        keywords: ["alimento", "fuba", "fubá", "pao", "pão", "sopa", "sopão", "comida", "fome", "cesta", "nutri", "refeição", "marmita"],
+        icon: "fa-bowl-food",
+        bgGradient: "from-rose-500 to-red-600",
+        lightBg: "bg-rose-50 text-rose-700",
+        category: "Alimentação & Social"
+      },
+      {
+        keywords: ["saude", "saúde", "médico", "medico", "pressao", "pressão", "exame", "hospital", "dentista", "remedio", "remédio", "prevent", "clinica", "clínica"],
+        icon: "fa-heart-pulse",
+        bgGradient: "from-blue-600 to-cyan-600",
+        lightBg: "bg-blue-50 text-blue-700",
+        category: "Saúde Comunitária"
+      },
+      {
+        keywords: ["cultura", "dança", "danca", "teatro", "música", "musica", "arte", "show", "juventude", "bateria", "violão", "desenho"],
+        icon: "fa-masks-theater",
+        bgGradient: "from-purple-600 to-indigo-600",
+        lightBg: "bg-purple-50 text-purple-700",
+        category: "Cultura & Juventude"
+      },
+      {
+        keywords: ["arvore", "árvore", "verde", "meio ambiente", "limpeza", "praça", "praca", "reciclagem", "muda", "horta", "lixo", "ecologia"],
+        icon: "fa-tree",
+        bgGradient: "from-teal-600 to-emerald-700",
+        lightBg: "bg-teal-50 text-teal-700",
+        category: "Meio Ambiente"
+      },
+      {
+        keywords: ["educacao", "educação", "escola", "reforço", "reforco", "aula", "curso", "capacitacao", "capacitação", "livro", "estudo", "ensino"],
+        icon: "fa-graduation-cap",
+        bgGradient: "from-indigo-600 to-blue-700",
+        lightBg: "bg-indigo-50 text-indigo-700",
+        category: "Educação & Capacitação"
+      },
+      {
+        keywords: ["mulher", "mãe", "mae", "infantil", "criança", "crianca", "idoso", "familia", "família", "creche", "comunidade"],
+        icon: "fa-people-roof",
+        bgGradient: "from-pink-500 to-rose-600",
+        lightBg: "bg-pink-50 text-pink-700",
+        category: "Família & Social"
+      }
+    ];
+
+    let currentSelectedCauseVisual = {
+      icon: "fa-handshake-angle",
+      bgGradient: "from-emerald-500 to-teal-500",
+      lightBg: "bg-emerald-50 text-emerald-700",
+      category: "Ação Comunitária"
+    };
+
+    function onCauseNameTyped(text) {
+      document.getElementById('causePreviewTitle').innerText = text.trim() || 'Nome da Causa';
+      
+      const lower = text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      
+      let match = null;
+      for (const item of causeSemanticDictionary) {
+        if (item.keywords.some(kw => lower.includes(kw))) {
+          match = item;
+          break;
+        }
+      }
+
+      if (match) {
+        selectCauseVisual(match.icon, match.bgGradient, match.lightBg, match.category, true);
+      } else {
+        selectCauseVisual("fa-handshake-angle", "from-emerald-500 to-teal-500", "bg-emerald-50 text-emerald-700", "Ação Comunitária", true);
+      }
+    }
+
+    function selectCauseVisual(icon, bgGradient, lightBg, category, auto = false) {
+      currentSelectedCauseVisual = { icon, bgGradient, lightBg, category };
+      
+      const iconElem = document.getElementById('causePreviewIcon');
+      const boxElem = document.getElementById('causePreviewIconBox');
+      const catElem = document.getElementById('causePreviewCategory');
+      const labelElem = document.getElementById('detectedThemeLabel');
+
+      iconElem.className = `fa-solid ${icon}`;
+      boxElem.className = `w-12 h-12 rounded-2xl bg-gradient-to-tr ${bgGradient} text-white flex items-center justify-center text-xl shadow-md shrink-0 transition-all`;
+      catElem.className = `px-2 py-0.5 ${lightBg} text-[10px] font-bold rounded-lg shrink-0`;
+      catElem.innerText = category;
+
+      if (auto) {
+        labelElem.innerText = `Identificado: ${category}`;
+        labelElem.className = "text-[10px] text-emerald-600 font-bold";
+      } else {
+        labelElem.innerText = `Escolhido: ${category}`;
+        labelElem.className = "text-[10px] text-blue-600 font-bold";
+      }
+    }
+
+    function openNewCauseModal() {
+      document.getElementById('causeForm').reset();
+      document.getElementById('causePreviewTitle').innerText = 'Nome da Causa';
+      document.getElementById('causePreviewDesc').innerText = 'Descrição do projeto comunitário';
+      selectCauseVisual("fa-handshake-angle", "from-emerald-500 to-teal-500", "bg-emerald-50 text-emerald-700", "Ação Comunitária", true);
+      
+      document.getElementById('causeModal').classList.remove('hidden');
+      document.getElementById('causeModal').classList.add('flex');
+    }
+
+    function closeCauseModal() {
+      document.getElementById('causeModal').classList.remove('flex');
+      document.getElementById('causeModal').classList.add('hidden');
+    }
+
+    function handleSaveCause(e) {
+      e.preventDefault();
+      const name = document.getElementById('causeNameInput').value.trim();
+      const desc = document.getElementById('causeDescInput').value.trim() || 'Ação voluntária e impacto direto na comunidade';
+      const leader = document.getElementById('causeLeaderInput').value.trim();
+      const donation = document.getElementById('causeDonationInput').value.trim() || 'Doações e Voluntariado';
+
+      if (!name) return;
+
+      const newCauseObj = {
+        id: 'cause_' + Date.now(),
+        name,
+        shortDesc: desc,
+        leader,
+        donation,
+        icon: currentSelectedCauseVisual.icon,
+        bgGradient: currentSelectedCauseVisual.bgGradient,
+        lightBg: currentSelectedCauseVisual.lightBg,
+        border: "border-emerald-200"
+      };
+
+      causesCatalog.unshift(newCauseObj);
+      updateCauseSelects(name);
+      closeCauseModal();
+      refreshAllViews();
+
+      alert(`A causa "${name}" foi criada com sucesso!\nO ícone foi configurado como "${currentSelectedCauseVisual.category}" e já está ativo no painel.`);
+    }
+
+    function updateCauseSelects(newCauseName) {
+      const publicSelect = document.getElementById('publicCauseSelect');
+      const editSelect = document.getElementById('fieldCause');
+      
+      if (publicSelect) {
+        const opt = document.createElement('option');
+        opt.value = newCauseName;
+        opt.innerText = newCauseName;
+        publicSelect.prepend(opt);
+      }
+
+      if (editSelect) {
+        const opt = document.createElement('option');
+        opt.value = newCauseName;
+        opt.innerText = newCauseName;
+        editSelect.prepend(opt);
+      }
+    }
+
+    // ==========================================
+    // DETECÇÃO DE ROTA PÚBLICA (SEM SENHA)
+    // ==========================================
+    function checkPublicRoute() {
+      const hash = window.location.hash || '';
+      const search = window.location.search || '';
+
+      if (hash.includes('cadastro') || search.includes('ref=')) {
+        let refKey = 'donamaria';
+        const match = (hash + search).match(/ref=([a-zA-Z0-9_-]+)/);
+        if (match && match[1] && leaderCatalog[match[1]]) {
+          refKey = match[1];
+        }
+        currentPublicLeaderKey = refKey;
+        showPublicRegistrationView(refKey);
+        return true;
+      }
+      return false;
+    }
+
+    function showPublicRegistrationView(leaderKey) {
+      const leader = leaderCatalog[leaderKey] || leaderCatalog['donamaria'];
+      
+      document.getElementById('loginOverlay').classList.add('hidden');
+      document.getElementById('appContainer').classList.add('hidden');
+      
+      const pubView = document.getElementById('publicRegisterView');
+      pubView.classList.remove('hidden');
+
+      document.getElementById('publicLeaderNameDisplay').innerText = leader.name;
+      document.getElementById('publicCauseSelect').value = leader.cause;
+      document.getElementById('publicRegion').value = leader.region;
+
+      document.getElementById('publicSignupForm').classList.remove('hidden');
+      document.getElementById('publicSuccessMsg').classList.add('hidden');
+    }
+
+    function resetPublicForm() {
+      document.getElementById('publicSignupForm').reset();
+      document.getElementById('publicSignupForm').classList.remove('hidden');
+      document.getElementById('publicSuccessMsg').classList.add('hidden');
+    }
+
+    function handlePublicRegistration(e) {
+      e.preventDefault();
+      const name = document.getElementById('publicName').value.trim();
+      const phone = document.getElementById('publicPhone').value.trim();
+      const region = document.getElementById('publicRegion').value.trim();
+      const cause = document.getElementById('publicCauseSelect').value;
+      const donation = document.getElementById('publicDonation').value.trim() || 'Voluntariado de Campo';
+      
+      const leader = leaderCatalog[currentPublicLeaderKey] || leaderCatalog['donamaria'];
+
+      campaignDatabase.unshift({
+        id: Date.now(),
+        name,
+        phone,
+        role: "Apoiador / Voluntário",
+        region,
+        leader: leader.name,
+        cause,
+        donation,
+        status: "Ativo",
+        scope: leader.scope,
+        badgeColor: "emerald"
+      });
+
+      document.getElementById('publicSignupForm').classList.add('hidden');
+      document.getElementById('publicSuccessMsg').classList.remove('hidden');
+    }
+
+    function openCurrentGeneratedLink() {
+      const leaderVal = document.getElementById('affiliateLeaderSelect').value;
+      currentPublicLeaderKey = leaderVal;
+      showPublicRegistrationView(leaderVal);
+    }
+
+    function openPublicRegistrationLinkDirect() {
+      showPublicRegistrationView('donamaria');
+    }
+
+    // ==========================================
+    // CONTROLE DE NAVEGAÇÃO INTERNA & LOGIN
+    // ==========================================
     function toggleMobileMenu() {
       const menu = document.getElementById('mobileMenu');
       menu.classList.toggle('hidden');
@@ -912,6 +1336,9 @@
 
         document.getElementById('loginOverlay').classList.add('hidden');
         document.getElementById('loginAlert').classList.add('hidden');
+        document.getElementById('appContainer').classList.remove('hidden');
+        document.getElementById('publicRegisterView').classList.add('hidden');
+
         document.getElementById('loggedUserName').innerText = match.name;
         document.getElementById('loggedUserRole').innerText = match.role;
         document.getElementById('mobileLoggedUser').innerText = match.name;
@@ -931,7 +1358,6 @@
     }
 
     function switchTab(tabId) {
-      // Trava de segurança: somente admin geral pode acessar a gestão de senhas
       if (tabId === 'usuarios' && currentScope !== 'admin') {
         alert("Acesso restrito: Somente a Gestão Geral pode criar ou gerenciar senhas do sistema.");
         return;
@@ -1028,7 +1454,6 @@
       }
     }
 
-    // FILTRO DE ESCOPO: O CORAÇÃO DO SISTEMA
     function getScopedRecords() {
       return campaignDatabase.filter(r => {
         if (currentScope === 'admin') return true;
@@ -1067,23 +1492,18 @@
       });
     }
 
-    // CÁLCULO DINÂMICO DOS NÚMEROS DO TOPO CONFORME O ESCOPO
     function calculateAndRenderMetrics() {
       const records = getScopedRecords();
       const partners = getScopedPartners();
 
-      // 1. Total Apoiadores
       document.getElementById('metricTotalSupporters').innerText = records.length;
       
-      // 2. Líderes e Ativistas
       const leadersCount = records.filter(r => r.role.includes("Liderança") || r.role.includes("Coordenação") || r.role.includes("Equipe")).length;
       document.getElementById('metricLeadersCount').innerText = leadersCount;
 
-      // 3. Causas distintas sob responsabilidade deste usuário
       const distinctCauses = new Set(records.map(r => r.cause).filter(c => c !== "Diretrizes Gerais" && c !== "Mobilização Comunitária"));
       document.getElementById('metricCausesCount').innerText = distinctCauses.size;
 
-      // 4. Doações registradas (quantas pessoas doaram recursos)
       const donationsWithItems = records.filter(r => r.donation && !r.donation.includes("Coordenação") && !r.donation.includes("Gestão") && !r.donation.includes("Articulação")).length;
       document.getElementById('metricDonationsCount').innerText = donationsWithItems;
 
@@ -1101,13 +1521,11 @@
       if (activeTab === 'usuarios') renderUsersTable();
     }
 
-    // CARDS GRANDES DE CAUSAS (VISUAL JOVEM, CATIVANTE E BEM LEGÍVEL)
     function renderBigCauses() {
       const container = document.getElementById('bigCausesGrid');
       const records = getScopedRecords();
 
       container.innerHTML = causesCatalog.map(c => {
-        // Conta quantas pessoas cadastradas existem especificamente sob esta causa no escopo
         const countInCause = records.filter(r => r.cause === c.name).length;
         const isCurrentScopeInterested = currentScope === 'admin' || records.some(r => r.cause === c.name);
 
@@ -1151,7 +1569,6 @@
       refreshAllViews();
     }
 
-    // TABELA RESUMIDA DA VISÃO GERAL
     function renderOverviewTable() {
       const tbody = document.getElementById('overviewTableBody');
       const records = getScopedRecords();
@@ -1193,7 +1610,6 @@
       });
     }
 
-    // LISTA DE EMPRESAS E ONGS PARCEIRAS (ITEM DO ÁUDIO)
     function renderPartnersList() {
       const container = document.getElementById('partnersListContainer');
       const partners = getScopedPartners();
@@ -1216,7 +1632,6 @@
       `).join('');
     }
 
-    // RENDERIZAR CAUSAS DETALHADAS (ABA 2)
     function renderCausesFullGrid() {
       const grid = document.getElementById('causesFullGrid');
       const records = getScopedRecords();
@@ -1256,7 +1671,8 @@
     }
 
     function shareCauseWhatsApp(causeName) {
-      const link = window.location.href.split('#')[0] + "#filiacao";
+      const base = window.location.href.split('#')[0].split('?')[0];
+      const link = `${base}#cadastro?ref=donamaria`;
       const text = encodeURIComponent(
         `Olá! Estou te convidando para apoiar o projeto *${causeName}* com a nossa equipe comunitária.
 
@@ -1268,11 +1684,9 @@ Sua ajuda faz toda a diferença!`
       window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
     }
 
-    // ORGANOGRAMA EM ÁRVORE (QUEM RESPONDE A QUEM)
     function renderOrganogramaTree() {
       const container = document.getElementById('treeContainer');
       container.innerHTML = `
-        <!-- NÍVEL 1: CANDIDATO -->
         <div class="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-2xs">
           <div class="flex items-center space-x-3">
             <div class="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-sm font-bold shrink-0"><i class="fa-solid fa-crown"></i></div>
@@ -1284,7 +1698,6 @@ Sua ajuda faz toda a diferença!`
         </div>
 
         <div class="tree-branch space-y-3">
-          <!-- NÍVEL 2: COORDENAÇÃO GERAL -->
           <div class="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-2xs">
             <div class="flex items-center space-x-3">
               <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold shrink-0"><i class="fa-solid fa-briefcase"></i></div>
@@ -1296,7 +1709,6 @@ Sua ajuda faz toda a diferença!`
           </div>
 
           <div class="tree-branch space-y-3">
-            <!-- NÍVEL 2 REGIONAL: PROF HELENA -->
             <div class="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-2xs">
               <div class="flex items-center space-x-3">
                 <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold shrink-0"><i class="fa-solid fa-map-location-dot"></i></div>
@@ -1308,7 +1720,6 @@ Sua ajuda faz toda a diferença!`
             </div>
 
             <div class="tree-branch space-y-3">
-              <!-- NÍVEL 3 ATIVISTA: DONA MARIA -->
               <div class="bg-white border border-slate-200 rounded-2xl p-3.5 shadow-2xs">
                 <div class="flex items-center space-x-3">
                   <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm font-bold shrink-0"><i class="fa-solid fa-paw"></i></div>
@@ -1319,7 +1730,6 @@ Sua ajuda faz toda a diferença!`
                 </div>
               </div>
 
-              <!-- EQUIPES E VOLUNTÁRIOS -->
               <div class="tree-branch space-y-2">
                 <div class="bg-white border border-slate-200 rounded-xl p-2.5 shadow-2xs flex items-center justify-between">
                   <div>
@@ -1358,7 +1768,6 @@ Sua ajuda faz toda a diferença!`
       });
     }
 
-    // TABELA COMPLETA DE APOIADORES
     function renderMembersTable() {
       const tbody = document.getElementById('fullMembersTableBody');
       const search = (document.getElementById('memberSearchInput').value || '').toLowerCase();
@@ -1423,21 +1832,11 @@ Sua ajuda faz toda a diferença!`
       });
     }
 
-    // PONTO DE FILIAÇÃO
     function updateAffiliateLinkUI() {
       const leaderVal = document.getElementById('affiliateLeaderSelect').value;
-      const base = window.location.href.split('#')[0];
+      const base = window.location.href.split('#')[0].split('?')[0];
       const link = `${base}#cadastro?ref=${leaderVal}`;
       document.getElementById('generatedLinkInput').value = link;
-
-      const leaderNames = {
-        donamaria: "Dona Maria da Várzea (Causa Animal)",
-        marcoslider: "Marcos Líder Social (Ação Social & Sopão)",
-        paonosso: "Equipe Pão Nosso (Alimentos & Fubá)",
-        helenaramos: "Profª Helena Ramos (Zona Norte)"
-      };
-
-      document.getElementById('publicFormReferralText').innerText = `Convidado por: ${leaderNames[leaderVal] || 'Liderança Comunitária'}`;
     }
 
     function copyGeneratedLink() {
@@ -1451,65 +1850,14 @@ Sua ajuda faz toda a diferença!`
     function shareLinkWhatsApp() {
       const link = document.getElementById('generatedLinkInput').value;
       const leaderVal = document.getElementById('affiliateLeaderSelect').value;
-      const leaderNames = {
-        donamaria: "Dona Maria da Várzea",
-        marcoslider: "Marcos Líder Social",
-        paonosso: "Equipe Pão Nosso",
-        helenaramos: "Profª Helena Ramos"
-      };
-      const nomeLider = leaderNames[leaderVal] || 'Nossa Equipe';
+      const leader = leaderCatalog[leaderVal] || leaderCatalog['donamaria'];
 
       const text = encodeURIComponent(
-        `Olá! Aqui é da equipe de *${nomeLider}*.
-
-Estamos cadastrando voluntários e recebendo doações de mantimentos para apoiar as ações no nosso bairro.
-
-Clique no link rápido para confirmar seu apoio:
-👉 ${link}
-
-Juntos fazemos a diferença!`
+        `Olá! Aqui é da equipe de *${leader.name}*.\n\nEstamos cadastrando voluntários e recebendo doações de mantimentos para apoiar as ações no nosso bairro.\n\nClique no link rápido para confirmar seu apoio:\n👉 ${link}\n\nJuntos fazemos a diferença!`
       );
       window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
     }
 
-    function handlePublicRegistration(e) {
-      e.preventDefault();
-      const name = document.getElementById('pubName').value.trim();
-      const phone = document.getElementById('pubPhone').value.trim();
-      const region = document.getElementById('pubNeighborhood').value.trim();
-      const cause = document.getElementById('pubCause').value;
-      const donation = document.getElementById('pubDonation').value.trim();
-      const leaderVal = document.getElementById('affiliateLeaderSelect').value;
-      const leaderNames = {
-        donamaria: "Dona Maria da Várzea",
-        marcoslider: "Marcos Líder Social",
-        paonosso: "Equipe Pão Nosso",
-        helenaramos: "Profª Helena Ramos"
-      };
-
-      campaignDatabase.unshift({
-        id: Date.now(),
-        name,
-        phone,
-        role: "Apoiador / Voluntário",
-        region,
-        leader: leaderNames[leaderVal] || "Dona Maria da Várzea",
-        cause,
-        donation: donation || "Voluntariado de Campo",
-        status: "Ativo",
-        scope: "regional2",
-        badgeColor: "emerald"
-      });
-
-      alert(`Parabéns, ${name}! Seu cadastro foi recebido com sucesso na rede de ${leaderNames[leaderVal]}!`);
-      document.getElementById('pubName').value = '';
-      document.getElementById('pubPhone').value = '';
-      document.getElementById('pubNeighborhood').value = '';
-      document.getElementById('pubDonation').value = '';
-      refreshAllViews();
-    }
-
-    // GESTÃO DE SENHAS (ADMIN)
     function renderUsersTable() {
       const tbody = document.getElementById('usersTableBody');
       systemUsers = getStoredUsers();
@@ -1611,11 +1959,7 @@ Juntos fazemos a diferença!`
 
       saveStoredUsers(systemUsers);
       closeUserModal();
-      alert(`Credencial guardada!
-
-Usuário: ${user}
-Senha: ${pass}
-A pessoa já pode entrar imediatamente no sistema.`);
+      alert(`Credencial guardada!\n\nUsuário: ${user}\nSenha: ${pass}\nA pessoa já pode entrar imediatamente no sistema.`);
       renderUsersTable();
     }
 
@@ -1631,18 +1975,9 @@ A pessoa já pode entrar imediatamente no sistema.`);
     function shareUserWhatsApp(idx) {
       systemUsers = getStoredUsers();
       const u = systemUsers[idx];
-      const link = window.location.href.split('#')[0];
+      const link = window.location.href.split('#')[0].split('?')[0];
       const text = encodeURIComponent(
-        `Olá, ${u.name}!
-
-Seu acesso ao *MOBILIZA - Painel Comunitário* foi configurado:
-
-🌐 *Link do Site:* ${link}
-👤 *Usuário:* ${u.user}
-🔑 *Senha:* ${u.pass}
-🛡️ *Nível:* ${u.role}
-
-Guarde sua credencial com segurança!`
+        `Olá, ${u.name}!\n\nSeu acesso ao *MOBILIZA - Painel Comunitário* foi configurado:\n\n🌐 *Link do Site:* ${link}\n👤 *Usuário:* ${u.user}\n🔑 *Senha:* ${u.pass}\n🛡️ *Nível:* ${u.role}\n\nGuarde sua credencial com segurança!`
       );
       window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
     }
@@ -1668,7 +2003,7 @@ Guarde sua credencial com segurança!`
     function openModalForNew() {
       document.getElementById('recordId').value = "";
       document.getElementById('editForm').reset();
-      document.getElementById('modalHeading').innerText = "Novo Cadastro Manual";
+      document.getElementById('modalHeading').innerText = "Novo Cadastro de Apoiador";
 
       document.getElementById('editModal').classList.remove('hidden');
       document.getElementById('editModal').classList.add('flex');
@@ -1733,9 +2068,13 @@ Guarde sua credencial com segurança!`
       }
     }
 
-    // Inicialização
-    updateScopeStatusUI();
-    refreshAllViews();
+    window.addEventListener('hashchange', checkPublicRoute);
+
+    if (!checkPublicRoute()) {
+      updateScopeStatusUI();
+      refreshAllViews();
+      updateAffiliateLinkUI();
+    }
   </script>
 </body>
 </html>
