@@ -249,7 +249,7 @@
       </div>
     </div>
 
-    <!-- SIDEBAR FIXA -->
+    <!-- SIDEBAR FIXA (DESKTOP) -->
     <aside class="hidden md:flex w-64 bg-[#0a1120] text-slate-300 flex-col shrink-0 min-h-screen">
       <div class="p-5 border-b border-slate-800/80 flex items-center space-x-3">
         <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center text-xl font-bold shadow-md shadow-emerald-500/20">
@@ -317,7 +317,7 @@
     <!-- ÁREA PRINCIPAL -->
     <div class="flex-1 flex flex-col min-w-0 overflow-y-auto w-full">
 
-      <!-- BARRA SUPERIOR COM OS DOIS BOTÕES SEPARADOS -->
+      <!-- BARRA SUPERIOR -->
       <header class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3 sticky top-0 md:relative z-20">
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold">
@@ -344,13 +344,11 @@
             <span>Criar Senha</span>
           </button>
 
-          <!-- BOTÃO 1: CRIA A CAUSA (PROJETO) -->
           <button onclick="openNewCauseModal()" class="px-2.5 sm:px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white text-[11px] sm:text-xs font-bold rounded-lg shadow-sm flex items-center gap-1 shrink-0" title="Cadastrar nova causa/projeto">
             <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i>
             <span>Nova Causa</span>
           </button>
 
-          <!-- BOTÃO 2: CADASTRA A PESSOA (VOLUNTÁRIO) -->
           <button onclick="openModalForNew()" class="px-2.5 sm:px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs font-bold rounded-lg shadow-sm flex items-center gap-1 shrink-0" title="Cadastrar novo apoiador">
             <i class="fa-solid fa-user-plus text-[10px]"></i>
             <span>Novo Apoiador</span>
@@ -358,7 +356,7 @@
         </div>
       </header>
 
-      <!-- Sub-Barra de Escopo -->
+      <!-- Sub-Barra de Limitação de Escopo -->
       <div class="bg-slate-100/70 border-b border-slate-200 px-4 sm:px-6 py-2 flex flex-wrap items-center justify-between gap-1 text-xs">
         <div class="flex items-center space-x-2 truncate">
           <span id="tagLevelPill" class="bg-purple-100 text-purple-800 font-bold px-2 py-0.5 rounded text-[10px] uppercase shrink-0">VISÃO GERAL</span>
@@ -374,6 +372,145 @@
 
         <!-- ABA 1: VISÃO GERAL -->
         <section id="tabContentVisaoGeral" class="space-y-5">
+          
+          <!-- ======================================================= -->
+          <!-- HUB CENTRAL ESTILO APLICATIVO NATIVO (GRADE DE CARDS)   -->
+          <!-- ======================================================= -->
+          <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-lg font-bold shadow-md shadow-indigo-500/25">
+                  <i class="fa-solid fa-shapes"></i>
+                </div>
+                <div>
+                  <h2 class="text-sm sm:text-base font-black text-slate-900 leading-tight">Módulos de Ação Rápida</h2>
+                  <p class="text-[11px] text-slate-400">Toque em qualquer botão para abrir a ferramenta direto</p>
+                </div>
+              </div>
+              <span id="launcherGreetingBadge" class="hidden sm:inline-block px-3 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-black rounded-full uppercase">
+                Painel Ativo
+              </span>
+            </div>
+
+            <!-- Grade Colorida Estilo App Google Play (2 colunas no celular / 4 no PC) -->
+            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              
+              <!-- Card 1: Novo Apoiador (Azul Céu) -->
+              <button onclick="openModalForNew()" class="group relative overflow-hidden rounded-2xl sm:rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-blue-500 to-sky-400 text-white text-left shadow-md shadow-blue-500/20 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition flex flex-col justify-between min-h-[110px] sm:min-h-[130px]">
+                <div class="flex items-center justify-between w-full">
+                  <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-user-plus"></i>
+                  </div>
+                  <i class="fa-solid fa-arrow-right text-xs opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition"></i>
+                </div>
+                <div>
+                  <h3 class="font-black text-xs sm:text-sm leading-tight">Novo Apoiador</h3>
+                  <p class="text-[10px] sm:text-[11px] text-blue-100 font-medium mt-0.5">Cadastrar no campo</p>
+                </div>
+              </button>
+
+              <!-- Card 2: Link WhatsApp (Turquesa / Ciano) -->
+              <button onclick="switchTab('filiacao')" class="group relative overflow-hidden rounded-2xl sm:rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-sky-500 to-cyan-400 text-white text-left shadow-md shadow-sky-500/20 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition flex flex-col justify-between min-h-[110px] sm:min-h-[130px]">
+                <div class="flex items-center justify-between w-full">
+                  <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-lg">
+                    <i class="fa-brands fa-whatsapp text-xl"></i>
+                  </div>
+                  <i class="fa-solid fa-arrow-right text-xs opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition"></i>
+                </div>
+                <div>
+                  <h3 class="font-black text-xs sm:text-sm leading-tight">Link de Filiação</h3>
+                  <p class="text-[10px] sm:text-[11px] text-sky-100 font-medium mt-0.5">Enviar pelo WhatsApp</p>
+                </div>
+              </button>
+
+              <!-- Card 3: Causas & Projetos (Magenta / Roxo) -->
+              <button onclick="switchTab('causas')" class="group relative overflow-hidden rounded-2xl sm:rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-fuchsia-600 to-pink-500 text-white text-left shadow-md shadow-fuchsia-500/20 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition flex flex-col justify-between min-h-[110px] sm:min-h-[130px]">
+                <div class="flex items-center justify-between w-full">
+                  <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-icons"></i>
+                  </div>
+                  <span id="launcherCausesBadge" class="px-2 py-0.5 bg-white/20 rounded-full text-[10px] font-black">6 Ativas</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-xs sm:text-sm leading-tight">Causas & Ações</h3>
+                  <p class="text-[10px] sm:text-[11px] text-fuchsia-100 font-medium mt-0.5">Mini-projetos locais</p>
+                </div>
+              </button>
+
+              <!-- Card 4: Rede de Apoiadores (Índigo Escuro) -->
+              <button onclick="switchTab('membros')" class="group relative overflow-hidden rounded-2xl sm:rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-indigo-600 to-blue-700 text-white text-left shadow-md shadow-indigo-600/20 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition flex flex-col justify-between min-h-[110px] sm:min-h-[130px]">
+                <div class="flex items-center justify-between w-full">
+                  <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-users"></i>
+                  </div>
+                  <span id="launcherSupportersBadge" class="px-2 py-0.5 bg-white/20 rounded-full text-[10px] font-black">21</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-xs sm:text-sm leading-tight">Rede Completa</h3>
+                  <p class="text-[10px] sm:text-[11px] text-indigo-100 font-medium mt-0.5">Lista de apoiadores</p>
+                </div>
+              </button>
+
+              <!-- Card 5: Árvore de Liderança (Violeta / Roxo Suave) -->
+              <button onclick="switchTab('organograma')" class="group relative overflow-hidden rounded-2xl sm:rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-violet-600 to-purple-500 text-white text-left shadow-md shadow-violet-500/20 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition flex flex-col justify-between min-h-[110px] sm:min-h-[130px]">
+                <div class="flex items-center justify-between w-full">
+                  <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-sitemap"></i>
+                  </div>
+                  <i class="fa-solid fa-arrow-right text-xs opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition"></i>
+                </div>
+                <div>
+                  <h3 class="font-black text-xs sm:text-sm leading-tight">Linha de Comando</h3>
+                  <p class="text-[10px] sm:text-[11px] text-violet-100 font-medium mt-0.5">Árvore de quem lidera</p>
+                </div>
+              </button>
+
+              <!-- Card 6: Nova Causa Inteligente (Esmeralda / Verde Claro) -->
+              <button onclick="openNewCauseModal()" class="group relative overflow-hidden rounded-2xl sm:rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-emerald-600 to-teal-500 text-white text-left shadow-md shadow-emerald-600/20 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition flex flex-col justify-between min-h-[110px] sm:min-h-[130px]">
+                <div class="flex items-center justify-between w-full">
+                  <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                  </div>
+                  <span class="px-2 py-0.5 bg-white/20 rounded-full text-[9px] font-black uppercase">Novo</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-xs sm:text-sm leading-tight">Criar Nova Causa</h3>
+                  <p class="text-[10px] sm:text-[11px] text-emerald-100 font-medium mt-0.5">Detecção automática</p>
+                </div>
+              </button>
+
+              <!-- Card 7: Empresas & ONGs (Teal / Verde Petróleo) -->
+              <button onclick="scrollToPartners()" class="group relative overflow-hidden rounded-2xl sm:rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-teal-600 to-emerald-500 text-white text-left shadow-md shadow-teal-600/20 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition flex flex-col justify-between min-h-[110px] sm:min-h-[130px]">
+                <div class="flex items-center justify-between w-full">
+                  <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-building-ngo"></i>
+                  </div>
+                  <span id="launcherPartnersBadge" class="px-2 py-0.5 bg-white/20 rounded-full text-[10px] font-black">5</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-xs sm:text-sm leading-tight">Empresas & ONGs</h3>
+                  <p class="text-[10px] sm:text-[11px] text-teal-100 font-medium mt-0.5">Parcerias locais</p>
+                </div>
+              </button>
+
+              <!-- Card 8: Gestão de Senhas (Âmbar / Dourado) -->
+              <button id="launcherAdminCard" onclick="switchTab('usuarios')" class="group relative overflow-hidden rounded-2xl sm:rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-amber-500 to-orange-500 text-white text-left shadow-md shadow-amber-500/20 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition flex flex-col justify-between min-h-[110px] sm:min-h-[130px]">
+                <div class="flex items-center justify-between w-full">
+                  <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-user-shield"></i>
+                  </div>
+                  <i class="fa-solid fa-arrow-right text-xs opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition"></i>
+                </div>
+                <div>
+                  <h3 class="font-black text-xs sm:text-sm leading-tight">Gestão de Senhas</h3>
+                  <p class="text-[10px] sm:text-[11px] text-amber-100 font-medium mt-0.5">Controle de acessos</p>
+                </div>
+              </button>
+
+            </div>
+          </div>
+          
+          <!-- Banner Informativo Dinâmico -->
           <div class="relative bg-gradient-to-r from-[#0a1120] to-[#122338] text-white rounded-3xl p-5 sm:p-7 shadow-sm overflow-hidden border border-slate-800">
             <div class="relative z-10 max-w-2xl">
               <span class="inline-block bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider mb-2">
@@ -520,7 +657,6 @@
                 <h2 class="text-base sm:text-lg font-black text-slate-900">Causas, Mini-Projetos & Ações em Campo</h2>
                 <p class="text-xs text-slate-400">Cada projeto reúne ativistas, doações de mantimentos e voluntários de bairro</p>
               </div>
-              <!-- BOTÃO QUE CHAMA EXCLUSIVAMENTE O CADASTRO DA CAUSA -->
               <button onclick="openNewCauseModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-600/25 flex items-center justify-center gap-1.5 shrink-0">
                 <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
                 <span>+ Criar Nova Causa</span>
@@ -1483,6 +1619,13 @@
       });
     }
 
+    function scrollToPartners() {
+      const container = document.getElementById('partnersListContainer');
+      if (container) {
+        container.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
     function calculateAndRenderMetrics() {
       const records = getScopedRecords();
       const partners = getScopedPartners();
@@ -1499,6 +1642,12 @@
       document.getElementById('metricDonationsCount').innerText = donationsWithItems;
 
       document.getElementById('partnersBadgeCount').innerText = partners.length;
+      const launcherSupporters = document.getElementById('launcherSupportersBadge');
+      if (launcherSupporters) launcherSupporters.innerText = records.length;
+      const launcherCauses = document.getElementById('launcherCausesBadge');
+      if (launcherCauses) launcherCauses.innerText = `${distinctCauses.size} Ativas`;
+      const launcherPartners = document.getElementById('launcherPartnersBadge');
+      if (launcherPartners) launcherPartners.innerText = partners.length;
     }
 
     function refreshAllViews() {
